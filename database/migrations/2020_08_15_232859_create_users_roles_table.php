@@ -13,19 +13,19 @@ class CreateUsersRolesTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_roles', function (Blueprint $table) {
-            // $table->bigIncrements('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('role_id');
+        // Schema::create('users_roles', function (Blueprint $table) {
+        //     // $table->bigIncrements('id');
+        //     $table->unsignedInteger('user_id');
+        //     $table->unsignedInteger('role_id');
 
-            //FOREIGN KEY CONSTRAINTS
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+        //     //FOREIGN KEY CONSTRAINTS
+        //     $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        //     $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
 
-            //SETTING THE PRIMARY KEYS
-            $table->primary(['user_id', 'role_id']);
-            $table->timestamps();
-        });
+        //     //SETTING THE PRIMARY KEYS
+        //     $table->primary(['user_id', 'role_id']);
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -33,8 +33,8 @@ class CreateUsersRolesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('users_roles');
-    }
+    // public function down()
+    // {
+    //     Schema::dropIfExists('users_roles');
+    // }
 }

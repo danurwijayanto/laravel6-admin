@@ -13,21 +13,21 @@ class CreateUsersPermissionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_permissions', function (Blueprint $table) {
-            // $table->bigIncrements('id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('permission_id');
+        // Schema::create('users_permissions', function (Blueprint $table) {
+        //     // $table->bigIncrements('id');
+        //     $table->unsignedInteger('user_id');
+        //     $table->unsignedInteger('permission_id');
 
-            // Foreign key constraint
-            $table->foreign('user_id')->reference('id')->on('users')->onDelete('cascade');
-            $table->foreign('permission_id')->reference('id')->on('permission')->onDelete('cascade');
+        //     // Foreign key constraint
+        //     $table->foreign('user_id')->reference('id')->on('users')->onDelete('cascade');
+        //     $table->foreign('permission_id')->reference('id')->on('permission')->onDelete('cascade');
 
-            //SETTING THE PRIMARY KEYS
-            $table->primary(['user_id', 'role_id']);
-            $table->timestamps();
+        //     //SETTING THE PRIMARY KEYS
+        //     $table->primary(['user_id', 'role_id']);
+        //     $table->timestamps();
 
-            $table->timestamps();
-        });
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -35,8 +35,8 @@ class CreateUsersPermissionsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('users_permissions');
-    }
+    // public function down()
+    // {
+    //     Schema::dropIfExists('users_permissions');
+    // }
 }
