@@ -1,4 +1,3 @@
-
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -8,7 +7,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('home') }}" class="nav-link">Home</a>
+        <a href="{{ route('home') }}" class="nav-link">{{ env('APP_NAME') }}</a>
       </li>
     </ul>
 
@@ -27,11 +26,11 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="../../index3.html" class="brand-link">
-      <img src="{{asset('assets/dist/img/AdminLTELogo.png')}}"
-           alt="AdminLTE Logo"
-           class="brand-image img-circle elevation-3"
-           style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      {{-- <img src="{{asset('assets/dist/img/AdminLTELogo.png')}}"
+      alt="AdminLTE Logo"
+      class="brand-image img-circle elevation-3"
+      style="opacity: .8"> --}}
+      <span class="brand-text font-weight-light">SMA Negeri 1 Grobogan</span>
     </a>
 
     <!-- Sidebar -->
@@ -45,7 +44,23 @@
             <a href="../widgets.html" class="nav-link">
               <i class="nav-icon fas fa-book"></i>
               <p>
+                Data Admin
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../widgets.html" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
                 Data Siswa
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="../widgets.html" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Data Guru
               </p>
             </a>
           </li>
@@ -65,6 +80,15 @@
               </p>
             </a>
           </li>
+        </ul>
+        <li class="nav-item">
+          <a href="../widgets.html" class="nav-link">
+            <i class="nav-icon fas fa-book"></i>
+            <p>
+              Hasil Perhitungan
+            </p>
+          </a>
+        </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
