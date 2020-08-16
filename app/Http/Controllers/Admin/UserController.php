@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use App\User;
+use DataTables;
 
 class UserController extends Controller
 {
     private $controllerDetails;
-    
-    public function __construct () 
+
+    public function __construct()
     {
         $this->middleware('auth');
 
@@ -26,7 +29,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('v1.admin.content.userList')->with('detailController', $this->controllerDetails);
+        // $listUser = User::with('role')->get();
+
+        return view('v1.admin.content.userList')->with([
+            'detailController' => $this->controllerDetails,
+            // 'data' => $listUser,
+        ]);
     }
 
     /**
@@ -93,5 +101,17 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function dataTablesGetAllData() {
+        $data = $listUser = User::with('role')->get();
+            return DataTables::of($data)
+                    ->addColumn('action', function($data){
+                        $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
+                        $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="edit" id="'.$data->id.'" class="delete btn btn-danger btn-sm">Delete</button>';
+                        return $button;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +16,10 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="{{asset('assets/plugins/fonts/SourceSansPro.css')}}" >
+  <link rel="stylesheet" href="{{asset('assets/plugins/fonts/SourceSansPro.css')}}">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
 
   <style>
     .color-palette {
@@ -24,13 +28,13 @@
       text-align: right;
       padding-right: .75rem;
     }
-    
+
     .color-palette.disabled {
       text-align: center;
       padding-right: 0;
       display: block;
     }
-    
+
     .color-palette-set {
       margin-bottom: 15px;
     }
