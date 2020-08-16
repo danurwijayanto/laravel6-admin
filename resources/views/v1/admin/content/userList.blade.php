@@ -1,6 +1,7 @@
 @extends('v1.admin.layout')
 @extends('v1.admin.header')
 @extends('v1.admin.body')
+@extends('v1.admin.footer')
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -40,7 +41,7 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
+@push('scripts')
 <script>
   $(document).ready(function() {
     $('#user_table').DataTable({
@@ -66,6 +67,5 @@
     });
   });
 </script>
+@endpush
 @endsection
-
-@extends('v1.admin.footer')

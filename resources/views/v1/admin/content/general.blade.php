@@ -1,5 +1,8 @@
+@extends('v1.admin.layout')
 @extends('v1.admin.header')
 @extends('v1.admin.body')
+@extends('v1.admin.footer')
+
 @section('content')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
