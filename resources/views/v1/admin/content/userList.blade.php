@@ -25,15 +25,19 @@
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <table id="user_table" class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th width="35%">First Name</th>
-            <th width="35%">Last Name</th>
-            <th width="30%">Action</th>
-          </tr>
-        </thead>
-      </table>
+      <div class="card card-default color-palette-box">
+        <div class="card-body">
+          <table id="user_table" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+              <tr>
+                <th width="35%">First Name</th>
+                <th width="35%">Last Name</th>
+                <th width="30%">Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+      </div>
       <!-- /.card-body -->
     </div>
     <!-- /.card -->
