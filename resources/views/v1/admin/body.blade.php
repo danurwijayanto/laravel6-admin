@@ -1,5 +1,4 @@
-@extends('v1.admin.header')
-
+@section('body')
 <body>
   <div class="wrapper">
     <!-- Navbar -->
@@ -97,8 +96,6 @@
       </div>
       <!-- /.sidebar -->
     </aside>
-
-
-    @yield('contents')
+    @yield('content')
 </body>
-@extends('v1.admin.footer')
+@endsection

@@ -1,4 +1,7 @@
+@extends('v1.admin.layout')
+@extends('v1.admin.header')
 @extends('v1.admin.body')
+
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -64,3 +67,5 @@
   });
 </script>
 @endsection
+
+@extends('v1.admin.footer')
