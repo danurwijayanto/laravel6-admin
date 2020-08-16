@@ -80,15 +80,14 @@
               </p>
             </a>
           </li>
-        </ul>
-        <li class="nav-item">
-          <a href="../widgets.html" class="nav-link">
-            <i class="nav-icon fas fa-book"></i>
-            <p>
-              Hasil Perhitungan
-            </p>
-          </a>
-        </li>
+          <li class="nav-item">
+            <a href="../widgets.html" class="nav-link">
+              <i class="nav-icon fas fa-book"></i>
+              <p>
+                Hasil Perhitungan
+              </p>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
