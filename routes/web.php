@@ -18,3 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::name('admin.')->group(function () {
+    Route::get('users', 'Admin\UserController@index')->name('users');
+});
