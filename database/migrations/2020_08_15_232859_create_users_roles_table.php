@@ -11,8 +11,8 @@ class CreateUsersRolesTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    // public function up()
+    // {
         // Schema::create('users_roles', function (Blueprint $table) {
         //     // $table->bigIncrements('id');
         //     $table->unsignedInteger('user_id');
@@ -26,7 +26,7 @@ class CreateUsersRolesTable extends Migration
         //     $table->primary(['user_id', 'role_id']);
         //     $table->timestamps();
         // });
-    }
+    // }
 
     /**
      * Reverse the migrations.

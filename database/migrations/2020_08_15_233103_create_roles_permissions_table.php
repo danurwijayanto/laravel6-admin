@@ -17,6 +17,11 @@ class CreateRolesPermissionsTable extends Migration
             // $table->bigIncrements('id');
             $table->unsignedInteger('role_id');
             $table->unsignedInteger('permission_id');
+            
+            $table->timestamps();
+        });
+
+        Schema::table('roles_permissions', function ($table) {
 
             //FOREIGN KEY CONSTRAINTS
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
@@ -25,7 +30,6 @@ class CreateRolesPermissionsTable extends Migration
             //SETTING THE PRIMARY KEYS
             $table->primary(['role_id','permission_id']);
             
-            $table->timestamps();
         });
     }
 

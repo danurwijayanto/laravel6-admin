@@ -14,9 +14,11 @@ class AddColumnUserRoles extends Migration
     public function up()
     {
         Schema::table('users', function ($table) {
-            $table->string('role_id')->nullable();
+            $table->unsignedInteger('role_id')->nullable();
+        });
 
-            $table->foreign('role_id')->constrained('roles');
+        Schema::table('users', function ($table) {
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
@@ -28,9 +30,11 @@ class AddColumnUserRoles extends Migration
     public function down()
     {
         Schema::table('users', function ($table) {
-            $table->dropColumn('role_id');
-
             $table->dropForeign('users_role_id_foreign');
+        });
+
+        Schema::table('users', function ($table) {
+            $table->dropColumn('role_id');
         });
     }
 }

@@ -11,8 +11,8 @@ class CreateUsersPermissionsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
+    // public function up()
+    // {
         // Schema::create('users_permissions', function (Blueprint $table) {
         //     // $table->bigIncrements('id');
         //     $table->unsignedInteger('user_id');
@@ -28,7 +28,7 @@ class CreateUsersPermissionsTable extends Migration
 
         //     $table->timestamps();
         // });
-    }
+    // }
 
     /**
      * Reverse the migrations.
