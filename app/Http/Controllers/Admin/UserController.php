@@ -30,9 +30,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        $role = Role::get();
 
         return view('v1.admin.content.userList')->with([
             'detailController' => $this->controllerDetails,
+            'roleList' => $role
         ]);
     }
 
@@ -57,7 +59,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'bail|required|255',
             'email' => 'required',
-            'password' => 'required',
+            // 'password' => 'required',
             'role_id' => 'required'
         ]);
 
@@ -93,10 +95,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        return view('v1.admin.content.userList')->with([
-            'detailController' => $this->controllerDetails,
-            'userDetail' => $user
-        ]);
+        return json_encode($user);
     }
 
     /**

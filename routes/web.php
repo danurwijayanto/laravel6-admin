@@ -26,9 +26,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::name('user.')->group(function () {
-        Route::get('index', 'Admin\UserController@index')->name('index');
-        Route::get('get-datatables-all-data', 'Admin\UserController@dataTablesGetAllData')->name('datatablesGetalldata');
+        Route::get('user/index', 'Admin\UserController@index')->name('index');
+        Route::get('user/get/{id}', 'Admin\UserController@edit')->name('get');
+        Route::get('user/get-datatables-all-data', 'Admin\UserController@dataTablesGetAllData')->name('datatablesGetalldata');
     
+    });
+
+    Route::name('roles.')->group(function() {
+        Route::get('roles/index', 'Admin\RoleController@index')->name('index');
     });
     // Route::get('users', 'Admin\UserController@index')->name('users');
 });
