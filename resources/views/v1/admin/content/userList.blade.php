@@ -27,7 +27,7 @@
     <div class="container-fluid">
       <div class="card card-default color-palette-box">
         <div class="card-body">
-          <table id="user_table" class="table table-striped table-bordered" style="width:100%">
+          <table id="user-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
                 <th width="35%">Username</th>
@@ -50,7 +50,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <span id="form_result"></span>
+              <span id="form-result"></span>
               <!-- <div class="alert alert-danger" role="alert">
                 This is a danger alert—check it out!
               </div> -->
@@ -99,14 +99,16 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h2 class="modal-title">Confirmation</h2>
+              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <div class="modal-body">
               <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok_button" class="btn btn-danger">OK</button>
+              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
           </div>
@@ -122,7 +124,7 @@
 @push('scripts')
 <script>
   $(document).ready(function() {
-    $('#user_table').DataTable({
+    $('#user-table').DataTable({
       processing: true,
       serverSide: true,
       ajax: {
@@ -179,16 +181,16 @@
           html = '<div class="alert alert-success">' + data.success + '</div>';
           $('#edit-form')[0].reset();
           $('#formModal').modal('hide');
-          $('#user_table').DataTable().ajax.reload();
+          $('#user-table').DataTable().ajax.reload();
         }
-        $('#form_result').html(html);
+        $('#form-result').html(html);
       }
     });
   });
 
   $(document).on('click', '.edit', function() {
     var id = $(this).attr('id');
-    $('#form_result').html('');
+    $('#form-result').html('');
     $.ajax({
       method: "GET",
       url: "/admin/user/get/" + id,
@@ -205,6 +207,41 @@
       },
       error: function() {
         alert("Error : Cannot get data");
+      }
+    })
+  });
+
+  $(document).on('click', '.delete', function() {
+    user_id = $(this).attr('id');
+    $('#confirmModal').modal('show');
+  });
+
+  $('#ok-button').click(function() {
+    $.ajax({
+      url: "/admin/user/delete/" + user_id,
+      method: "DELETE",
+      data: {
+        "_token": "{{ csrf_token() }}",
+      },
+      beforeSend: function() {
+        $('#ok-button').text('Deleting...');
+      },
+      success: function(data) {
+        setTimeout(function() {
+          if (data.errors) {
+            errorMessage = '';
+            for (var count = 0; count < data.errors.length; count++) {
+              errorMessage += data.errors[count];
+            }
+            $('#confirmModal').modal('hide');
+            $('#user-table').DataTable().ajax.reload();
+            alert(errorMessage);
+          } else {
+            $('#confirmModal').modal('hide');
+            $('#user-table').DataTable().ajax.reload();
+            alert('Data Deleted');
+          }
+        }, 2000);
       }
     })
   });

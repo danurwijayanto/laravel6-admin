@@ -128,7 +128,7 @@ class UserController extends Controller
 
         // Save data
         $user = User::find($request->user_id);
-        if (empty($user)){
+        if (empty($user)) {
             return response()->json(['errors' => [0 => 'Data not found !']]);
         }
         $user->name = $request->username;
@@ -137,7 +137,7 @@ class UserController extends Controller
 
         if (!$user->save()) {
             return response()->json(['errors' => [0 => 'Fail to update data']]);
-        }else{
+        } else {
             return response()->json(['success' => 'Data is successfully updated']);
         }
     }
@@ -150,13 +150,22 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        // Check if super user or not
+        if($id == 1){
+            return response()->json(['errors' => [0 => 'Cannot delete Super User Account!']]);
+        }
+
         $user = User::find($id);
+        
+        if (empty($user)) {
+            return response()->json(['errors' => [0 => 'Data not found !']]);
+        }
 
-        $user->delete();
-
-        return view('v1.admin.content.userList')->with([
-            'detailController' => $this->controllerDetails,
-        ]);
+        if (!$user->delete()) {
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
+        } else {
+            return response()->json(['success' => 'Data is successfully updated']);
+        }
     }
 
     public function dataTablesGetAllData()

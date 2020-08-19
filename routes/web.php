@@ -30,6 +30,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::get('user/get/{id}', 'Admin\UserController@edit')->name('get');
         Route::post('user/update', 'Admin\UserController@update')->name('update');
         Route::post('user/store', 'Admin\UserController@store')->name('store');
+        Route::delete('user/delete/{id}', 'Admin\UserController@destroy')->name('delete');
         Route::get('user/get-datatables-all-data', 'Admin\UserController@dataTablesGetAllData')->name('datatablesGetalldata');
     
     });
