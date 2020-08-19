@@ -28,6 +28,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::name('user.')->group(function () {
         Route::get('user/index', 'Admin\UserController@index')->name('index');
         Route::get('user/get/{id}', 'Admin\UserController@edit')->name('get');
+        Route::post('user/update', 'Admin\UserController@update')->name('update');
+        Route::post('user/store', 'Admin\UserController@store')->name('store');
         Route::get('user/get-datatables-all-data', 'Admin\UserController@dataTablesGetAllData')->name('datatablesGetalldata');
     
     });

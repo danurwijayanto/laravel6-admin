@@ -16,7 +16,7 @@ class RoleController extends Controller
     public function index()
     {
         $role = Role::get();
-
+        
         return json_encode($role);
     }
 

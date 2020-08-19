@@ -51,10 +51,10 @@
             </div>
             <div class="modal-body">
               <span id="form_result"></span>
-              <div class="alert alert-danger" role="alert">
+              <!-- <div class="alert alert-danger" role="alert">
                 This is a danger alert—check it out!
-              </div>
-              <form method="post" id="sample_form" class="form-horizontal">
+              </div> -->
+              <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
                   <label class="col-form-label">Username : </label>
@@ -86,7 +86,7 @@
                 <br />
                 <div class="modal-footer">
                   <input type="hidden" name="action" id="action" value="Add" />
-                  <input type="hidden" name="hidden_id" id="hidden_id" />
+                  <input type="hidden" name="user_id" id="user-id" />
                   <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Add" />
                 </div>
               </form>
@@ -149,6 +149,43 @@
     });
   });
 
+  $('#edit-form').on('submit', function(event) {
+    event.preventDefault();
+    var action_url = '';
+
+    if ($('#action').val() == 'Add') {
+      action_url = "{{ route('admin.user.store') }}";
+    }
+
+    if ($('#action').val() == 'Edit') {
+      action_url = "{{ route('admin.user.update') }}";
+    }
+
+    $.ajax({
+      url: action_url,
+      method: "POST",
+      data: $(this).serialize(),
+      dataType: "json",
+      success: function(data) {
+        var html = '';
+        if (data.errors) {
+          html = '<div class="alert alert-danger">';
+          for (var count = 0; count < data.errors.length; count++) {
+            html += '<p>' + data.errors[count] + '</p>';
+          }
+          html += '</div>';
+        }
+        if (data.success) {
+          html = '<div class="alert alert-success">' + data.success + '</div>';
+          $('#edit-form')[0].reset();
+          $('#formModal').modal('hide');
+          $('#user_table').DataTable().ajax.reload();
+        }
+        $('#form_result').html(html);
+      }
+    });
+  });
+
   $(document).on('click', '.edit', function() {
     var id = $(this).attr('id');
     $('#form_result').html('');
@@ -157,11 +194,10 @@
       url: "/admin/user/get/" + id,
       dataType: "json",
       success: function(data) {
-        console.log(data);
         $('#username').val(data.name);
         $('#email').val(data.email);
         $("#role").val(data.role_id)
-        $('#hidden_id').val(id);
+        $('#user-id').val(id);
         $('.modal-title').text('Edit User Record');
         $('#action_button').val('Edit');
         $('#action').val('Edit');

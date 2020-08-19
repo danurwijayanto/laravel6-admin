@@ -7,7 +7,12 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\User;
 use DataTables;
+use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Validator;
+use Illuminate\Database\QueryException;
+
 
 class UserController extends Controller
 {
@@ -57,14 +62,14 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'bail|required|255',
+            'name' => 'bail|required',
             'email' => 'required',
             // 'password' => 'required',
             'role_id' => 'required'
         ]);
 
         $user = new User;
-        $user->name = $request->name;
+        $user->name = $request->username;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
         $user->role_id = $request->role_id;
@@ -82,7 +87,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        
     }
 
     /**
@@ -105,20 +109,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $user = User::find($id);
+        // Request Validation
+        $validatorRules = array(
+            'user_id' => 'bail|required',
+            'username' => 'required',
+            'email' => 'required',
+            // 'password' => 'required',
+            'role' => 'required'
+        );
 
-        $user->name = $request->name;
+        $error = Validator::make($request->all(), $validatorRules);
+
+        if ($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+
+        // Save data
+        $user = User::find($request->user_id);
+        if (empty($user)){
+            return response()->json(['errors' => [0 => 'Data not found !']]);
+        }
+        $user->name = $request->username;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->role_id = $request->role_id;
+        $user->role_id = $request->role;
 
-        $user->save();
-
-        return view('v1.admin.content.userList')->with([
-            'detailController' => $this->controllerDetails,
-        ]);
+        if (!$user->save()) {
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
+        }else{
+            return response()->json(['success' => 'Data is successfully updated']);
+        }
     }
 
     /**
@@ -138,16 +159,17 @@ class UserController extends Controller
         ]);
     }
 
-    public function dataTablesGetAllData() {
+    public function dataTablesGetAllData()
+    {
         $data = $listUser = User::with('role')->get();
 
         return DataTables::of($data)
-                ->addColumn('action', function($data){
-                    $button = '<button type="button" name="edit" id="'.$data->id.'" class="edit btn btn-primary btn-sm">Edit</button>';
-                    $button .= '&nbsp;&nbsp;&nbsp;<button type="button" onclick="return confirm(`Are you sure?`)" name="delete" id="'.$data->id.'" class="delete btn btn-danger btn-sm" '.($data->id==1 ? "disabled" : "").'>Delete</button>';
-                    return $button;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            ->addColumn('action', function ($data) {
+                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" ' . ($data->id == 1 ? "disabled" : "") . '>Delete</button>';
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }
