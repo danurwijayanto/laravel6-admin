@@ -47,5 +47,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::delete('student/delete/{id}', 'Admin\StudentController@destroy')->name('delete');
         Route::get('student/get-datatables-all-data', 'Admin\StudentController@dataTablesGetAllData')->name('datatablesGetalldata');
     });
+
+    Route::name('course.')->group(function() {
+        Route::get('course/index', 'Admin\MapelLmController@index')->name('index');
+        Route::get('course/get/{id}', 'Admin\MapelLmController@edit')->name('get');
+        Route::post('course/update', 'Admin\MapelLmController@update')->name('update');
+        Route::post('course/store', 'Admin\MapelLmController@store')->name('store');
+        Route::delete('course/delete/{id}', 'Admin\MapelLmController@destroy')->name('delete');
+        Route::get('course/get-datatables-all-data', 'Admin\MapelLmController@dataTablesGetAllData')->name('datatablesGetalldata');
+    });
     // Route::get('users', 'Admin\UserController@index')->name('users');
 });

@@ -59,30 +59,30 @@
                 </p>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Data Guru
                 </p>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
-              <a href="../widgets.html" class="nav-link">
+              <a href="{{ route('admin.course.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Data Mata Pelajaran
                 </p>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Data Kelas Lintas Minat
                 </p>
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
