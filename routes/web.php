@@ -57,6 +57,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::get('course/get-datatables-all-data', 'Admin\MapelLmController@dataTablesGetAllData')->name('datatablesGetalldata');
     });
 
+    Route::name('crossInterestClass.')->group(function() {
+        Route::get('crossInterestClass/index', 'Admin\LintasMinatClassController@index')->name('index');
+        Route::get('crossInterestClass/get/{id}', 'Admin\LintasMinatClassController@edit')->name('get');
+        Route::post('crossInterestClass/update', 'Admin\LintasMinatClassController@update')->name('update');
+        Route::post('crossInterestClass/store', 'Admin\LintasMinatClassController@store')->name('store');
+        Route::delete('crossInterestClass/delete/{id}', 'Admin\LintasMinatClassController@destroy')->name('delete');
+        Route::get('crossInterestClass/get-datatables-all-data', 'Admin\LintasMinatClassController@dataTablesGetAllData')->name('datatablesGetalldata');
+    });
+
     Route::name('calresult.')->group(function() {
         Route::get('calresult/index', 'Admin\CalculationResultController@index')->name('index');
         Route::get('calresult/get/{id}', 'Admin\CalculationResultController@edit')->name('get');
