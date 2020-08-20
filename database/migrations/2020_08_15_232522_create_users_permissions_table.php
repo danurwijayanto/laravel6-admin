@@ -22,7 +22,7 @@ class CreateUsersPermissionsTable extends Migration
         //     $table->foreign('user_id')->reference('id')->on('users')->onDelete('cascade');
         //     $table->foreign('permission_id')->reference('id')->on('permission')->onDelete('cascade');
 
-        //     //SETTING THE PRIMARY KEYS
+        //     //SETTING THE COMPOSITE KEYS
         //     $table->primary(['user_id', 'role_id']);
         //     $table->timestamps();
 

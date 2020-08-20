@@ -14,17 +14,17 @@ class CreateSiswaTable extends Migration
     public function up()
     {
         Schema::create('siswa', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('nis')->unique();
             $table->string('nama_siswa', 35);
             $table->string('kelas', 30);
             $table->float('nilai_raport', 8, 2);
-            $table->bigIncrements('pilih_lm1');
-            $table->bigIncrements('pilih_lm2');
-            $table->bigIncrements('pilih_lm3');
-            $table->float('vektor_v1', 8, 2);
-            $table->float('vektor_v2', 8, 2);
-            $table->float('vektor_v3', 8, 2);
+            // $table->bigIncrements('pilih_lm1');
+            // $table->bigIncrements('pilih_lm2');
+            // $table->bigIncrements('pilih_lm3');
+            // $table->float('vektor_v1', 8, 2);
+            // $table->float('vektor_v2', 8, 2);
+            // $table->float('vektor_v3', 8, 2);
             $table->timestamps();
         });
     }

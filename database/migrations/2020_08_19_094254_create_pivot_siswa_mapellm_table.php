@@ -15,11 +15,21 @@ class CreatePivotSiswaMapellmTable extends Migration
     {
         Schema::create('kelaslm', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('id_siswa');
-            $table->bigInteger('id_mapellm');
+            $table->unsignedInteger('id_siswa');
+            $table->unsignedInteger('id_mapellm');
             $table->string('nama_kelas', 10)->unique();
             $table->dateTime('jadwal');
+            $table->unsignedInteger('urutan_pilihan');
+            $table->float('vektor', 8, 2);
             $table->timestamps();
+        });
+
+        Schema::table('kelaslm', function ($table) {
+
+            //FOREIGN KEY CONSTRAINTS
+            $table->foreign('id_siswa')->references('id')->on('siswa')->onDelete('cascade');
+            $table->foreign('id_mapellm')->references('id')->on('mapellm')->onDelete('cascade');
+            
         });
     }
 

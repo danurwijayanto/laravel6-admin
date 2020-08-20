@@ -14,7 +14,7 @@ class CreateMapelLMTable extends Migration
     public function up()
     {
         Schema::create('mapellm', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('kode_mapel', 11)->unique();
             $table->string('nama_mapel', 35)->unique();
             $table->unsignedInteger('jumlah_kelas');
