@@ -19,13 +19,21 @@ class CreateSiswaTable extends Migration
             $table->string('nama_siswa', 35);
             $table->string('kelas', 30);
             $table->float('nilai_raport', 8, 2);
-            // $table->bigIncrements('pilih_lm1');
-            // $table->bigIncrements('pilih_lm2');
-            // $table->bigIncrements('pilih_lm3');
-            // $table->float('vektor_v1', 8, 2);
-            // $table->float('vektor_v2', 8, 2);
-            // $table->float('vektor_v3', 8, 2);
+            $table->unsignedInteger('pilih_lm1');
+            $table->unsignedInteger('pilih_lm2');
+            $table->unsignedInteger('pilih_lm3');
+            $table->float('vektor_v1', 8, 2);
+            $table->float('vektor_v2', 8, 2);
+            $table->float('vektor_v3', 8, 2);
             $table->timestamps();
+        });
+
+        Schema::table('siswa', function ($table) {
+
+            //FOREIGN KEY CONSTRAINTS
+            $table->foreign('pilih_lm1')->references('id')->on('mapellm')->onDelete('cascade');
+            $table->foreign('pilih_lm2')->references('id')->on('mapellm')->onDelete('cascade');
+            $table->foreign('pilih_lm3')->references('id')->on('mapellm')->onDelete('cascade');
         });
     }
 

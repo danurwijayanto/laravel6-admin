@@ -19,8 +19,8 @@ class CreatePivotSiswaMapellmTable extends Migration
             $table->unsignedInteger('id_mapellm');
             $table->string('nama_kelas', 10)->unique();
             $table->dateTime('jadwal');
-            $table->unsignedInteger('urutan_pilihan');
-            $table->float('vektor', 8, 2);
+            // $table->unsignedInteger('urutan_pilihan');
+            // $table->float('vektor', 8, 2);
             $table->timestamps();
         });
 
