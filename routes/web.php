@@ -38,5 +38,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::name('roles.')->group(function() {
         Route::get('roles/index', 'Admin\RoleController@index')->name('index');
     });
+
+    Route::name('student.')->group(function() {
+        Route::get('student/index', 'Admin\StudentController@index')->name('index');
+        Route::get('student/get/{id}', 'Admin\StudentController@edit')->name('get');
+        Route::post('student/update', 'Admin\StudentController@update')->name('update');
+        Route::post('student/store', 'Admin\StudentController@store')->name('store');
+        Route::delete('student/delete/{id}', 'Admin\StudentController@destroy')->name('delete');
+        Route::get('student/get-datatables-all-data', 'Admin\StudentController@dataTablesGetAllData')->name('datatablesGetalldata');
+    });
     // Route::get('users', 'Admin\UserController@index')->name('users');
 });
