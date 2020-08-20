@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::get('student/get/{id}', 'Admin\StudentController@edit')->name('get');
         Route::post('student/update', 'Admin\StudentController@update')->name('update');
         Route::post('student/store', 'Admin\StudentController@store')->name('store');
+        Route::post('student/store-excel-data', 'Admin\StudentController@storeExcelData')->name('storeExcel');
         Route::delete('student/delete/{id}', 'Admin\StudentController@destroy')->name('delete');
         Route::get('student/get-datatables-all-data', 'Admin\StudentController@dataTablesGetAllData')->name('datatablesGetalldata');
     });

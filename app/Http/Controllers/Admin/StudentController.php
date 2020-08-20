@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Mapellm;
+use App\Models\Siswa;
+use DataTables;
+use Validator;
 
 class StudentController extends Controller
 {
@@ -99,15 +103,27 @@ class StudentController extends Controller
 
     public function dataTablesGetAllData()
     {
-        // $data = $listUser = User::with('role')->get();
+        $data = $listUser = Siswa::get();
 
-        // return DataTables::of($data)
-        //     ->addColumn('action', function ($data) {
-        //         $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
-        //         $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" ' . ($data->id == 1 ? "disabled" : "") . '>Delete</button>';
-        //         return $button;
-        //     })
-        //     ->rawColumns(['action'])
-        //     ->make(true);
+        return DataTables::of($data)
+            ->addColumn('action', function ($data) {
+                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" >Delete</button>';
+                return $button;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function storeExcelData(Request $request)
+    {
+        if (!empty($request->student_data)){
+            $file = $request->file('student_data');
+            $new_name = rand() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('file'), $new_name);
+            return response()->json(['success' => 'Data is successfully added']);
+        }else{
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
+        }
     }
 }

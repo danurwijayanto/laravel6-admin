@@ -28,16 +28,17 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary">Add new data</button>
-            <button type="button" class="btn btn-secondary">Download empty format</button>
+            <button type="button" class="btn btn-primary" id="add-student-data">Add new data</button>
+            <a href="{{ asset('file/data_murid_kosong.xlsx') }}" type="button" class="btn btn-secondary">Download empty format</a>
           </div>
-          <table id="user-table" class="table table-striped table-bordered" style="width:100%">
+          <table id="student-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="35%">Username</th>
-                <th width="35%">Email</th>
-                <th width="35%">Role</th>
-                <th width="30%">Action</th>
+                <th width="20%">NIS</th>
+                <th width="20%">Name</th>
+                <th width="20%">Class</th>
+                <th width="20%">Score</th>
+                <th width="20%">Action</th>
               </tr>
             </thead>
           </table>
@@ -99,6 +100,35 @@
         </div>
       </div>
 
+      <div id="uploadModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Upload Student Data</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <span id="upload-result"></span>
+              <!-- <div class="alert alert-danger" role="alert">
+                This is a danger alert—check it out!
+              </div> -->
+              <form method="post" id="upload-form" class="form-horizontal" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                  <input type="file" id="student_data" name="student_data" required />
+                </div>
+                <br />
+                <div class="modal-footer">
+                  <input type="submit" name="upload_button" id="upload_button" class="btn btn-primary" value="Upload" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="confirmModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -128,23 +158,27 @@
 @push('scripts')
 <script>
   $(document).ready(function() {
-    $('#user-table').DataTable({
+    $('#student-table').DataTable({
       processing: true,
       serverSide: true,
       ajax: {
         url: "{{ route('admin.student.datatablesGetalldata') }}",
       },
       columns: [{
-          data: 'name',
+          data: 'nis',
+          name: 'nis'
+        },
+        {
+          data: 'nama_siswa',
           name: 'name'
         },
         {
-          data: 'email',
-          name: 'email'
+          data: 'kelas',
+          name: 'class'
         },
         {
-          data: 'role.name',
-          name: 'roles'
+          data: 'nilai_raport',
+          name: 'score'
         },
         {
           data: 'action',
@@ -184,8 +218,8 @@
         if (data.success) {
           html = '<div class="alert alert-success">' + data.success + '</div>';
           $('#edit-form')[0].reset();
-          $('#formModal').modal('hide');
-          $('#user-table').DataTable().ajax.reload();
+          // $('#formModal').modal('hide');
+          $('#student-table').DataTable().ajax.reload();
         }
         $('#form-result').html(html);
       }
@@ -220,6 +254,41 @@
     $('#confirmModal').modal('show');
   });
 
+  $(document).on('click', '#add-student-data', function() {
+    $('#uploadModal').modal('show');
+  })
+
+  $('#upload-form').on('submit', function(event) {
+    event.preventDefault();
+
+    $.ajax({
+      url: "{{ route('admin.student.storeExcel') }}",
+      method: "POST",
+      data: new FormData(this),
+      dataType: "json",
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data) {
+        var html = '';
+        if (data.success) {
+          html = '<div class="alert alert-success">' + data.success + '</div>';
+          $('#upload-form')[0].reset();
+          $('#student-table').DataTable().ajax.reload();
+        }
+        if (data.errors) {
+          html = '<div class="alert alert-danger">';
+          for (var count = 0; count < data.errors.length; count++) {
+            html += '<p>' + data.errors[count] + '</p>';
+          }
+          html += '</div>';
+        }
+        $('#upload-result').html(html);
+      }
+
+    })
+  });
+
   $('#ok-button').click(function() {
     $.ajax({
       url: "/admin/student/delete/" + user_id,
@@ -238,11 +307,11 @@
               errorMessage += data.errors[count];
             }
             $('#confirmModal').modal('hide');
-            $('#user-table').DataTable().ajax.reload();
+            $('#student-table').DataTable().ajax.reload();
             alert(errorMessage);
           } else {
             $('#confirmModal').modal('hide');
-            $('#user-table').DataTable().ajax.reload();
+            $('#student-table').DataTable().ajax.reload();
             alert('Data Deleted');
           }
         }, 2000);
