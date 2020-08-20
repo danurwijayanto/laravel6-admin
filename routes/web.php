@@ -56,5 +56,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::delete('course/delete/{id}', 'Admin\MapelLmController@destroy')->name('delete');
         Route::get('course/get-datatables-all-data', 'Admin\MapelLmController@dataTablesGetAllData')->name('datatablesGetalldata');
     });
+
+    Route::name('calresult.')->group(function() {
+        Route::get('calresult/index', 'Admin\CalculationResultController@index')->name('index');
+        Route::get('calresult/get/{id}', 'Admin\CalculationResultController@edit')->name('get');
+        Route::post('calresult/update', 'Admin\CalculationResultController@update')->name('update');
+        Route::post('calresult/store', 'Admin\CalculationResultController@store')->name('store');
+        Route::delete('calresult/delete/{id}', 'Admin\CalculationResultController@destroy')->name('delete');
+        Route::get('calresult/get-datatables-all-data', 'Admin\CalculationResultController@dataTablesGetAllData')->name('datatablesGetalldata');
+    });
     // Route::get('users', 'Admin\UserController@index')->name('users');
 });
