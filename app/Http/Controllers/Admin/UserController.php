@@ -170,7 +170,7 @@ class UserController extends Controller
 
     public function dataTablesGetAllData()
     {
-        $data = $listUser = User::with('role')->get();
+        $data = User::with('role')->get();
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {

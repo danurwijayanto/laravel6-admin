@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Siswa extends Model
 {
+    protected $table = 'siswa';
     // public function mapelLm()
     // {
     //     return $this->belongsToMany('App\Models\MapelLm')->using('App\Models\Kelaslm');

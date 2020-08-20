@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Kelaslm extends Pivot
 {
-    //
+    protected $table = 'kelaslm';
 }

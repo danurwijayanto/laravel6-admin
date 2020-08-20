@@ -28,16 +28,16 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary">Add new data</button>
-            <button type="button" class="btn btn-secondary">Download empty format</button>
+            <button type="button" class="btn btn-primary add-course">Add new data</button>
           </div>
-          <table id="user-table" class="table table-striped table-bordered" style="width:100%">
+          <table id="course-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="35%">Username</th>
-                <th width="35%">Email</th>
-                <th width="35%">Role</th>
-                <th width="30%">Action</th>
+                <th width="20%">Course Code</th>
+                <th width="20%">Course Name</th>
+                <th width="20%">Number of Class</th>
+                <th width="20%">Class Quota</th>
+                <th width="20%">Action</th>
               </tr>
             </thead>
           </table>
@@ -48,7 +48,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Add New User</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Add New Course</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -61,36 +61,25 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">Username : </label>
-                  <input type="text" name="username" id="username" class="form-control" />
+                  <label class="col-form-label">Course code : </label>
+                  <input type="text" name="course_code" id="course-code" class="form-control" maxlength="11" required/>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Email : </label>
-                  <input type="text" name="email" id="email" class="form-control" />
+                  <label class="col-form-label">Course name : </label>
+                  <input type="text" name="course_name" id="course-name" class="form-control" maxlength="35" required/>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Role : </label>
-                  <select class="custom-select" name="role" id="role">
-                    <option selected>Role List</option>
-                    @if (!empty($roleList))
-                    @foreach ($roleList as $role)
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                    @endforeach
-                    @endif
-                  </select>
-                </div>
-                <!-- <div class="form-group">
-                  <label class="col-form-label">Password : </label>
-                  <input type="password" name="password" id="password" class="form-control" />
+                  <label class="col-form-label">Number of classes : </label>
+                  <input type="number" name="number_of_classes" id="number-of-classes" class="form-control" min="1" required/>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Confirm Password : </label>
-                  <input type="password" name="confirmPassword" id="confirm-password" class="form-control" />
-                </div> -->
+                  <label class="col-form-label">Class quota : </label>
+                  <input type="number" name="class_quota" id="class-quota" class="form-control" min="1" required/>
+                </div>
                 <br />
                 <div class="modal-footer">
                   <input type="hidden" name="action" id="action" value="Add" />
-                  <input type="hidden" name="user_id" id="user-id" />
+                  <input type="hidden" name="course_id" id="course-id" />
                   <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Add" />
                 </div>
               </form>
@@ -128,23 +117,27 @@
 @push('scripts')
 <script>
   $(document).ready(function() {
-    $('#user-table').DataTable({
+    $('#course-table').DataTable({
       processing: true,
       serverSide: true,
       ajax: {
         url: "{{ route('admin.course.datatablesGetalldata') }}",
       },
       columns: [{
-          data: 'name',
-          name: 'name'
+          data: 'kode_mapel',
+          name: 'course_code'
         },
         {
-          data: 'email',
-          name: 'email'
+          data: 'nama_mapel',
+          name: 'course_name'
         },
         {
-          data: 'role.name',
-          name: 'roles'
+          data: 'jumlah_kelas',
+          name: 'number_of_classes'
+        },
+        {
+          data: 'kuota_kelas',
+          name: 'class_quota',
         },
         {
           data: 'action',
@@ -182,14 +175,22 @@
           html += '</div>';
         }
         if (data.success) {
+          alert("Data successfully added or edited !");
           html = '<div class="alert alert-success">' + data.success + '</div>';
           $('#edit-form')[0].reset();
-          $('#formModal').modal('hide');
-          $('#user-table').DataTable().ajax.reload();
+          $('#course-table').DataTable().ajax.reload();
         }
         $('#form-result').html(html);
+        $('#formModal').modal('hide');
       }
     });
+  });
+
+  $(document).on('click', '.add-course', function() {
+    $('#form-result').html('');
+    $('#formModal').modal('show');
+    $('#action_button').val('Add');
+    $('#action').val('Add');
   });
 
   $(document).on('click', '.edit', function() {
@@ -200,10 +201,11 @@
       url: "/admin/course/get/" + id,
       dataType: "json",
       success: function(data) {
-        $('#username').val(data.name);
-        $('#email').val(data.email);
-        $("#role").val(data.role_id)
-        $('#user-id').val(id);
+        $('#course-code').val(data.kode_mapel);
+        $('#course-name').val(data.nama_mapel);
+        $("#number-of-classes").val(data.jumlah_kelas)
+        $("#class-quota").val(data.kuota_kelas)
+        $('#course-id').val(id);
         $('.modal-title').text('Edit User Record');
         $('#action_button').val('Edit');
         $('#action').val('Edit');
@@ -216,13 +218,13 @@
   });
 
   $(document).on('click', '.delete', function() {
-    user_id = $(this).attr('id');
+    course_id = $(this).attr('id');
     $('#confirmModal').modal('show');
   });
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/course/delete/" + user_id,
+      url: "/admin/course/delete/" + course_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",
@@ -238,11 +240,11 @@
               errorMessage += data.errors[count];
             }
             $('#confirmModal').modal('hide');
-            $('#user-table').DataTable().ajax.reload();
+            $('#course-table').DataTable().ajax.reload();
             alert(errorMessage);
           } else {
             $('#confirmModal').modal('hide');
-            $('#user-table').DataTable().ajax.reload();
+            $('#course-table').DataTable().ajax.reload();
             alert('Data Deleted');
           }
         }, 2000);
