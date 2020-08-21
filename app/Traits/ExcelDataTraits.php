@@ -37,7 +37,7 @@ trait ExcelDataTraits
     private function validationData($sheetData)
     {
         $value = [];
-        // Data Mapel
+        // Get data mapel to DB
         $mapelList = Mapellm::get()->toArray();
 
         // inisialisasi data dan pengecekan apakah kode mapel benar
@@ -64,6 +64,7 @@ trait ExcelDataTraits
                     return json_encode(['fail' => 'Course "' . $sheetData[$i]['G'] . '" not found ! Please create course first']);
                 }
 
+                // Mencari id dari mata kuliah
                 $findLm1Data = array_search(strtolower($sheetData[$i]['E']), array_column($mapelList, 'nama_mapel'));
                 $findLm2Data = array_search(strtolower($sheetData[$i]['F']), array_column($mapelList, 'nama_mapel'));
                 $findLm3Data = array_search(strtolower($sheetData[$i]['G']), array_column($mapelList, 'nama_mapel'));
@@ -71,7 +72,6 @@ trait ExcelDataTraits
                 $lm1DataId = $mapelList[$findLm1Data]['id'];
                 $lm2DataId = $mapelList[$findLm2Data]['id'];
                 $lm3DataId = $mapelList[$findLm3Data]['id'];
-                
                 
                 //pembuatan list data yang diinputkan
                 // $value  .= "('" . $sheetData[$i]['A'] . "','" . $sheetData[$i]['B'] . "','" . $sheetData[$i]['C'] . "','" . $sheetData[$i]['D'] . "','" .  $lm1DataId . "','" .  $lm2DataId . "','" . $lm3DataId . "'),";

@@ -140,7 +140,7 @@
         },
         {
           data: 'role.name',
-          name: 'roles'
+          name: 'role.name'
         },
         {
           data: 'action',

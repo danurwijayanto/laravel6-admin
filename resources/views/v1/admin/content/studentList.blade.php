@@ -49,7 +49,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Add New User</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Detail Student</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -62,37 +62,36 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">Username : </label>
-                  <input type="text" name="username" id="username" class="form-control" />
+                  <label class="col-form-label">NIS : </label>
+                  <input type="text" name="nis" id="nis" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Email : </label>
-                  <input type="text" name="email" id="email" class="form-control" />
+                  <label class="col-form-label">Name : </label>
+                  <input type="text" name="name" id="name" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Role : </label>
-                  <select class="custom-select" name="role" id="role">
-                    <option selected>Role List</option>
-                    @if (!empty($roleList))
-                    @foreach ($roleList as $role)
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                    @endforeach
-                    @endif
-                  </select>
+                  <label class="col-form-label">Class : </label>
+                  <input type="text" name="class" id="class" class="form-control" required />
                 </div>
-                <!-- <div class="form-group">
-                  <label class="col-form-label">Password : </label>
-                  <input type="password" name="password" id="password" class="form-control" />
+                <div class="edit-content">
+                  <div class="form-group">
+                    <label class="col-form-label">Choice Interest 1 : </label>
+                    <input type="text" name="choice_interest_1" id="choice_interest_1" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Choice Interest 2 : </label>
+                    <input type="text" name="choice_interest_2" id="choice_interest_2" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label class="col-form-label">Choice Interest 3 : </label>
+                    <input type="text" name="choice_interest_3" id="choice_interest_3" class="form-control" required />
+                  </div>
+                  <br />
                 </div>
-                <div class="form-group">
-                  <label class="col-form-label">Confirm Password : </label>
-                  <input type="password" name="confirmPassword" id="confirm-password" class="form-control" />
-                </div> -->
-                <br />
                 <div class="modal-footer">
                   <input type="hidden" name="action" id="action" value="Add" />
-                  <input type="hidden" name="user_id" id="user-id" />
-                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Add" />
+                  <input type="hidden" name="student_id" id="student-id" />
+                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Edit" />
                 </div>
               </form>
             </div>
@@ -170,15 +169,15 @@
         },
         {
           data: 'nama_siswa',
-          name: 'name'
+          name: 'nama_siswa'
         },
         {
           data: 'kelas',
-          name: 'class'
+          name: 'kelas'
         },
         {
           data: 'nilai_raport',
-          name: 'score'
+          name: 'nilai_raport'
         },
         {
           data: 'action',
@@ -228,20 +227,27 @@
 
   $(document).on('click', '.edit', function() {
     var id = $(this).attr('id');
+
     $('#form-result').html('');
+    $('#formModal').modal('show');
+    $("#edit-form :input").attr("disabled", false);
+    $('.edit-content').hide();
+    $('#action_button').show();
+    $(".edit-content :input").prop('required',false);
+
     $.ajax({
       method: "GET",
       url: "/admin/student/get/" + id,
       dataType: "json",
       success: function(data) {
-        $('#username').val(data.name);
-        $('#email').val(data.email);
-        $("#role").val(data.role_id)
-        $('#user-id').val(id);
-        $('.modal-title').text('Edit User Record');
+        $('#nis').val(data.nis);
+        $('#name').val(data.nama_siswa);
+        $("#class").val(data.kelas)
+        $('#student-id').val(id);
+        $('.modal-title').text('Edit Student Record');
         $('#action_button').val('Edit');
         $('#action').val('Edit');
-        $('#formModal').modal('show');
+        // $('#formModal').modal('show');
       },
       error: function() {
         alert("Error : Cannot get data");
@@ -316,6 +322,34 @@
             alert('Data Deleted');
           }
         }, 2000);
+      }
+    })
+  });
+
+  $(document).on('click', '.detail', function() {
+    $('#formModal').modal('show');
+    $('#form-result').html('');
+    $("#edit-form :input").attr("disabled", true);
+    $('.edit-content').show();
+    $('#action_button').hide();
+    $("#edit-form :input").prop('required',true);
+
+    var id = $(this).attr('id');
+    $.ajax({
+      method: "GET",
+      url: "/admin/student/get/" + id,
+      dataType: "json",
+      success: function(data) {
+        $('#nis').val(data.nis);
+        $('#name').val(data.nama_siswa);
+        $("#class").val(data.kelas)
+        $('#choice_interest_1').val(data.detail_lm1.nama_mapel);
+        $('#choice_interest_2').val(data.detail_lm2.nama_mapel);
+        $('#choice_interest_3').val(data.detail_lm3.nama_mapel);
+        $('.modal-title').text('View Student Record');
+      },
+      error: function() {
+        alert("Error : Cannot get data");
       }
     })
   });

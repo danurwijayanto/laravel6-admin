@@ -125,19 +125,19 @@
       },
       columns: [{
           data: 'kode_mapel',
-          name: 'course_code'
+          name: 'kode_mapel'
         },
         {
           data: 'nama_mapel',
-          name: 'course_name'
+          name: 'nama_mapel'
         },
         {
           data: 'jumlah_kelas',
-          name: 'number_of_classes'
+          name: 'jumlah_kelas'
         },
         {
           data: 'kuota_kelas',
-          name: 'class_quota',
+          name: 'kuota_kelas',
         },
         {
           data: 'action',

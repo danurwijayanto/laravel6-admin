@@ -79,7 +79,9 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Siswa::with('detailLm1', 'detailLm2', 'detailLm3')->find($id);
+        Log::debug($user);
+        return response()->json($user);
     }
 
     /**
@@ -89,9 +91,35 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        // Request Validation
+        $validatorRules = array(
+            'nis' => 'bail|required',
+            'name' => 'required',
+            'class' => 'required',
+        );
+
+        $error = Validator::make($request->all(), $validatorRules);
+
+        if ($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+
+        // Save data
+        $student = Siswa::find($request->student_id);
+        if (empty($student)) {
+            return response()->json(['errors' => [0 => 'Data not found !']]);
+        }
+        $student->nis = $request->nis;
+        $student->nama_siswa = $request->name;
+        $student->kelas = $request->class;
+
+        if (!$student->save()) {
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
+        } else {
+            return response()->json(['success' => 'Data is successfully updated']);
+        }
     }
 
     /**
@@ -102,7 +130,17 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $siswa = Siswa::find($id);
+        
+        if (empty($siswa)) {
+            return response()->json(['errors' => [0 => 'Data not found !']]);
+        }
+
+        if (!$siswa->delete()) {
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
+        } else {
+            return response()->json(['success' => 'Data is successfully updated']);
+        }
     }
 
     public function dataTablesGetAllData()
@@ -111,7 +149,8 @@ class StudentController extends Controller
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
-                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
+                $button = '<button type="button" name="detail" id="' . $data->id . '" class="detail btn btn-secondary btn-sm">Detail</button>';
+                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
                 $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" >Delete</button>';
                 return $button;
             })
