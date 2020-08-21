@@ -255,6 +255,7 @@
   });
 
   $(document).on('click', '#add-student-data', function() {
+    $('#upload-result').html('');
     $('#uploadModal').modal('show');
   })
 

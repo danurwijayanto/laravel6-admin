@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mapellm;
 use App\Models\Siswa;
+use App\Traits\ExcelDataTraits;
 use DataTables;
 use Validator;
 
 class StudentController extends Controller
 {
     private $controllerDetails;
+
+    use ExcelDataTraits;
 
     public function __construct()
     {
@@ -120,7 +123,18 @@ class StudentController extends Controller
         if (!empty($request->student_data)){
             $file = $request->file('student_data');
             $new_name = rand() . '.' . $file->getClientOriginalExtension();
+            $file_path = public_path('file')."/".$new_name;
             $file->move(public_path('file'), $new_name);
+
+            // Change process to traits
+            $export = $this->doExport($file_path);
+            if (isset(json_decode($export)->fail)){
+                return response()->json(['errors' => [0 => json_decode($export)->fail]]);
+            }
+
+            // Delete file
+            unlink($file_path);
+
             return response()->json(['success' => 'Data is successfully added']);
         }else{
             return response()->json(['errors' => [0 => 'Fail to update data']]);
