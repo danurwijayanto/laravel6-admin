@@ -103,7 +103,7 @@ class CalculationResultController extends Controller
     public function dataTablesGetAllData()
     {
         $data = Siswa::with('detailLm1', 'detailLm2', 'detailLm3')->get();
-        Log::debug($data);
+
         return DataTables::of($data)->make(true);
     }
 }
