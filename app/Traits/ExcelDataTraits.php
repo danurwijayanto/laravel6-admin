@@ -23,7 +23,7 @@ trait ExcelDataTraits
         return $validationData;
     }
 
-    public function readData($path = "")
+    private function readData($path = "")
     {
         $reader = new Xlsx();
         $reader->setReadDataOnly(true);
@@ -34,7 +34,7 @@ trait ExcelDataTraits
         return $sheetData;
     }
 
-    public function validationData($sheetData)
+    private function validationData($sheetData)
     {
         $value = [];
         // Data Mapel
