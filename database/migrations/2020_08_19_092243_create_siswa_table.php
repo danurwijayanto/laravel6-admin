@@ -22,9 +22,9 @@ class CreateSiswaTable extends Migration
             $table->unsignedInteger('pilih_lm1');
             $table->unsignedInteger('pilih_lm2');
             $table->unsignedInteger('pilih_lm3');
-            $table->float('vektor_v1', 8, 2);
-            $table->float('vektor_v2', 8, 2);
-            $table->float('vektor_v3', 8, 2);
+            $table->float('vektor_v1', 8, 2)->nullable();
+            $table->float('vektor_v2', 8, 2)->nullable();
+            $table->float('vektor_v3', 8, 2)->nullable();
             $table->timestamps();
         });
 

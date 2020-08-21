@@ -20,7 +20,7 @@ trait ExcelDataTraits
             return $validationData;
         }
 
-        return json_encode(['success' => 'Adding data success']);
+        return $validationData;
     }
 
     public function readData($path = "")
@@ -36,10 +36,9 @@ trait ExcelDataTraits
 
     public function validationData($sheetData)
     {
+        $value = [];
         // Data Mapel
         $mapelList = Mapellm::get()->toArray();
-        // Log::debug($mapelList);
-
 
         // inisialisasi data dan pengecekan apakah kode mapel benar
         for ($i = 2; $i <= count($sheetData); $i++) {
@@ -64,20 +63,39 @@ trait ExcelDataTraits
                 if (!in_array(strtolower($sheetData[$i]['G']), array_column($mapelList, 'nama_mapel'), true)) {
                     return json_encode(['fail' => 'Course "' . $sheetData[$i]['G'] . '" not found ! Please create course first']);
                 }
+
+                $findLm1Data = array_search(strtolower($sheetData[$i]['E']), array_column($mapelList, 'nama_mapel'));
+                $findLm2Data = array_search(strtolower($sheetData[$i]['F']), array_column($mapelList, 'nama_mapel'));
+                $findLm3Data = array_search(strtolower($sheetData[$i]['G']), array_column($mapelList, 'nama_mapel'));
+                
+                $lm1DataId = $mapelList[$findLm1Data]['id'];
+                $lm2DataId = $mapelList[$findLm2Data]['id'];
+                $lm3DataId = $mapelList[$findLm3Data]['id'];
+                
+                
                 //pembuatan list data yang diinputkan
-                $value  .= "('" . $sheetData[$i]['B'] . "','" . $sheetData[$i]['A'] . "','" . $sheetData[$i]['C'] . "','" . $sheetData[$i]['D'] . "','" . $row1['ID_MAPEL'] . "','" . $row2['ID_MAPEL'] . "','" . $row3['ID_MAPEL'] . "'),";
+                // $value  .= "('" . $sheetData[$i]['A'] . "','" . $sheetData[$i]['B'] . "','" . $sheetData[$i]['C'] . "','" . $sheetData[$i]['D'] . "','" .  $lm1DataId . "','" .  $lm2DataId . "','" . $lm3DataId . "'),";
+                $data = [
+                    'nis' => $sheetData[$i]['A'],
+                    'nama_siswa' => $sheetData[$i]['B'],
+                    'kelas' => $sheetData[$i]['C'],
+                    'nilai_raport' => $sheetData[$i]['D'],
+                    'pilih_lm1' => $lm1DataId,
+                    'pilih_lm2' => $lm2DataId,
+                    'pilih_lm3' => $lm3DataId,
+                ];
+
+                array_push($value,$data);
             } else {
                 return json_encode(['fail' => 'Student nip or student score is null']);
             }
-
-            //     $row1 = $this->query($query1)->fetch_assoc();
-
-            //     $row2 = $this->query($query2)->fetch_assoc();
-
-            //     $row3 = $this->query($query3)->fetch_assoc();
-
-
         }
-        // Log::debug($data);
+        // Menghilangkan koma di belakang
+        // $value  = substr($value,0,-1);
+
+        return json_encode([
+            'success' => 'Validation Successfully !',
+            'data' => $value,
+        ]);
     }
 }

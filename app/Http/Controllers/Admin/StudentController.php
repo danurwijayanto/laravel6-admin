@@ -9,6 +9,7 @@ use App\Models\Siswa;
 use App\Traits\ExcelDataTraits;
 use DataTables;
 use Validator;
+use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
@@ -106,7 +107,7 @@ class StudentController extends Controller
 
     public function dataTablesGetAllData()
     {
-        $data = $listUser = Siswa::get();
+        $data = Siswa::get();
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
@@ -120,24 +121,31 @@ class StudentController extends Controller
 
     public function storeExcelData(Request $request)
     {
-        if (!empty($request->student_data)){
+        if (!empty($request->student_data)) {
             $file = $request->file('student_data');
             $new_name = rand() . '.' . $file->getClientOriginalExtension();
-            $file_path = public_path('file')."/".$new_name;
+            $file_path = public_path('file') . "/" . $new_name;
             $file->move(public_path('file'), $new_name);
 
             // Change process to traits
             $export = $this->doExport($file_path);
-            if (isset(json_decode($export)->fail)){
+            if (isset(json_decode($export)->fail)) {
                 return response()->json(['errors' => [0 => json_decode($export)->fail]]);
             }
 
-            // Delete file
-            unlink($file_path);
+            // Insert into database
+            $data = json_decode($export, true) ;
 
-            return response()->json(['success' => 'Data is successfully added']);
-        }else{
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            if (Siswa::insert($data['data'])) {
+                // Delete file
+                unlink($file_path);
+
+                return response()->json(['success' => 'Data is successfully added']);
+            }
+
+            return response()->json(['errors' => [0 => 'Fail to adding data']]);
+        } else {
+            return response()->json(['errors' => [0 => 'Fail to adding data']]);
         }
     }
 }
