@@ -27,6 +27,9 @@
     <div class="container-fluid">
       <div class="card card-default color-palette-box">
         <div class="card-body">
+          <div class="top-button-group" style="margin-bottom: 20px;">
+            <button type="button" class="btn btn-primary" id="do-calculation">Do Calculation</button>
+          </div>
           <table id="user-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
@@ -44,62 +47,6 @@
           </table>
         </div>
       </div>
-
-      <div id="formModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Add New User</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <span id="form-result"></span>
-              <!-- <div class="alert alert-danger" role="alert">
-                This is a danger alert—check it out!
-              </div> -->
-              <form method="post" id="edit-form" class="form-horizontal">
-                @csrf
-                <div class="form-group">
-                  <label class="col-form-label">Username : </label>
-                  <input type="text" name="username" id="username" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">Email : </label>
-                  <input type="text" name="email" id="email" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">Role : </label>
-                  <select class="custom-select" name="role" id="role">
-                    <option selected>Role List</option>
-                    @if (!empty($roleList))
-                    @foreach ($roleList as $role)
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                    @endforeach
-                    @endif
-                  </select>
-                </div>
-                <!-- <div class="form-group">
-                  <label class="col-form-label">Password : </label>
-                  <input type="password" name="password" id="password" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">Confirm Password : </label>
-                  <input type="password" name="confirmPassword" id="confirm-password" class="form-control" />
-                </div> -->
-                <br />
-                <div class="modal-footer">
-                  <input type="hidden" name="action" id="action" value="Add" />
-                  <input type="hidden" name="user_id" id="user-id" />
-                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Add" />
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div id="confirmModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -110,7 +57,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Are you sure you want to do some calculation ? </h4>
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
@@ -175,75 +122,14 @@
     });
   });
 
-  $('#edit-form').on('submit', function(event) {
-    event.preventDefault();
-    var action_url = '';
-
-    if ($('#action').val() == 'Add') {
-      action_url = "{{ route('admin.calresult.store') }}";
-    }
-
-    if ($('#action').val() == 'Edit') {
-      action_url = "{{ route('admin.calresult.update') }}";
-    }
-
-    $.ajax({
-      url: action_url,
-      method: "POST",
-      data: $(this).serialize(),
-      dataType: "json",
-      success: function(data) {
-        var html = '';
-        if (data.errors) {
-          html = '<div class="alert alert-danger">';
-          for (var count = 0; count < data.errors.length; count++) {
-            html += '<p>' + data.errors[count] + '</p>';
-          }
-          html += '</div>';
-        }
-        if (data.success) {
-          html = '<div class="alert alert-success">' + data.success + '</div>';
-          $('#edit-form')[0].reset();
-          $('#formModal').modal('hide');
-          $('#user-table').DataTable().ajax.reload();
-        }
-        $('#form-result').html(html);
-      }
-    });
-  });
-
-  $(document).on('click', '.edit', function() {
-    var id = $(this).attr('id');
-    $('#form-result').html('');
-    $.ajax({
-      method: "GET",
-      url: "/admin/calresult/get/" + id,
-      dataType: "json",
-      success: function(data) {
-        $('#username').val(data.name);
-        $('#email').val(data.email);
-        $("#role").val(data.role_id)
-        $('#user-id').val(id);
-        $('.modal-title').text('Edit User Record');
-        $('#action_button').val('Edit');
-        $('#action').val('Edit');
-        $('#formModal').modal('show');
-      },
-      error: function() {
-        alert("Error : Cannot get data");
-      }
-    })
-  });
-
-  $(document).on('click', '.delete', function() {
-    user_id = $(this).attr('id');
+  $(document).on('click', '#do-calculation', function() {
     $('#confirmModal').modal('show');
   });
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/calresult/delete/" + user_id,
-      method: "DELETE",
+      url: "/admin/calresult/do-calculation/",
+      method: "GET",
       data: {
         "_token": "{{ csrf_token() }}",
       },
