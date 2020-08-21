@@ -30,10 +30,15 @@
           <table id="user-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="35%">Username</th>
-                <th width="35%">Email</th>
-                <th width="35%">Role</th>
-                <th width="30%">Action</th>
+                <th width="35%">NIS</th>
+                <th width="35%">Name</th>
+                <th width="35%">Class</th>
+                <th width="30%">Choice Interest 1</th>
+                <th width="30%">Choice Interest 2</th>
+                <th width="30%">Choice Interest 3</th>
+                <th width="30%">Vector 1</th>
+                <th width="30%">Vector 2</th>
+                <th width="30%">Vector 3</th>
               </tr>
             </thead>
           </table>
@@ -128,24 +133,43 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('admin.student.datatablesGetalldata') }}",
+        url: "{{ route('admin.calresult.datatablesGetalldata') }}",
       },
       columns: [{
-          data: 'name',
-          name: 'name'
+          data: 'nis',
+          name: 'nis'
         },
         {
-          data: 'email',
-          name: 'email'
+          data: 'nama_siswa',
+          name: 'nama_siswa'
         },
         {
-          data: 'role.name',
-          name: 'roles'
+          data: 'kelas',
+          name: 'kelas'
         },
         {
-          data: 'action',
-          name: 'action',
-          orderable: false
+          data: 'detail_lm1.nama_mapel',
+          name: 'detail_lm1.nama_mapel',
+        },
+        {
+          data: 'detail_lm2.nama_mapel',
+          name: 'detail_lm2.nama_mapel',
+        },
+        {
+          data: 'detail_lm3.nama_mapel',
+          name: 'detail_lm3.nama_mapel',
+        },
+        {
+          data: 'vektor_v1',
+          name: 'vektor_v1',
+        },
+        {
+          data: 'vektor_v2',
+          name: 'vektor_v2',
+        },
+        {
+          data: 'vektor_v3',
+          name: 'vektor_v3',
         }
       ]
     });
@@ -156,11 +180,11 @@
     var action_url = '';
 
     if ($('#action').val() == 'Add') {
-      action_url = "{{ route('admin.student.store') }}";
+      action_url = "{{ route('admin.calresult.store') }}";
     }
 
     if ($('#action').val() == 'Edit') {
-      action_url = "{{ route('admin.student.update') }}";
+      action_url = "{{ route('admin.calresult.update') }}";
     }
 
     $.ajax({
@@ -193,7 +217,7 @@
     $('#form-result').html('');
     $.ajax({
       method: "GET",
-      url: "/admin/student/get/" + id,
+      url: "/admin/calresult/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#username').val(data.name);
@@ -218,7 +242,7 @@
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/student/delete/" + user_id,
+      url: "/admin/calresult/delete/" + user_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",

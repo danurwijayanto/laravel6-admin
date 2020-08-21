@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelaslm;
 use Illuminate\Http\Request;
+use DataTables;
+use Illuminate\Support\Facades\Log;
 
 class LintasMinatClassController extends Controller
 {
@@ -99,10 +102,10 @@ class LintasMinatClassController extends Controller
 
     public function dataTablesGetAllData()
     {
-        // $data = $listUser = User::with('role')->get();
+        $data = Kelaslm::get();
 
-        // return DataTables::of($data)
-        //     ->rawColumns(['action'])
-        //     ->make(true);
+        return DataTables::of($data)
+            ->rawColumns(['action'])
+            ->make(true);
     }
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Siswa;
+use Illuminate\Support\Facades\Log;
+use DataTables;
 
 class CalculationResultController extends Controller
 {
@@ -18,7 +21,7 @@ class CalculationResultController extends Controller
             "pageDescription" => "Calculation Result Page"
         ];
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -99,10 +102,8 @@ class CalculationResultController extends Controller
 
     public function dataTablesGetAllData()
     {
-        // $data = $listUser = User::with('role')->get();
-
-        // return DataTables::of($data)
-        //     ->rawColumns(['action'])
-        //     ->make(true);
+        $data = Siswa::with('detailLm1', 'detailLm2', 'detailLm3')->get();
+        Log::debug($data);
+        return DataTables::of($data)->make(true);
     }
 }
