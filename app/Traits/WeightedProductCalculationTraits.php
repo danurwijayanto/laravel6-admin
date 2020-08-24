@@ -167,18 +167,22 @@ trait WeightedProductCalculationTraits
         }
 
         for ($i = 0; $i < count($data); $i++) {
-            $total_vector_s = $data[$i]['s_value']['sMinat1'] + $data[$i]['s_value']['sMinat2'] + $data[$i]['s_value']['sMinat3'];
+            // Save data
+            $student = \App\Models\Siswa::find($data[$i]['id']);
+            if (empty($student)) {
+                return response()->json(['errors' => [0 => 'Data not found !']]);
+            }
 
-            $vValue = [
-                'v1' => $data[$i]['s_value']['sMinat1'] / $total_vector_s,
-                'v2' => $data[$i]['s_value']['sMinat2'] / $total_vector_s,
-                'v3' => $data[$i]['s_value']['sMinat3'] / $total_vector_s,
-            ];
-
-            $data[$i]['v_value'] = $vValue;
+            $student->vektor_v1 = $data[$i]['v_value']['v1'];
+            $student->vektor_v2 = $data[$i]['v_value']['v2'];
+            $student->vektor_v3 = $data[$i]['v_value']['v3'];
+            
+            if (!$student->save()) {
+                return response()->json(['errors' => [0 => 'Fail to update data']]);
+            }
         }
 
         // \Illuminate\Support\Facades\Log::debug($data);
-        return $data;
+        return response()->json(['errors' => [0 => 'Fail to update data']]);
     }
 }
