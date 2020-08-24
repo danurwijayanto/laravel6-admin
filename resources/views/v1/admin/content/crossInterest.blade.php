@@ -42,7 +42,6 @@
           </table>
         </div>
       </div>
-
       <div id="formModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -60,36 +59,21 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">NIS : </label>
-                  <input type="text" name="nis" id="nis" class="form-control" required />
-                </div>
-                <div class="form-group">
-                  <label class="col-form-label">Name : </label>
-                  <input type="text" name="name" id="name" class="form-control" required />
+                  <label class="col-form-label">Course Code : </label>
+                  <input type="text" name="course_code" id="course-code" class="form-control" required />
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Class : </label>
                   <input type="text" name="class" id="class" class="form-control" required />
                 </div>
-                <div class="edit-content">
-                  <div class="form-group">
-                    <label class="col-form-label">Choice Interest 1 : </label>
-                    <input type="text" name="choice_interest_1" id="choice_interest_1" class="form-control" required />
-                  </div>
-                  <div class="form-group">
-                    <label class="col-form-label">Choice Interest 2 : </label>
-                    <input type="text" name="choice_interest_2" id="choice_interest_2" class="form-control" required />
-                  </div>
-                  <div class="form-group">
-                    <label class="col-form-label">Choice Interest 3 : </label>
-                    <input type="text" name="choice_interest_3" id="choice_interest_3" class="form-control" required />
-                  </div>
-                  <br />
+                <div class="form-group">
+                  <label class="col-form-label">Schedule : </label>
+                  <input type="datetime" name="schedule" id="schedule" class="form-control" required />
                 </div>
                 <div class="modal-footer">
                   <input type="hidden" name="action" id="action" value="Add" />
                   <input type="hidden" name="cross-interest-class_id" id="cross-interest-class-id" />
-                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Edit" />
+                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Add" />
                 </div>
               </form>
             </div>
@@ -152,6 +136,11 @@
       ]
     });
   });
+
+  $(document).on('click', '#add-cross-interest-class-data', function() {
+    $('#upload-result').html('');
+    $('#formModal').modal('show');
+  })
 
   $('#edit-form').on('submit', function(event) {
     event.preventDefault();
@@ -224,7 +213,7 @@
     user_id = $(this).attr('id');
     $('#confirmModal').modal('show');
   });
-  
+
   $('#ok-button').click(function() {
     $.ajax({
       url: "/admin/crossInterestClass/delete/" + user_id,

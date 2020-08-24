@@ -68,6 +68,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     });
 
     Route::name('calresult.')->group(function() {
+        Route::get('calresult/do-calculation', 'Admin\CalculationResultController@calculation')->name('calculation');
         Route::get('calresult/index', 'Admin\CalculationResultController@index')->name('index');
         Route::get('calresult/get/{id}', 'Admin\CalculationResultController@edit')->name('get');
         Route::post('calresult/update', 'Admin\CalculationResultController@update')->name('update');

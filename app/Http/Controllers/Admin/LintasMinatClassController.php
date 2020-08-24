@@ -7,6 +7,8 @@ use App\Models\Kelaslm;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
 
 class LintasMinatClassController extends Controller
 {
@@ -102,13 +104,19 @@ class LintasMinatClassController extends Controller
 
     public function dataTablesGetAllData()
     {
-        $data = Kelaslm::get();
+        // $data = Kelaslm::select('count("id_siswa") as jumlah_siswa', 'id_mapellm', 'nama_kelas', 'jadwal')
+        //     ->group_by('id_mapellm')
+        //     ->get();
+
+        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal')
+            ->groupBy('nama_kelas')
+            ->get();
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
-                $button = '<button type="button" name="detail" id="' . $data->id . '" class="detail btn btn-secondary btn-sm">Detail</button>';
-                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" >Delete</button>';
+                $button = '<button type="button" name="detail" id="' . $data->id_mapellm . '" class="detail btn btn-secondary btn-sm">Detail</button>';
+                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->id_mapellm . '" class="edit btn btn-primary btn-sm">Edit</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id_mapellm . '" class="delete btn btn-danger btn-sm" >Delete</button>';
                 return $button;
             })
             ->rawColumns(['action'])

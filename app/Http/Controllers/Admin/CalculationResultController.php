@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use App\Traits\WeightedProductCalculationTraits;
 
 class CalculationResultController extends Controller
 {
     private $controllerDetails;
+
+    use WeightedProductCalculationTraits;
 
     public function __construct()
     {
@@ -105,5 +108,16 @@ class CalculationResultController extends Controller
         $data = Siswa::with('detailLm1', 'detailLm2', 'detailLm3')->get();
 
         return DataTables::of($data)->make(true);
+    }
+
+    public function calculation()
+    {
+        $calculate = $this->doCalculate();
+
+        if (isset(json_decode($calculate)->fail)) {
+            return response()->json(['errors' => [0 => json_decode($calculate)->fail]]);
+        }
+
+        return response()->json(['success' => 'Data is successfully added']);
     }
 }
