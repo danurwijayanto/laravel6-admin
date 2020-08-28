@@ -120,4 +120,8 @@ class CalculationResultController extends Controller
 
         return response()->json(['success' => 'Data is successfully added']);
     }
+
+    public function classCalculation() {
+        return response()->json(['success' => 'Done']);
+    }
 }

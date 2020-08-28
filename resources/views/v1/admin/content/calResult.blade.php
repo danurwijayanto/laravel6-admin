@@ -29,6 +29,7 @@
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
             <button type="button" class="btn btn-primary" id="do-calculation">Do Calculation</button>
+            <button type="button" class="btn btn-secondary" id="do-class-divison">Do Class Division</button>
           </div>
           <table id="user-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -47,7 +48,7 @@
           </table>
         </div>
       </div>
-      <div id="confirmModal" class="modal fade" role="dialog">
+      <div id="confirmModal" class="modal fade" role="dialog" data->
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -60,7 +61,7 @@
               <h4 align="center" style="margin:0;">Are you sure you want to do some calculation ? </h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
+              <button type="button" name="ok_button" id="ok-button" data-action="" class="btn btn-danger">OK</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
           </div>
@@ -124,36 +125,74 @@
 
   $(document).on('click', '#do-calculation', function() {
     $('#confirmModal').modal('show');
+    $('#ok-button').data('action', 'do-calculation');
   });
 
+  $(document).on('click', '#do-class-divison', function() {
+    $('#confirmModal').modal('show');
+    $('#ok-button').data('action', 'do-class-division');
+  })
+
   $('#ok-button').click(function() {
-    $.ajax({
-      url: "/admin/calresult/do-calculation/",
-      method: "GET",
-      data: {
-        "_token": "{{ csrf_token() }}",
-      },
-      beforeSend: function() {
-        $('#ok-button').text('Deleting...');
-      },
-      success: function(data) {
-        setTimeout(function() {
-          if (data.errors) {
-            errorMessage = '';
-            for (var count = 0; count < data.errors.length; count++) {
-              errorMessage += data.errors[count];
+    const action = $('#ok-button').data('action');
+
+    if (action == "do-calculation") {
+      $.ajax({
+        url: "/admin/calresult/do-calculation/",
+        method: "GET",
+        data: {
+          "_token": "{{ csrf_token() }}",
+        },
+        beforeSend: function() {
+          $('#ok-button').text('Calculating...');
+        },
+        success: function(data) {
+          setTimeout(function() {
+            if (data.errors) {
+              errorMessage = '';
+              for (var count = 0; count < data.errors.length; count++) {
+                errorMessage += data.errors[count];
+              }
+              $('#confirmModal').modal('hide');
+              $('#user-table').DataTable().ajax.reload();
+              alert(errorMessage);
+            } else {
+              $('#confirmModal').modal('hide');
+              $('#user-table').DataTable().ajax.reload();
+              alert('Calculated Successfully');
             }
-            $('#confirmModal').modal('hide');
-            $('#user-table').DataTable().ajax.reload();
-            alert(errorMessage);
-          } else {
-            $('#confirmModal').modal('hide');
-            $('#user-table').DataTable().ajax.reload();
-            alert('Data Deleted');
-          }
-        }, 2000);
-      }
-    })
+          }, 2000);
+        }
+      })
+    } else {
+      $.ajax({
+        url: "/admin/calresult/do-class-division/",
+        method: "GET",
+        data: {
+          "_token": "{{ csrf_token() }}",
+        },
+        beforeSend: function() {
+          $('#ok-button').text('Calculating...');
+        },
+        success: function(data) {
+          setTimeout(function() {
+            if (data.errors) {
+              errorMessage = '';
+              for (var count = 0; count < data.errors.length; count++) {
+                errorMessage += data.errors[count];
+              }
+              $('#confirmModal').modal('hide');
+              $('#user-table').DataTable().ajax.reload();
+              alert(errorMessage);
+            } else {
+              $('#confirmModal').modal('hide');
+              $('#user-table').DataTable().ajax.reload();
+              alert('Calculated Successfully');
+            }
+          }, 2000);
+        }
+      })
+    }
   });
 </script>
 @endpush

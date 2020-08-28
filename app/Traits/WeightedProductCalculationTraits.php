@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Siswa;
-use Illuminate\Support\Facades\Log;
-
 namespace App\Traits;
 
 trait WeightedProductCalculationTraits
