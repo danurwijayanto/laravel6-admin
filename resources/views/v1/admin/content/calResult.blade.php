@@ -165,6 +165,7 @@
         }
       })
     } else {
+      console.log("class");
       $.ajax({
         url: "/admin/calresult/do-class-division/",
         method: "GET",
