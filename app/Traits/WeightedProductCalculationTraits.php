@@ -180,6 +180,6 @@ trait WeightedProductCalculationTraits
         }
 
         // \Illuminate\Support\Facades\Log::debug($data);
-        return response()->json(['errors' => [0 => 'Fail to update data']]);
+        return response()->json(['success' => 'Data is successfully added']);
     }
 }

@@ -118,9 +118,9 @@ trait ClassCalculationTraits
         }
 
         $record = [];
-        $className = "";
 
         for ($i = 0; $i < count($studentData); $i++) {
+            $className = "";
             if ($studentData[$i]['mapel_terpilih'] != 0) { // Hanya memproses siswa yang sudah ter-assign kelas
                 $idSelectedMapel = array_search($studentData[$i]['mapel_terpilih'], array_column($courseData, 'id'));
                 // $idSelectedMapel = $courseData[$idSelectedMapel][''];
@@ -138,35 +138,22 @@ trait ClassCalculationTraits
                 }
 
                 // Save data
-                // $value = [
-                //     'id_siswa' => $data[$i]['id'],
-                //     'id_mapellm' => $data[$i]['mapel_terpilih'],
-                //     'nama_kelas' => $this->className($data[$i]),
-                // ];
+                $value = [
+                    'id_siswa' => $studentData[$i]['id'],
+                    'id_mapellm' => $studentData[$i]['mapel_terpilih'],
+                    'nama_kelas' => $className,
+                    'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                ];
             }
-            \Illuminate\Support\Facades\Log::debug($className);
+            array_push($record, $value);
         }
-        // \App\Models\Siswa::insert($value);
+        \App\Models\Kelaslm::insert($record);
 
-        // \Illuminate\Support\Facades\Log::debug($max_quota);
-        // \Illuminate\Support\Facades\Log::debug($max_total_class);
-        return response()->json(['errors' => [0 => 'Fail to update data']]);
-    }
-
-    private function className($data)
-    {
-        if (empty($data)) {
-            return json_encode(['fail' => 'Data inser is null']);
+        \Illuminate\Support\Facades\Log::debug($record);
+        if (!\App\Models\Kelaslm::insert($record)) {
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
         }
 
-        $dataMapel = \App\Models\Mapellm::get()->toArray();
-
-        foreach ($dataMapel as $value) {
-            $index[$value['id']] = 0;
-        }
-
-        foreach ($data as $value) {
-            $index[$value['mapel_terpilih']]++;
-        }
+        return response()->json(['success' => 'Data is successfully added']);
     }
 }

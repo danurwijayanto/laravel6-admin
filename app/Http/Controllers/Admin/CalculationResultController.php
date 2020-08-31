@@ -124,7 +124,12 @@ class CalculationResultController extends Controller
     }
 
     public function classCalculation() {
-        $this->doClassCalculation();
-        return response()->json(['success' => 'Done']);
+        $calculate = $this->doClassCalculation();
+
+        if (isset(json_decode($calculate)->fail)) {
+            return response()->json(['errors' => [0 => json_decode($calculate)->fail]]);
+        }
+
+        return response()->json(['success' => 'Data is successfully added']);
     }
 }
