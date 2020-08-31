@@ -108,9 +108,11 @@ class LintasMinatClassController extends Controller
         //     ->group_by('id_mapellm')
         //     ->get();
 
-        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal')
-            ->groupBy('nama_kelas')
+        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas')
+            ->groupBy('nama_kelas', 'id_mapellm')
             ->get();
+
+        Log::debug($data);
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {

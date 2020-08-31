@@ -34,7 +34,6 @@
             <thead>
               <tr>
                 <th width="20%">Class Name</th>
-                <th width="20%">Schedule</th>
                 <th width="20%">Total Students</th>
                 <th width="20%">Action</th>
               </tr>
@@ -119,10 +118,6 @@
       columns: [{
           data: 'nama_kelas',
           name: 'nama_kelas'
-        },
-        {
-          data: 'jadwal',
-          name: 'jadwal'
         },
         {
           data: 'jumlah_siswa',
