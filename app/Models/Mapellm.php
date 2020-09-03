@@ -27,5 +27,4 @@ class Mapellm extends Model
     {
         return $this->hasMany('siswa', 'id', 'pilih_lm3');
     }
-
 }

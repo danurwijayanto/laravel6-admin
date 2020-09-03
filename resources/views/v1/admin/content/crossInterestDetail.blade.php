@@ -27,16 +27,44 @@
     <div class="container-fluid">
       <div class="card card-default color-palette-box">
         <div class="card-body">
+          @if (isset($error))
+          <div class="alert alert-warning" role="alert">
+            {{ $error }}
+          </div>
+          @endif
+          <input type="hidden" id="class-name" value="{{ $classData['nama_kelas'] ?? '' }}">
+          <table style="margin-bottom:20px">
+            <tr>
+              <td>
+                <h5>Class Name</h5>
+              </td>
+              <td>
+                <h5>:</h5>
+              </td>
+              <td>
+                <h5>{{ $classData['nama_kelas'] ?? '' }}</h5>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <h5>Schedule</h5>
+              </td>
+              <td>
+                <h5>:</h5>
+              </td>
+              <td>
+                <h5>{{ $classData['jadwal'] ?? '' }}</h5>
+              </td>
+            </tr>
+          </table>
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="add-cross-interest-class-data">Add new data</button>
+            <button type="button" class="btn btn-primary" id="add-cross-interest-class-data">Download File</button>
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="20%">Class Name</th>
-                <th width="20%">Schedule</th>
-                <th width="20%">Total Students</th>
-                <th width="20%">Action</th>
+                <th width="20%">Class</th>
+                <th width="20%">Student Name</th>
               </tr>
             </thead>
           </table>
@@ -130,25 +158,16 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('admin.crossInterestClass.datatablesGetalldata') }}",
+        url: "/admin/crossInterestClass/get-datatables-detail-data/" + $('#class-name').val(),
       },
       columns: [{
-          data: 'nama_kelas',
-          name: 'nama_kelas'
+          data: 'student.kelas',
+          name: 'student.kelas'
         },
         {
-          data: 'jadwal',
-          name: 'jadwal'
+          data: 'student.nama_siswa',
+          name: 'student.nama_siswa'
         },
-        {
-          data: 'jumlah_siswa',
-          name: 'jumlah_siswa'
-        },
-        {
-          data: 'action',
-          name: 'action',
-          orderable: false
-        }
       ]
     });
   });
@@ -224,7 +243,7 @@
     user_id = $(this).attr('id');
     $('#confirmModal').modal('show');
   });
-  
+
   $('#ok-button').click(function() {
     $.ajax({
       url: "/admin/crossInterestClass/delete/" + user_id,

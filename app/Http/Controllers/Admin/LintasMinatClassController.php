@@ -65,7 +65,17 @@ class LintasMinatClassController extends Controller
      */
     public function show($id)
     {
-        //
+        $classData = Kelaslm::where("id", $id)->first();
+        if (!$classData) return view('v1.admin.content.crossInterestDetail')->with(['error' => "Warning : Class not found !"]);
+
+        $studentList = Kelaslm::where("nama_kelas", $classData->nama_kelas)->get();
+        if (!$studentList) return view('v1.admin.content.crossInterestDetail')->with(['error' => "Warning : Student not found !"]);
+
+        return view('v1.admin.content.crossInterestDetail')->with([
+            'detailController' => $this->controllerDetails,
+            'classData' => $classData,
+            'studentList' => $studentList
+        ]);
     }
 
     /**
@@ -104,15 +114,9 @@ class LintasMinatClassController extends Controller
 
     public function dataTablesGetAllData()
     {
-        // $data = Kelaslm::select('count("id_siswa") as jumlah_siswa', 'id_mapellm', 'nama_kelas', 'jadwal')
-        //     ->group_by('id_mapellm')
-        //     ->get();
-
-        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas')
-            ->groupBy('nama_kelas', 'id_mapellm')
+        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal')
+            ->groupBy('nama_kelas', 'id_mapellm', 'jadwal')
             ->get();
-
-        Log::debug($data);
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
@@ -122,6 +126,16 @@ class LintasMinatClassController extends Controller
                 return $button;
             })
             ->rawColumns(['action'])
+            ->make(true);
+    }
+
+    public function dataTablesGetDetailData($className)
+    {
+        $data = Kelaslm::where('nama_kelas', $className)->with('student')->get();
+
+        // Log::debug($data);
+
+        return DataTables::of($data)
             ->make(true);
     }
 }

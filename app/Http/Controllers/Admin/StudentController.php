@@ -80,7 +80,6 @@ class StudentController extends Controller
     public function edit($id)
     {
         $user = Siswa::with('detailLm1', 'detailLm2', 'detailLm3')->find($id);
-        Log::debug($user);
         return response()->json($user);
     }
 

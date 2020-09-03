@@ -33,9 +33,10 @@
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="20%">Class Name</th>
-                <th width="20%">Total Students</th>
-                <th width="20%">Action</th>
+                <th width="25%">Class Name</th>
+                <th width="25%">Total Students</th>
+                <th width="25%">Schedule</th>
+                <th width="25%">Action</th>
               </tr>
             </thead>
           </table>
@@ -124,6 +125,10 @@
           name: 'jumlah_siswa'
         },
         {
+          data: 'jadwal',
+          name: 'jadwal'
+        },
+        {
           data: 'action',
           name: 'action',
           orderable: false
@@ -135,6 +140,10 @@
   $(document).on('click', '#add-cross-interest-class-data', function() {
     $('#upload-result').html('');
     $('#formModal').modal('show');
+  })
+
+  $(document).on('click', '.detail', function(){
+    window.open("/admin/crossInterestClass/detail/"+$(this).attr('id'));
   })
 
   $('#edit-form').on('submit', function(event) {
@@ -239,33 +248,33 @@
     })
   });
 
-  $(document).on('click', '.detail', function() {
-    $('#formModal').modal('show');
-    $('#form-result').html('');
-    $("#edit-form :input").attr("disabled", true);
-    $('.edit-content').show();
-    $('#action_button').hide();
-    $("#edit-form :input").prop('required', true);
+  // $(document).on('click', '.detail', function() {
+  //   $('#formModal').modal('show');
+  //   $('#form-result').html('');
+  //   $("#edit-form :input").attr("disabled", true);
+  //   $('.edit-content').show();
+  //   $('#action_button').hide();
+  //   $("#edit-form :input").prop('required', true);
 
-    var id = $(this).attr('id');
-    $.ajax({
-      method: "GET",
-      url: "/admin/crossInterestClass/get/" + id,
-      dataType: "json",
-      success: function(data) {
-        $('#nis').val(data.nis);
-        $('#name').val(data.nama_siswa);
-        $("#class").val(data.kelas)
-        $('#choice_interest_1').val(data.detail_lm1.nama_mapel);
-        $('#choice_interest_2').val(data.detail_lm2.nama_mapel);
-        $('#choice_interest_3').val(data.detail_lm3.nama_mapel);
-        $('.modal-title').text('View Cross Interest Class Record');
-      },
-      error: function() {
-        alert("Error : Cannot get data");
-      }
-    })
-  });
+  //   var id = $(this).attr('id');
+  //   $.ajax({
+  //     method: "GET",
+  //     url: "/admin/crossInterestClass/get/" + id,
+  //     dataType: "json",
+  //     success: function(data) {
+  //       $('#nis').val(data.nis);
+  //       $('#name').val(data.nama_siswa);
+  //       $("#class").val(data.kelas)
+  //       $('#choice_interest_1').val(data.detail_lm1.nama_mapel);
+  //       $('#choice_interest_2').val(data.detail_lm2.nama_mapel);
+  //       $('#choice_interest_3').val(data.detail_lm3.nama_mapel);
+  //       $('.modal-title').text('View Cross Interest Class Record');
+  //     },
+  //     error: function() {
+  //       alert("Error : Cannot get data");
+  //     }
+  //   })
+  // });
 </script>
 @endpush
 @endsection
