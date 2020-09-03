@@ -65,10 +65,10 @@ class LintasMinatClassController extends Controller
      */
     public function show($id)
     {
-        $classData = Kelaslm::where("id", $id)->first();
+        $classData = Kelaslm::where("nama_kelas", $id)->first();
         if (!$classData) return view('v1.admin.content.crossInterestDetail')->with(['error' => "Warning : Class not found !"]);
 
-        $studentList = Kelaslm::where("nama_kelas", $classData->nama_kelas)->get();
+        $studentList = Kelaslm::where("nama_kelas", $id)->get();
         if (!$studentList) return view('v1.admin.content.crossInterestDetail')->with(['error' => "Warning : Student not found !"]);
 
         return view('v1.admin.content.crossInterestDetail')->with([
@@ -120,9 +120,9 @@ class LintasMinatClassController extends Controller
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
-                $button = '<button type="button" name="detail" id="' . $data->id_mapellm . '" class="detail btn btn-secondary btn-sm">Detail</button>';
-                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->id_mapellm . '" class="edit btn btn-primary btn-sm">Edit</button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id_mapellm . '" class="delete btn btn-danger btn-sm" >Delete</button>';
+                $button = '<button type="button" name="detail" id="' . $data->nama_kelas . '" class="detail btn btn-secondary btn-sm">Detail</button>';
+                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->nama_kelas . '" class="edit btn btn-primary btn-sm">Edit</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->nama_kelas . '" class="delete btn btn-danger btn-sm" >Delete</button>';
                 return $button;
             })
             ->rawColumns(['action'])
