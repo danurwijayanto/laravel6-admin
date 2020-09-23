@@ -61,7 +61,7 @@ class MapelLmController extends Controller
 
         $course = new Mapellm;
         $course->kode_mapel = $request->course_code;
-        $course->nama_mapel = $request->course_name;
+        $course->nama_mapel = strtolower($request->course_name);
         $course->jumlah_kelas = $request->number_of_classes;
         $course->kuota_kelas = $request->class_quota;
 
@@ -125,7 +125,7 @@ class MapelLmController extends Controller
             return response()->json(['errors' => [0 => 'Data not found !']]);
         }
         $course->kode_mapel = $request->course_code;
-        $course->nama_mapel = $request->course_name;
+        $course->nama_mapel = strtolower($request->course_name);
         $course->jumlah_kelas = $request->number_of_classes;
         $course->kuota_kelas = $request->class_quota;
 
