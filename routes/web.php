@@ -59,14 +59,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     });
 
     Route::name('crossInterestClass.')->group(function() {
-        Route::get('crossInterestClass/index', 'Admin\LintasMinatClassController@index')->name('index');
-        Route::get('crossInterestClass/detail/{id}', 'Admin\LintasMinatClassController@show')->name('detail');
-        Route::get('crossInterestClass/get/{id}', 'Admin\LintasMinatClassController@edit')->name('get');
-        Route::post('crossInterestClass/update', 'Admin\LintasMinatClassController@update')->name('update');
-        Route::post('crossInterestClass/store', 'Admin\LintasMinatClassController@store')->name('store');
-        Route::delete('crossInterestClass/delete/{id}', 'Admin\LintasMinatClassController@destroy')->name('delete');
-        Route::get('crossInterestClass/get-datatables-all-data', 'Admin\LintasMinatClassController@dataTablesGetAllData')->name('datatablesGetalldata');
-        Route::get('crossInterestClass/get-datatables-detail-data/{name}', 'Admin\LintasMinatClassController@dataTablesGetDetailData')->name('datatablesGetdetaildata');
+        Route::get('cross-interest/index', 'Admin\LintasMinatClassController@index')->name('index');
+        Route::get('cross-interest/detail/{id}', 'Admin\LintasMinatClassController@show')->name('detail');
+        Route::get('cross-interest/get/{id}', 'Admin\LintasMinatClassController@edit')->name('get');
+        Route::post('cross-interest/update', 'Admin\LintasMinatClassController@update')->name('update');
+        Route::post('cross-interest/store', 'Admin\LintasMinatClassController@store')->name('store');
+        Route::delete('cross-interest/delete/{id}', 'Admin\LintasMinatClassController@destroy')->name('delete');
+        Route::get('cross-interest/get-datatables-all-data', 'Admin\LintasMinatClassController@dataTablesGetAllData')->name('datatablesGetalldata');
+        Route::get('cross-interest/get-datatables-detail-data/{name}', 'Admin\LintasMinatClassController@dataTablesGetDetailData')->name('datatablesGetdetaildata');
     });
 
     Route::name('calresult.')->group(function() {

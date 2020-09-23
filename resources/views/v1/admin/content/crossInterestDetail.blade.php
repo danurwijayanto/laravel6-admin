@@ -158,7 +158,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "/admin/crossInterestClass/get-datatables-detail-data/" + $('#class-name').val(),
+        url: "/admin/cross-interest/get-datatables-detail-data/" + $('#class-name').val(),
       },
       columns: [{
           data: 'student.kelas',
@@ -221,7 +221,7 @@
 
     $.ajax({
       method: "GET",
-      url: "/admin/crossInterestClass/get/" + id,
+      url: "/admin/cross-interest/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#nis').val(data.nis);
@@ -246,7 +246,7 @@
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/crossInterestClass/delete/" + user_id,
+      url: "/admin/cross-interest/delete/" + user_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",
@@ -285,7 +285,7 @@
     var id = $(this).attr('id');
     $.ajax({
       method: "GET",
-      url: "/admin/crossInterestClass/get/" + id,
+      url: "/admin/cross-interest/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#nis').val(data.nis);
