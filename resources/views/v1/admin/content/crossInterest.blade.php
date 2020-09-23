@@ -28,7 +28,7 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="add-cross-interest-class-data">Add new data</button>
+            <!-- <button type="button" class="btn btn-primary" id="add-cross-interest-class-data">Add new data</button> -->
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -60,19 +60,38 @@
                 @csrf
                 <div class="form-group">
                   <label class="col-form-label">Course Code : </label>
-                  <input type="text" name="course_code" id="course-code" class="form-control" required />
+                  <input type="text" id="course-code" class="form-control" />
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Class : </label>
-                  <input type="text" name="class" id="class" class="form-control" required />
+                  <input type="text" id="class" class="form-control" />
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Teacher : </label>
+                  <input type="text" id="teacher" class="form-control" name="teacher" />
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Schedule : </label>
-                  <input type="datetime" name="schedule" id="schedule" class="form-control" required />
+                  <div class="row">
+                    <div class="col">
+                      <select id="day" class="form-control" name="day" required>
+                        <option selected>Choose...</option>
+                        <option>Sunday</option>
+                        <option>Monday</option>
+                        <option>Tuesday</option>
+                        <option>Wednesday</option>
+                        <option>Thursday</option>
+                        <option>Saturday</option>
+                      </select>
+                    </div>
+                    <div class="col">
+                      <input type="time" name="time" id="time" class="form-control" required />
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <input type="hidden" name="action" id="action" value="Add" />
-                  <input type="hidden" name="cross-interest-class_id" id="cross-interest-class-id" />
+                  <input type="hidden" name="cross_interest_class_id" id="cross-interest-class-id" />
                   <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Add" />
                 </div>
               </form>
@@ -143,7 +162,7 @@
   })
 
   $(document).on('click', '.detail', function(){
-    window.open("/admin/crossInterestClass/detail/"+$(this).attr('id'));
+    window.open("/admin/cross-interest/detail/"+$(this).attr('id'));
   })
 
   $('#edit-form').on('submit', function(event) {
@@ -195,15 +214,16 @@
 
     $.ajax({
       method: "GET",
-      url: "/admin/crossInterestClass/get/" + id,
+      url: "/admin/cross-interest/get/" + id,
       dataType: "json",
       success: function(data) {
-        $('#nis').val(data.nis);
-        $('#name').val(data.nama_siswa);
-        $("#class").val(data.kelas)
-        $('#cross-interest-class-id').val(id);
+        $('#course-code').val(data.course.kode_mapel);
+        $("#course-code").prop('disabled', true);
+        $('#class').val(data.nama_kelas);
+        $("#class").prop('disabled', true);
+        $('#cross-interest-class-id').val(data.id);
         $('.modal-title').text('Edit Cross Interest Class Record');
-        $('#action_button').val('Edit');
+        $('#action_button').val('Save');
         $('#action').val('Edit');
         // $('#formModal').modal('show');
       },
@@ -247,34 +267,6 @@
       }
     })
   });
-
-  // $(document).on('click', '.detail', function() {
-  //   $('#formModal').modal('show');
-  //   $('#form-result').html('');
-  //   $("#edit-form :input").attr("disabled", true);
-  //   $('.edit-content').show();
-  //   $('#action_button').hide();
-  //   $("#edit-form :input").prop('required', true);
-
-  //   var id = $(this).attr('id');
-  //   $.ajax({
-  //     method: "GET",
-  //     url: "/admin/crossInterestClass/get/" + id,
-  //     dataType: "json",
-  //     success: function(data) {
-  //       $('#nis').val(data.nis);
-  //       $('#name').val(data.nama_siswa);
-  //       $("#class").val(data.kelas)
-  //       $('#choice_interest_1').val(data.detail_lm1.nama_mapel);
-  //       $('#choice_interest_2').val(data.detail_lm2.nama_mapel);
-  //       $('#choice_interest_3').val(data.detail_lm3.nama_mapel);
-  //       $('.modal-title').text('View Cross Interest Class Record');
-  //     },
-  //     error: function() {
-  //       alert("Error : Cannot get data");
-  //     }
-  //   })
-  // });
 </script>
 @endpush
 @endsection

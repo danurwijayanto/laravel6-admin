@@ -86,7 +86,9 @@ class LintasMinatClassController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Kelaslm::where('nama_kelas', $id)->with(['student','course'])->first();
+
+        return json_encode($data);
     }
 
     /**
@@ -96,9 +98,10 @@ class LintasMinatClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
+        Log::debug($request);
     }
 
     /**
@@ -131,9 +134,9 @@ class LintasMinatClassController extends Controller
 
     public function dataTablesGetDetailData($className)
     {
-        $data = Kelaslm::where('nama_kelas', $className)->with('student')->get();
+        $data = Kelaslm::where('nama_kelas', $className)->with(['student','course'])->get();
 
-        // Log::debug($data);
+        Log::debug($data);
 
         return DataTables::of($data)
             ->make(true);
