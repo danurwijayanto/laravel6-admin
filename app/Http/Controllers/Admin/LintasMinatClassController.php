@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 
 class LintasMinatClassController extends Controller
@@ -100,8 +101,37 @@ class LintasMinatClassController extends Controller
      */
     public function update(Request $request)
     {
-        //
-        Log::debug($request);
+        // Request Validation
+        $validatorRules = array(
+            'cross_interest_class_id' => 'bail|required',
+            'day' => 'required',
+            'time' => 'required',
+            'teacher' => 'required',
+        );
+
+        $error = Validator::make($request->all(), $validatorRules);
+        if ($error->fails()) {
+            return response()->json(['errors' => $error->errors()->all()]);
+        }
+        
+        // Log::debug($request);
+        // Save data
+        $classData = Kelaslm::find($request->cross_interest_class_id);
+        
+        if (empty($classData)) {
+            return response()->json(['errors' => [0 => 'Data not found !']]);
+        }
+
+        $classData->pengajar = $request->teacher;
+        $classData->jadwal = $request->day.",".$request->time;
+
+        if (!$classData->save()) {
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
+        } else {
+            return response()->json(['success' => 'Data is successfully updated']);
+        }
+
+        // Log::debug($request);
     }
 
     /**

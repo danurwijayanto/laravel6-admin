@@ -75,13 +75,12 @@
                   <div class="row">
                     <div class="col">
                       <select id="day" class="form-control" name="day" required>
-                        <option selected>Choose...</option>
-                        <option>Sunday</option>
-                        <option>Monday</option>
-                        <option>Tuesday</option>
-                        <option>Wednesday</option>
-                        <option>Thursday</option>
-                        <option>Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Saturday">Saturday</option>
                       </select>
                     </div>
                     <div class="col">
@@ -217,10 +216,16 @@
       url: "/admin/cross-interest/get/" + id,
       dataType: "json",
       success: function(data) {
+        const jadwal = data.jadwal
+        const jadwalSplit = jadwal.split(",")
+        console.log(jadwalSplit)
         $('#course-code').val(data.course.kode_mapel);
         $("#course-code").prop('disabled', true);
         $('#class').val(data.nama_kelas);
         $("#class").prop('disabled', true);
+        $("#teacher").val(data.pengajar);
+        $("#day").val(jadwalSplit[0]);
+        $("#time").val(jadwalSplit[1]);
         $('#cross-interest-class-id').val(data.id);
         $('.modal-title').text('Edit Cross Interest Class Record');
         $('#action_button').val('Save');
