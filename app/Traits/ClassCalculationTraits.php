@@ -12,7 +12,7 @@ trait ClassCalculationTraits
         $doStudentClassOrder = $this->studentClassOrder();
         $doAssignClass = $this->assignClass($doStudentClassOrder);
         $insertDb = $this->calculationInsertDb($doAssignClass);
-        return $insertDb;
+        // return $insertDb;
     }
 
     private function studentClassOrder()
@@ -94,7 +94,7 @@ trait ClassCalculationTraits
             'data_mapel' => $dataMapel
         ];
 
-        // \Illuminate\Support\Facades\Log::debug($data);
+        // \Illuminate\Support\Facades\Log::debug($returnData);
         return ($returnData);
     }
 
@@ -106,6 +106,8 @@ trait ClassCalculationTraits
 
         $studentData = $data['data_siswa'];
         $courseData = $data['data_mapel'];
+
+        // \Illuminate\Support\Facades\Log::debug($courseData);
 
         $dataMapel = \App\Models\Mapellm::get()->toArray();
 
@@ -120,14 +122,16 @@ trait ClassCalculationTraits
             $className = "";
             if ($studentData[$i]['mapel_terpilih'] != 0) { // Hanya memproses siswa yang sudah ter-assign kelas
                 $idSelectedMapel = array_search($studentData[$i]['mapel_terpilih'], array_column($courseData, 'id'));
+                // \Illuminate\Support\Facades\Log::debug($max_quota[$studentData[$i]['mapel_terpilih']]." || ". $courseData[$idSelectedMapel]['max_kuota_kelas']. " || ".$max_total_class[$studentData[$i]['mapel_terpilih']]);
                 if ($max_quota[$studentData[$i]['mapel_terpilih']] < $courseData[$idSelectedMapel]['max_kuota_kelas']) {
                     $className = $courseData[$idSelectedMapel]['nama_mapel'] . '_' . chr($max_total_class[$studentData[$i]['mapel_terpilih']] + 65);
-                    if ($max_quota[$studentData[$i]['mapel_terpilih']] % $courseData[$idSelectedMapel]['kuota_kelas'] == 4) {
+                    
+                    if ($max_quota[$studentData[$i]['mapel_terpilih']] % $courseData[$idSelectedMapel]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel]['kuota_kelas']-1) {
                         $max_total_class[$studentData[$i]['mapel_terpilih']]++;
                     }
-                    // if ($max_total_class[$studentData[$i]['mapel_terpilih']] < $courseData[$idSelectedMapel]['jumlah_kelas']) {
+
                     $max_quota[$studentData[$i]['mapel_terpilih']]++;
-                    // }
+
                 }
                 // Save data
                 $value = [
@@ -135,12 +139,16 @@ trait ClassCalculationTraits
                     'id_mapellm' => $studentData[$i]['mapel_terpilih'],
                     'nama_kelas' => $className,
                     'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                    // 'max_quota' => $max_quota[$studentData[$i]['mapel_terpilih']],
+                    // 'max_total_class' => $max_total_class[$studentData[$i]['mapel_terpilih']],
                 ];
+                // \Illuminate\Support\Facades\Log::debug($value);
                 array_push($record, $value);
             }
         }
 
-        \Illuminate\Support\Facades\Log::debug($record);
+
+        // \Illuminate\Support\Facades\Log::debug($record);
         if (!\App\Models\Kelaslm::insert($record)) {
             return response()->json(['errors' => [0 => 'Fail to update data']]);
         }
