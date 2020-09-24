@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::post('cross-interest/update', 'Admin\LintasMinatClassController@update')->name('update');
         Route::post('cross-interest/store', 'Admin\LintasMinatClassController@store')->name('store');
         Route::delete('cross-interest/delete/{id}', 'Admin\LintasMinatClassController@destroy')->name('delete');
+        Route::delete('cross-interest/delete-all', 'Admin\LintasMinatClassController@deleteAll')->name('deleteAll');
         Route::get('cross-interest/get-datatables-all-data', 'Admin\LintasMinatClassController@dataTablesGetAllData')->name('datatablesGetalldata');
         Route::get('cross-interest/get-datatables-detail-data/{name}', 'Admin\LintasMinatClassController@dataTablesGetDetailData')->name('datatablesGetdetaildata');
     });

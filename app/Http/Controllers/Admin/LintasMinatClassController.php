@@ -145,6 +145,13 @@ class LintasMinatClassController extends Controller
         //
     }
 
+    public function deleteAll()
+    {
+        KelasLm::truncate();
+        
+        return response()->json(['success' => 'All data is successfully deleted']);
+    }
+
     public function dataTablesGetAllData()
     {
         $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal')
@@ -155,7 +162,6 @@ class LintasMinatClassController extends Controller
             ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="detail" id="' . $data->nama_kelas . '" class="detail btn btn-secondary btn-sm">Detail</button>';
                 $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->nama_kelas . '" class="edit btn btn-primary btn-sm">Edit</button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->nama_kelas . '" class="delete btn btn-danger btn-sm" >Delete</button>';
                 return $button;
             })
             ->rawColumns(['action'])

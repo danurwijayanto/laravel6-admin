@@ -28,7 +28,7 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <!-- <button type="button" class="btn btn-primary" id="add-cross-interest-class-data">Add new data</button> -->
+            <button type="button" class="btn btn-primary" id="clear-data">Clear Data</button>
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -109,10 +109,29 @@
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" id="modal-remove-text" style="margin:0;">Are you sure you want to remove this data ?</h4>
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="confirmModalDeleteAll" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h4 align="center" id="modal-remove-text" style="margin:0;">Are you sure you want to remove all data ?</h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">OK</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
           </div>
@@ -160,8 +179,8 @@
     $('#formModal').modal('show');
   })
 
-  $(document).on('click', '.detail', function(){
-    window.open("/admin/cross-interest/detail/"+$(this).attr('id'));
+  $(document).on('click', '.detail', function() {
+    window.open("/admin/cross-interest/detail/" + $(this).attr('id'));
   })
 
   $('#edit-form').on('submit', function(event) {
@@ -243,9 +262,43 @@
     $('#confirmModal').modal('show');
   });
 
+  $(document).on('click', '#clear-data', function() {
+    $('#confirmModalDeleteAll').modal('show');
+  })
+
+  $('#ok-button-delete-all').click(function() {
+    $.ajax({
+      url: "/admin/cross-interest/delete-all/",
+      method: "DELETE",
+      data: {
+        "_token": "{{ csrf_token() }}",
+      },
+      beforeSend: function() {
+        $('#ok-button-delete-all').text('Deleting...');
+      },
+      success: function(data) {
+        setTimeout(function() {
+          if (data.errors) {
+            errorMessage = '';
+            for (var count = 0; count < data.errors.length; count++) {
+              errorMessage += data.errors[count];
+            }
+            $('#confirmModalDeleteAll').modal('hide');
+            $('#cross-interest-class-table').DataTable().ajax.reload();
+            alert(errorMessage);
+          } else {
+            $('#confirmModalDeleteAll').modal('hide');
+            $('#cross-interest-class-table').DataTable().ajax.reload();
+            alert('Data Deleted');
+          }
+        }, 2000);
+      }
+    })
+  })
+
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/crossInterestClass/delete/" + user_id,
+      url: "/admin/cross-interest/delete/" + user_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",
