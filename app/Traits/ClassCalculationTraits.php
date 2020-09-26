@@ -12,7 +12,7 @@ trait ClassCalculationTraits
         $doStudentClassOrder = $this->studentClassOrder();
         $doAssignClass = $this->assignClass($doStudentClassOrder);
         $insertDb = $this->calculationInsertDb($doAssignClass);
-        // return $insertDb;
+        return $insertDb;
     }
 
     private function studentClassOrder()
@@ -76,15 +76,23 @@ trait ClassCalculationTraits
 
             $idMakul1 = array_search($data[$i]['urutan_lintas_minat'][0]['mapel_id'], array_column($dataMapel, 'id'));
             $idMakul2 = array_search($data[$i]['urutan_lintas_minat'][1]['mapel_id'], array_column($dataMapel, 'id'));
+            $idMakul3 = array_search($data[$i]['urutan_lintas_minat'][2]['mapel_id'], array_column($dataMapel, 'id'));
 
-            if ($dataMapel[$idMakul1]['kuota_kelas_terpakai'] <  $dataMapel[$idMakul1]['max_kuota_kelas']) {
-                $mapelSelected = $data[$i]['urutan_lintas_minat'][0]['mapel_id'];
-                $dataMapel[$idMakul1]['kuota_kelas_terpakai']++;
-            } elseif ($dataMapel[$idMakul2]['kuota_kelas_terpakai'] <  $dataMapel[$idMakul2]['max_kuota_kelas']) {
-                $mapelSelected = $data[$i]['urutan_lintas_minat'][1]['mapel_id'];
-                $dataMapel[$idMakul2]['kuota_kelas_terpakai']++;
-            } else {
-                \Illuminate\Support\Facades\Log::debug("Siswa " . $data[$i]['nama_siswa'] . " harus memilih kelas 3 atau sekolah harus menambahkan kuota kelas");
+            if ($dataMapel[$idMakul1]['kuota_kelas_terpakai'] <  $dataMapel[$idMakul1]['max_kuota_kelas'] ||  $dataMapel[$idMakul2]['kuota_kelas_terpakai'] <  $dataMapel[$idMakul2]['max_kuota_kelas']) {
+                if ($dataMapel[$idMakul1]['kuota_kelas_terpakai'] <  $dataMapel[$idMakul1]['max_kuota_kelas']) {
+                    $mapelSelected = $data[$i]['urutan_lintas_minat'][0]['mapel_id'];
+                    $dataMapel[$idMakul1]['kuota_kelas_terpakai']++;
+                }
+    
+                if ($dataMapel[$idMakul2]['kuota_kelas_terpakai'] <  $dataMapel[$idMakul2]['max_kuota_kelas']) {
+                    $mapelSelected = $data[$i]['urutan_lintas_minat'][1]['mapel_id'];
+                    $dataMapel[$idMakul2]['kuota_kelas_terpakai']++;
+                } 
+            }else{
+                $mapelSelected = $data[$i]['urutan_lintas_minat'][2]['mapel_id'];
+                $dataMapel[$idMakul3]['kuota_kelas_terpakai']++;
+                // \Illuminate\Support\Facades\Log::debug("Siswa " . $data[$i]['nama_siswa'] . " harus memilih kelas 3 atau sekolah harus menambahkan kuota kelas");
+
             }
             $data[$i]['mapel_terpilih'] = $mapelSelected;
         }
@@ -107,7 +115,7 @@ trait ClassCalculationTraits
         $studentData = $data['data_siswa'];
         $courseData = $data['data_mapel'];
 
-        // \Illuminate\Support\Facades\Log::debug($courseData);
+        \Illuminate\Support\Facades\Log::debug($courseData);
 
         $dataMapel = \App\Models\Mapellm::get()->toArray();
 
@@ -120,28 +128,81 @@ trait ClassCalculationTraits
 
         for ($i = 0; $i < count($studentData); $i++) {
             $className = "";
-            if ($studentData[$i]['mapel_terpilih'] != 0) { // Hanya memproses siswa yang sudah ter-assign kelas
-                $idSelectedMapel = array_search($studentData[$i]['mapel_terpilih'], array_column($courseData, 'id'));
-                // \Illuminate\Support\Facades\Log::debug($max_quota[$studentData[$i]['mapel_terpilih']]." || ". $courseData[$idSelectedMapel]['max_kuota_kelas']. " || ".$max_total_class[$studentData[$i]['mapel_terpilih']]);
-                if ($max_quota[$studentData[$i]['mapel_terpilih']] < $courseData[$idSelectedMapel]['max_kuota_kelas']) {
-                    $className = $courseData[$idSelectedMapel]['nama_mapel'] . '_' . chr($max_total_class[$studentData[$i]['mapel_terpilih']] + 65);
+
+            // for ($j = 0; $j < count($studentData[$i]['urutan_lintas_minat']); $j++) {
+            $mapelId1 = $studentData[$i]['urutan_lintas_minat'][0]['mapel_id'];
+            $mapelId2 = $studentData[$i]['urutan_lintas_minat'][1]['mapel_id'];
+            $mapelId3 = $studentData[$i]['urutan_lintas_minat'][2]['mapel_id'];
+
+            $idSelectedMapel1 = array_search($mapelId1, array_column($courseData, 'id'));
+            $idSelectedMapel2 = array_search($mapelId2, array_column($courseData, 'id'));
+            $idSelectedMapel3 = array_search($mapelId3, array_column($courseData, 'id'));
+                
+            if ($max_quota[$mapelId1] < $courseData[$idSelectedMapel1]['max_kuota_kelas'] || $max_quota[$mapelId2] < $courseData[$idSelectedMapel2]['max_kuota_kelas']) {
+                if ($max_quota[$mapelId1] < $courseData[$idSelectedMapel1]['max_kuota_kelas']) {
+                    $className = $courseData[$idSelectedMapel1]['nama_mapel'] . '_' . chr($max_total_class[$mapelId1] + 65);
                     
-                    if ($max_quota[$studentData[$i]['mapel_terpilih']] % $courseData[$idSelectedMapel]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel]['kuota_kelas']-1) {
-                        $max_total_class[$studentData[$i]['mapel_terpilih']]++;
+                    if ($max_quota[$mapelId1] % $courseData[$idSelectedMapel1]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel1]['kuota_kelas']-1) {
+                        $max_total_class[$mapelId1]++;
                     }
+    
+                    $max_quota[$mapelId1]++;
 
-                    $max_quota[$studentData[$i]['mapel_terpilih']]++;
-
+                    // Save data
+                    $value = [
+                        'id_siswa' => $studentData[$i]['id'],
+                        'id_mapellm' => $mapelId1,
+                        'nama_kelas' => $className,
+                        'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                        // 'max_quota' => $max_quota[$studentData[$i]['mapel_terpilih']],
+                        // 'max_total_class' => $max_total_class[$mapelId1],
+                    ];
+                    
+                    // \Illuminate\Support\Facades\Log::debug($value);
+                    array_push($record, $value);
                 }
+
+                if ($max_quota[$mapelId2] < $courseData[$idSelectedMapel2]['max_kuota_kelas']) {
+                    $className = $courseData[$idSelectedMapel2]['nama_mapel'] . '_' . chr($max_total_class[$mapelId2] + 65);
+                    
+                    if ($max_quota[$mapelId2] % $courseData[$idSelectedMapel2]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel2]['kuota_kelas']-1) {
+                        $max_total_class[$mapelId2]++;
+                    }
+    
+                    $max_quota[$mapelId2]++;
+
+                    // Save data
+                    $value = [
+                        'id_siswa' => $studentData[$i]['id'],
+                        'id_mapellm' => $mapelId2,
+                        'nama_kelas' => $className,
+                        'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                        // 'max_quota' => $max_quota[$studentData[$i]['mapel_terpilih']],
+                        // 'max_total_class' => $max_total_class[$mapelId2],
+                    ];
+                    
+                    // \Illuminate\Support\Facades\Log::debug($value);
+                    array_push($record, $value);
+                }
+            }else{
+                $className = $courseData[$idSelectedMapel3]['nama_mapel'] . '_' . chr($max_total_class[$mapelId3] + 65);
+                    
+                if ($max_quota[$mapelId3] % $courseData[$idSelectedMapel3]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel3]['kuota_kelas']-1) {
+                    $max_total_class[$mapelId3]++;
+                }
+
+                $max_quota[$mapelId3]++;
+                
                 // Save data
                 $value = [
                     'id_siswa' => $studentData[$i]['id'],
-                    'id_mapellm' => $studentData[$i]['mapel_terpilih'],
+                    'id_mapellm' => $mapelId2,
                     'nama_kelas' => $className,
                     'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
                     // 'max_quota' => $max_quota[$studentData[$i]['mapel_terpilih']],
-                    // 'max_total_class' => $max_total_class[$studentData[$i]['mapel_terpilih']],
+                    // 'max_total_class' => $max_total_class[$mapelId3],
                 ];
+                
                 // \Illuminate\Support\Facades\Log::debug($value);
                 array_push($record, $value);
             }
