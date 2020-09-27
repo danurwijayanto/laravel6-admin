@@ -87,7 +87,7 @@ trait ClassCalculationTraits
                 if ($dataMapel[$idMakul2]['kuota_kelas_terpakai'] <  $dataMapel[$idMakul2]['max_kuota_kelas']) {
                     $mapelSelected = $data[$i]['urutan_lintas_minat'][1]['mapel_id'];
                     $dataMapel[$idMakul2]['kuota_kelas_terpakai']++;
-                } 
+                }
             }else{
                 $mapelSelected = $data[$i]['urutan_lintas_minat'][2]['mapel_id'];
                 $dataMapel[$idMakul3]['kuota_kelas_terpakai']++;
@@ -102,7 +102,7 @@ trait ClassCalculationTraits
             'data_mapel' => $dataMapel
         ];
 
-        // \Illuminate\Support\Facades\Log::debug($returnData);
+        \Illuminate\Support\Facades\Log::debug($returnData);
         return ($returnData);
     }
 
@@ -115,7 +115,7 @@ trait ClassCalculationTraits
         $studentData = $data['data_siswa'];
         $courseData = $data['data_mapel'];
 
-        \Illuminate\Support\Facades\Log::debug($courseData);
+        // \Illuminate\Support\Facades\Log::debug($courseData);
 
         $dataMapel = \App\Models\Mapellm::get()->toArray();
 
