@@ -68,11 +68,11 @@ trait ExcelDataTraits
                 $findLm1Data = array_search(strtolower($sheetData[$i]['E']), array_column($mapelList, 'nama_mapel'));
                 $findLm2Data = array_search(strtolower($sheetData[$i]['F']), array_column($mapelList, 'nama_mapel'));
                 $findLm3Data = array_search(strtolower($sheetData[$i]['G']), array_column($mapelList, 'nama_mapel'));
-                
+
                 $lm1DataId = $mapelList[$findLm1Data]['id'];
                 $lm2DataId = $mapelList[$findLm2Data]['id'];
                 $lm3DataId = $mapelList[$findLm3Data]['id'];
-                
+
                 //pembuatan list data yang diinputkan
                 // $value  .= "('" . $sheetData[$i]['A'] . "','" . $sheetData[$i]['B'] . "','" . $sheetData[$i]['C'] . "','" . $sheetData[$i]['D'] . "','" .  $lm1DataId . "','" .  $lm2DataId . "','" . $lm3DataId . "'),";
                 $data = [
@@ -85,7 +85,7 @@ trait ExcelDataTraits
                     'pilih_lm3' => $lm3DataId,
                 ];
 
-                array_push($value,$data);
+                array_push($value, $data);
             } else {
                 return json_encode(['fail' => 'Student nip or student score is null']);
             }
@@ -96,6 +96,20 @@ trait ExcelDataTraits
         return json_encode([
             'success' => 'Validation Successfully !',
             'data' => $value,
+        ]);
+    }
+
+    public function writeExcel($data)
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('hello world.xlsx');
+
+        return json_encode([
+            'success' => 'Export Successfully !'
         ]);
     }
 }

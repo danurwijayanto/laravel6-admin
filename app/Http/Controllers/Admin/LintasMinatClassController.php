@@ -87,7 +87,7 @@ class LintasMinatClassController extends Controller
      */
     public function edit($id)
     {
-        $data = Kelaslm::where('nama_kelas', $id)->with(['student','course'])->first();
+        $data = Kelaslm::where('nama_kelas', $id)->with(['student', 'course'])->first();
 
         return json_encode($data);
     }
@@ -113,17 +113,17 @@ class LintasMinatClassController extends Controller
         if ($error->fails()) {
             return response()->json(['errors' => $error->errors()->all()]);
         }
-        
+
         // Log::debug($request);
         // Save data
         $classData = Kelaslm::find($request->cross_interest_class_id);
-        
+
         if (empty($classData)) {
             return response()->json(['errors' => [0 => 'Data not found !']]);
         }
 
         $classData->pengajar = $request->teacher;
-        $classData->jadwal = $request->day.",".$request->time;
+        $classData->jadwal = $request->day . "," . $request->time;
 
         if (!$classData->save()) {
             return response()->json(['errors' => [0 => 'Fail to update data']]);
@@ -148,7 +148,7 @@ class LintasMinatClassController extends Controller
     public function deleteAll()
     {
         KelasLm::truncate();
-        
+
         return response()->json(['success' => 'All data is successfully deleted']);
     }
 
@@ -170,11 +170,14 @@ class LintasMinatClassController extends Controller
 
     public function dataTablesGetDetailData($className)
     {
-        $data = Kelaslm::where('nama_kelas', $className)->with(['student','course'])->get();
-
-        Log::debug($data);
+        $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();
 
         return DataTables::of($data)
             ->make(true);
+    }
+
+    public function detailClassToExcel($className)
+    {
+        $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();
     }
 }
