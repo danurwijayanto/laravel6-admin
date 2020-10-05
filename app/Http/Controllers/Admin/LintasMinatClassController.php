@@ -179,5 +179,7 @@ class LintasMinatClassController extends Controller
     public function detailClassToExcel($className)
     {
         $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();
+
+        
     }
 }
