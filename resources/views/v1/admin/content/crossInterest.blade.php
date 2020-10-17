@@ -131,7 +131,7 @@
               <h4 align="center" id="modal-remove-text" style="margin:0;">Are you sure you want to remove all data ?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">OK</button>
+              <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">Delete</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
           </div>
@@ -264,6 +264,7 @@
 
   $(document).on('click', '#clear-data', function() {
     $('#confirmModalDeleteAll').modal('show');
+    $('#ok-button-delete-all').text('Delete');
   })
 
   $('#ok-button-delete-all').click(function() {

@@ -126,11 +126,13 @@
   $(document).on('click', '#do-calculation', function() {
     $('#confirmModal').modal('show');
     $('#ok-button').data('action', 'do-calculation');
+    $('#ok-button').text('OK');
   });
 
   $(document).on('click', '#do-class-divison', function() {
     $('#confirmModal').modal('show');
     $('#ok-button').data('action', 'do-class-division');
+    $('#ok-button').text('OK');
   })
 
   $('#ok-button').click(function() {
