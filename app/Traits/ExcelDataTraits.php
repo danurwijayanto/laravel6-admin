@@ -102,15 +102,25 @@ trait ExcelDataTraits
 
     public function writeExcel($data)
     {
+        if (empty($data)) return response()->json(['errors' => [0 => 'Data is empty, cannot export data !']]);
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Hello World !');
+        $sheet->setCellValue('A1', $data[0]["nama_kelas"]);
+        $sheet->setCellValue('A2', "Kelas Awal");
+        $sheet->setCellValue('B2', "Nama Siswa");
+        
+        for ($i = 0; $i < count($data); $i++){
+            $row = $i+3;
+            $sheet->setCellValue('A'.$row, $data[$i]['student']["kelas"]);
+            $sheet->setCellValue('B'.$row, $data[$i]['student']["nama_siswa"]);
+        }
 
         $writer = new WriterXlsx($spreadsheet);
-        $writer->save('hello world.xlsx');
+        $writer->save('./'.$data[0]["nama_kelas"].'.xlsx');
 
-        // return json_encode([
-        //     'success' => 'Export Successfully !'
-        // ]);
+        return json_encode([
+            'success' => 'Export Successfully !'
+        ]);
     }
 }
