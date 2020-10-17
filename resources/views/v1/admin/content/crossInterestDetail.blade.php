@@ -58,7 +58,11 @@
             </tr>
           </table>
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="add-cross-interest-class-data">Download File</button>
+            <a href="{{ route('admin.crossInterestClass.downloadExcelData', $classData['nama_kelas']) }}">
+              <button type="button" class="btn btn-primary" id="download-cross-interest-class-data">
+                Download File
+              </button>
+            </a>
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -171,6 +175,33 @@
       ]
     });
   });
+  // $(document).on('click', '#download-cross-interest-class-data', function() {
+  //   const action = $('#ok-button').data('action');
+
+  //   $.ajax({
+  //     url: action_url,
+  //     method: "GET",
+  //     data: $(this).serialize(),
+  //     dataType: "json",
+  //     success: function(data) {
+  //       var html = '';
+  //       if (data.errors) {
+  //         html = '<div class="alert alert-danger">';
+  //         for (var count = 0; count < data.errors.length; count++) {
+  //           html += '<p>' + data.errors[count] + '</p>';
+  //         }
+  //         html += '</div>';
+  //       }
+  //       if (data.success) {
+  //         html = '<div class="alert alert-success">' + data.success + '</div>';
+  //         $('#edit-form')[0].reset();
+  //         // $('#formModal').modal('hide');
+  //         $('#cross-interest-class-table').DataTable().ajax.reload();
+  //       }
+  //       $('#form-result').html(html);
+  //     }
+  //   });
+  // });
 
   $('#edit-form').on('submit', function(event) {
     event.preventDefault();

@@ -9,11 +9,14 @@ use DataTables;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Validator;
+use App\Traits\ExcelDataTraits;
 
 
 class LintasMinatClassController extends Controller
 {
     private $controllerDetails;
+
+    use ExcelDataTraits;
 
     public function __construct()
     {
@@ -178,8 +181,7 @@ class LintasMinatClassController extends Controller
 
     public function detailClassToExcel($className)
     {
-        $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();
-
-        
+        $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();   
+        $this->writeExcel($data);
     }
 }

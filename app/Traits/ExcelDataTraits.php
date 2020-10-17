@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\HTTP\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
 use Illuminate\Support\Facades\Log;
 use App\Models\Mapellm;
 
@@ -105,11 +106,11 @@ trait ExcelDataTraits
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'Hello World !');
 
-        $writer = new Xlsx($spreadsheet);
+        $writer = new WriterXlsx($spreadsheet);
         $writer->save('hello world.xlsx');
 
-        return json_encode([
-            'success' => 'Export Successfully !'
-        ]);
+        // return json_encode([
+        //     'success' => 'Export Successfully !'
+        // ]);
     }
 }
