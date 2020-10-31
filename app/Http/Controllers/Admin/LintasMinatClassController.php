@@ -120,8 +120,7 @@ class LintasMinatClassController extends Controller
         // Log::debug($request);
         // Save data
         $classData = Kelaslm::find($request->cross_interest_class_id);
-        Log::debug($request->cross_interest_class_id);
-        Log::debug($classData);
+
         if (empty($classData)) {
             return response()->json(['errors' => [0 => 'Data not found !']]);
         }
