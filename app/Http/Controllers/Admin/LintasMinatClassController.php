@@ -120,15 +120,22 @@ class LintasMinatClassController extends Controller
         // Log::debug($request);
         // Save data
         $classData = Kelaslm::find($request->cross_interest_class_id);
-
+        Log::debug($request->cross_interest_class_id);
+        Log::debug($classData);
         if (empty($classData)) {
             return response()->json(['errors' => [0 => 'Data not found !']]);
         }
 
-        $classData->pengajar = $request->teacher;
-        $classData->jadwal = $request->day . "," . $request->time;
+        $editClassData = Kelaslm::where('nama_kelas', $classData->nama_kelas)
+            ->update([
+                'pengajar' => $request->teacher,
+                'jadwal' => $request->time
+                ]);
 
-        if (!$classData->save()) {
+        // $classData->pengajar = $request->teacher;
+        // $classData->jadwal = $request->day . "," . $request->time;
+
+        if (!$editClassData) {
             return response()->json(['errors' => [0 => 'Fail to update data']]);
         } else {
             return response()->json(['success' => 'Data is successfully updated']);
