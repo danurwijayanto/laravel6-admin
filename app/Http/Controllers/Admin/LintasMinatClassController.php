@@ -132,9 +132,6 @@ class LintasMinatClassController extends Controller
                 'jadwal' => $request->time
                 ]);
 
-        // $classData->pengajar = $request->teacher;
-        // $classData->jadwal = $request->day . "," . $request->time;
-
         if (!$editClassData) {
             return response()->json(['errors' => [0 => 'Fail to update data']]);
         } else {
