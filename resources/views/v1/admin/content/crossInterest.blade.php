@@ -29,6 +29,7 @@
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
             <button type="button" class="btn btn-primary" id="clear-data">Clear Data</button>
+            <button type="button" class="btn btn-secondary" id="do-class-divison">Do Class Division</button>
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
@@ -132,6 +133,25 @@
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">Delete</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="confirmModalDoDivision" class="modal fade" role="dialog" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <h4 align="center" style="margin:0;">Are you sure you want to do some division ? </h4>
+            </div>
+            <div class="modal-footer">
+              <button type="button" name="ok_button_division" id="ok-button-division" data-action="" class="btn btn-danger">OK</button>
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
           </div>
@@ -296,6 +316,47 @@
       }
     })
   })
+
+  $(document).on('click', '#do-class-divison', function() {
+    $('#confirmModalDoDivision').modal('show');
+    $('#ok-button-division').data('action', 'do-class-division');
+    $('#ok-button-division').text('OK');
+  })
+
+  $('#ok-button-division').click(function() {
+    const action = $('#ok-button-division').data('action');
+    console.log(action);
+    if (action == "do-class-division") {
+      console.log("class");
+      $.ajax({
+        url: "/admin/calresult/do-class-division/",
+        method: "GET",
+        data: {
+          "_token": "{{ csrf_token() }}",
+        },
+        beforeSend: function() {
+          $('#ok-button-division').text('Calculating...');
+        },
+        success: function(data) {
+          setTimeout(function() {
+            if (data.errors) {
+              errorMessage = '';
+              for (var count = 0; count < data.errors.length; count++) {
+                errorMessage += data.errors[count];
+              }
+              $('#confirmModalDoDivision').modal('hide');
+              $('#cross-interest-class-table').DataTable().ajax.reload();
+              alert(errorMessage);
+            } else {
+              $('#confirmModalDoDivision').modal('hide');
+              $('#cross-interest-class-table').DataTable().ajax.reload();
+              alert('Calculated Successfully');
+            }
+          }, 2000);
+        }
+      })
+    }
+  });
 
   $('#ok-button').click(function() {
     $.ajax({
