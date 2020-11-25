@@ -298,21 +298,25 @@ trait ClassCalculationTraits
             
             for ($j=0; $j < count($dataProcess[$i+1]); $j++) { 
                 
-                if ($j+1 % $courseData[$idSelectedMapel]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel]['kuota_kelas']-1) {
-                    $max_total_class[$i+1]++;
-                }
                 
                 $className = $mapel['nama_mapel'] . '_' . chr($max_total_class[$i+1] + 65);
-                // \Illuminate\Support\Facades\Log::debug($className);
-
+                \Illuminate\Support\Facades\Log::debug($j+1 % $courseData[$idSelectedMapel]['max_kuota_kelas']);
+                \Illuminate\Support\Facades\Log::debug($courseData[$idSelectedMapel]['kuota_kelas']-1);
+                \Illuminate\Support\Facades\Log::debug($max_total_class);
+                \Illuminate\Support\Facades\Log::debug($className);
+                
                 // Save Data
                 $dataProcess[$i+1][$j]['nama_kelas'] = $className;
                 unset($dataProcess[$i+1][$j]['nilai']);
                 
+                // Nama Kelas
+                if ($j % $courseData[$idSelectedMapel]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel]['kuota_kelas']-1) {
+                    $max_total_class[$i+1]++;
+                }
+                
                 if (!\App\Models\Kelaslm::insert($dataProcess[$i+1][$j])) {
                     return response()->json(['errors' => [0 => 'Fail to update data']]);
                 }
-            break;
             }
         }
         // \Illuminate\Support\Facades\Log::debug($max_total_class);
