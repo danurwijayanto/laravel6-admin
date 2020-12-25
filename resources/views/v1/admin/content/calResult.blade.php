@@ -15,7 +15,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">{{ $detailController['currentPage'] ?? '' }}</li>
           </ol>
         </div>
@@ -28,18 +28,18 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="do-calculation">Do Calculation</button>
+            <button type="button" class="btn btn-primary" id="do-calculation">Lakukan Kalkulasi</button>
             <!-- <button type="button" class="btn btn-secondary" id="do-class-divison">Do Class Division</button> -->
           </div>
           <table id="user-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
                 <th width="35%">NIS</th>
-                <th width="35%">Name</th>
-                <th width="35%">Class</th>
-                <th width="30%">Choice Interest 1</th>
-                <th width="30%">Choice Interest 2</th>
-                <th width="30%">Choice Interest 3</th>
+                <th width="35%">Nama Siswa</th>
+                <th width="35%">Kelas</th>
+                <th width="30%">Pilihan Minat 1</th>
+                <th width="30%">Pilihan Minat 2</th>
+                <th width="30%">Pilihan Minat 3</th>
                 <th width="30%">Vector 1</th>
                 <th width="30%">Vector 2</th>
                 <th width="30%">Vector 3</th>
@@ -52,17 +52,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to do some calculation ? </h4>
+              <h4 align="center" style="margin:0;">Apakah anda ingin melakukan perhitungan ? </h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" data-action="" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button" data-action="" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -81,7 +81,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('admin.calresult.datatablesGetalldata') }}",
+        url: "{{ route('admin.kalkulasi.datatablesGetalldata') }}",
       },
       columns: [{
           data: 'nis',

@@ -14,7 +14,7 @@ use Validator;
 use Illuminate\Database\QueryException;
 
 
-class UserController extends Controller
+class Pengguna extends Controller
 {
     private $controllerDetails;
 

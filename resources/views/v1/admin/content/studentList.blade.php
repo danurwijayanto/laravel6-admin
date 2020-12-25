@@ -15,7 +15,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">{{ $detailController['currentPage'] ?? '' }}</li>
           </ol>
         </div>
@@ -28,17 +28,17 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="add-student-data">Add new data</button>
-            <a href="{{ asset('file/data_murid_kosong.xlsx') }}" type="button" class="btn btn-secondary">Download empty format</a>
+            <button type="button" class="btn btn-primary" id="add-student-data">Tambah data baru</button>
+            <a href="{{ asset('file/data_murid_kosong.xlsx') }}" type="button" class="btn btn-secondary">Unduh format kosong</a>
           </div>
           <table id="student-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
                 <th width="20%">NIS</th>
-                <th width="20%">Name</th>
-                <th width="20%">Class</th>
-                <th width="20%">Score</th>
-                <th width="20%">Action</th>
+                <th width="20%">Nama</th>
+                <th width="20%">Kelas</th>
+                <th width="20%">Nilai</th>
+                <th width="20%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -49,7 +49,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Detail Student</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Detail Murid</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -66,24 +66,24 @@
                   <input type="text" name="nis" id="nis" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Name : </label>
+                  <label class="col-form-label">Nama : </label>
                   <input type="text" name="name" id="name" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Class : </label>
+                  <label class="col-form-label">Kelas : </label>
                   <input type="text" name="class" id="class" class="form-control" required />
                 </div>
                 <div class="edit-content">
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 1 : </label>
+                    <label class="col-form-label">Pilihan minat 1 : </label>
                     <input type="text" name="choice_interest_1" id="choice_interest_1" class="form-control" required />
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 2 : </label>
+                    <label class="col-form-label">Pilihan minat 2 : </label>
                     <input type="text" name="choice_interest_2" id="choice_interest_2" class="form-control" required />
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 3 : </label>
+                    <label class="col-form-label">Pilihan minat 3 : </label>
                     <input type="text" name="choice_interest_3" id="choice_interest_3" class="form-control" required />
                   </div>
                   <br />
@@ -103,7 +103,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Upload Student Data</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Unggah data siswa</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -132,17 +132,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah anda ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">batal</button>
             </div>
           </div>
         </div>
@@ -161,7 +161,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('admin.student.datatablesGetalldata') }}",
+        url: "{{ route('admin.siswa.datatablesGetalldata') }}",
       },
       columns: [{
           data: 'nis',
@@ -193,11 +193,11 @@
     var action_url = '';
 
     if ($('#action').val() == 'Add') {
-      action_url = "{{ route('admin.student.store') }}";
+      action_url = "{{ route('admin.siswa.store') }}";
     }
 
     if ($('#action').val() == 'Edit') {
-      action_url = "{{ route('admin.student.update') }}";
+      action_url = "{{ route('admin.siswa.update') }}";
     }
 
     $.ajax({
@@ -237,7 +237,7 @@
 
     $.ajax({
       method: "GET",
-      url: "/admin/student/get/" + id,
+      url: "/admin/siswa/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#nis').val(data.nis);
@@ -269,7 +269,7 @@
     event.preventDefault();
 
     $.ajax({
-      url: "{{ route('admin.student.storeExcel') }}",
+      url: "{{ route('admin.siswa.storeExcel') }}",
       method: "POST",
       data: new FormData(this),
       dataType: "json",
@@ -298,7 +298,7 @@
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/student/delete/" + user_id,
+      url: "/admin/siswa/delete/" + user_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",
@@ -337,7 +337,7 @@
     var id = $(this).attr('id');
     $.ajax({
       method: "GET",
-      url: "/admin/student/get/" + id,
+      url: "/admin/siswa/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#nis').val(data.nis);

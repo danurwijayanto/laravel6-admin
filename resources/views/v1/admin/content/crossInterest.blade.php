@@ -15,7 +15,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">{{ $detailController['currentPage'] ?? '' }}</li>
           </ol>
         </div>
@@ -28,16 +28,16 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="clear-data">Clear Data</button>
-            <button type="button" class="btn btn-secondary" id="do-class-divison">Do Class Division</button>
+            <button type="button" class="btn btn-primary" id="clear-data">Hapus data</button>
+            <button type="button" class="btn btn-secondary" id="do-class-divison">Lakukan pembagian kelas</button>
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="25%">Class Name</th>
-                <th width="25%">Total Students</th>
-                <th width="25%">Schedule</th>
-                <th width="25%">Action</th>
+                <th width="25%">Nama Kelas</th>
+                <th width="25%">Jumlah murid</th>
+                <th width="25%">Jadwal</th>
+                <th width="25%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -47,7 +47,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Detail Cross Interest Class</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Detail Kelas Lintas Minat</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -60,28 +60,29 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">Course Code : </label>
+                  <label class="col-form-label">Kode mata kuliah : </label>
                   <input type="text" id="course-code" class="form-control" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Class : </label>
+                  <label class="col-form-label">Kelas : </label>
                   <input type="text" id="class" class="form-control" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Teacher : </label>
+                  <label class="col-form-label">Guru : </label>
                   <input type="text" id="teacher" class="form-control" name="teacher" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Schedule : </label>
+                  <label class="col-form-label">Jadwal : </label>
                   <div class="row">
                     <div class="col">
                       <select id="day" class="form-control" name="day" required>
-                        <option value="Sunday">Sunday</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Saturday">Saturday</option>
+                        <option value="senin">Senin</option>
+                        <option value="selasa">Selasa</option>
+                        <option value="rabu">Rabu</option>
+                        <option value="kamis">Kamis</option>
+                        <option value="jumat">Jum`at</option>
+                        <option value="sabtu">Sabtu</option>
+                        <option value="minggu">Minggu</option>
                       </select>
                     </div>
                     <div class="col">
@@ -104,17 +105,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" id="modal-remove-text" style="margin:0;">Are you sure you want to remove this data ?</h4>
+              <h4 align="center" id="modal-remove-text" style="margin:0;">Apakah kamu ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -129,11 +130,11 @@
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" id="modal-remove-text" style="margin:0;">Are you sure you want to remove all data ?</h4>
+              <h4 align="center" id="modal-remove-text" style="margin:0;">Apakah kamu ingin menghapus semua data ?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">Delete</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -142,17 +143,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to do some division ? </h4>
+              <h4 align="center" style="margin:0;">Apakah anda ingin melakukan pembagian kelas ? </h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button_division" id="ok-button-division" data-action="" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button_division" id="ok-button-division" data-action="" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -171,7 +172,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('admin.crossInterestClass.datatablesGetalldata') }}",
+        url: "{{ route('admin.lintas-minat.datatablesGetalldata') }}",
       },
       columns: [{
           data: 'nama_kelas',
@@ -200,7 +201,7 @@
   })
 
   $(document).on('click', '.detail', function() {
-    window.open("/admin/cross-interest/detail/" + $(this).attr('id'));
+    window.open("/admin/lintas-minat/detail/" + $(this).attr('id'));
   })
 
   $('#edit-form').on('submit', function(event) {
@@ -208,11 +209,11 @@
     var action_url = '';
 
     if ($('#action').val() == 'Add') {
-      action_url = "{{ route('admin.crossInterestClass.store') }}";
+      action_url = "{{ route('admin.lintas-minat.store') }}";
     }
 
     if ($('#action').val() == 'Edit') {
-      action_url = "{{ route('admin.crossInterestClass.update') }}";
+      action_url = "{{ route('admin.lintas-minat.update') }}";
     }
 
     $.ajax({
@@ -252,7 +253,7 @@
 
     $.ajax({
       method: "GET",
-      url: "/admin/cross-interest/get/" + id,
+      url: "/admin/lintas-minat/get/" + id,
       dataType: "json",
       success: function(data) {
         const jadwal = data.jadwal
@@ -289,7 +290,7 @@
 
   $('#ok-button-delete-all').click(function() {
     $.ajax({
-      url: "/admin/cross-interest/delete-all/",
+      url: "/admin/lintas-minat/delete-all/",
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",
@@ -329,7 +330,7 @@
     if (action == "do-class-division") {
       console.log("class");
       $.ajax({
-        url: "/admin/calresult/do-class-division/",
+        url: "/admin/kalkulasi/do-class-division/",
         method: "GET",
         data: {
           "_token": "{{ csrf_token() }}",
@@ -360,7 +361,7 @@
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/cross-interest/delete/" + user_id,
+      url: "/admin/lintas-minat/delete/" + user_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",

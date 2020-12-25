@@ -15,7 +15,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">{{ $detailController['currentPage'] ?? '' }}</li>
           </ol>
         </div>
@@ -30,10 +30,10 @@
           <table id="user-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="35%">Username</th>
+                <th width="35%">Nama pengguna</th>
                 <th width="35%">Email</th>
-                <th width="35%">Role</th>
-                <th width="30%">Action</th>
+                <th width="35%">Wewenang</th>
+                <th width="30%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -44,7 +44,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Add New User</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Tambah pengguna baru</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -57,7 +57,7 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">Username : </label>
+                  <label class="col-form-label">Nama pengguna : </label>
                   <input type="text" name="username" id="username" class="form-control" />
                 </div>
                 <div class="form-group">
@@ -65,7 +65,7 @@
                   <input type="text" name="email" id="email" class="form-control" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Role : </label>
+                  <label class="col-form-label">Wewenang : </label>
                   <select class="custom-select" name="role" id="role">
                     <option selected>Role List</option>
                     @if (!empty($roleList))
@@ -99,17 +99,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah anda ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -128,7 +128,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('admin.user.datatablesGetalldata') }}",
+        url: "{{ route('admin.pengguna.datatablesGetalldata') }}",
       },
       columns: [{
           data: 'name',
@@ -156,11 +156,11 @@
     var action_url = '';
 
     if ($('#action').val() == 'Add') {
-      action_url = "{{ route('admin.user.store') }}";
+      action_url = "{{ route('admin.pengguna.store') }}";
     }
 
     if ($('#action').val() == 'Edit') {
-      action_url = "{{ route('admin.user.update') }}";
+      action_url = "{{ route('admin.pengguna.update') }}";
     }
 
     $.ajax({
@@ -193,7 +193,7 @@
     $('#form-result').html('');
     $.ajax({
       method: "GET",
-      url: "/admin/user/get/" + id,
+      url: "/admin/pengguna/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#username').val(data.name);
@@ -218,7 +218,7 @@
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/user/delete/" + user_id,
+      url: "/admin/pengguna/delete/" + user_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",

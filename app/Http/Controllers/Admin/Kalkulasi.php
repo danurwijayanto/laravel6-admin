@@ -10,7 +10,7 @@ use DataTables;
 use App\Traits\WeightedProductCalculationTraits;
 use App\Traits\ClassCalculationTraits;
 
-class CalculationResultController extends Controller
+class Kalkulasi extends Controller
 {
     private $controllerDetails;
 

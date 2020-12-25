@@ -15,7 +15,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Beranda</a></li>
             <li class="breadcrumb-item active">{{ $detailController['currentPage'] ?? '' }}</li>
           </ol>
         </div>
@@ -28,16 +28,16 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary add-course">Add new data</button>
+            <button type="button" class="btn btn-primary add-course">Tambah data baru</button>
           </div>
           <table id="course-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="20%">Course Code</th>
-                <th width="20%">Course Name</th>
-                <th width="20%">Number of Class</th>
-                <th width="20%">Class Quota</th>
-                <th width="20%">Action</th>
+                <th width="20%">Kode mata pelajaran</th>
+                <th width="20%">Nama mata pelajaran</th>
+                <th width="20%">Jumlah kelas</th>
+                <th width="20%">Kuota kelas</th>
+                <th width="20%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -48,7 +48,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Add New Course</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Tambah mata pelajaran baru</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -61,19 +61,19 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">Course code : </label>
+                  <label class="col-form-label">Kode mata pelajaran : </label>
                   <input type="text" name="course_code" id="course-code" class="form-control" maxlength="11" required/>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Course name : </label>
+                  <label class="col-form-label">Nama mata pelajaran : </label>
                   <input type="text" name="course_name" id="course-name" class="form-control" maxlength="35" required/>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Number of classes : </label>
+                  <label class="col-form-label">Jumlah kelas : </label>
                   <input type="number" name="number_of_classes" id="number-of-classes" class="form-control" min="1" required/>
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Class quota : </label>
+                  <label class="col-form-label">Kuota kelas : </label>
                   <input type="number" name="class_quota" id="class-quota" class="form-control" min="1" required/>
                 </div>
                 <br />
@@ -92,17 +92,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah anda ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -121,7 +121,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "{{ route('admin.course.datatablesGetalldata') }}",
+        url: "{{ route('admin.pelajaran.datatablesGetalldata') }}",
       },
       columns: [{
           data: 'kode_mapel',
@@ -153,11 +153,11 @@
     var action_url = '';
 
     if ($('#action').val() == 'Add') {
-      action_url = "{{ route('admin.course.store') }}";
+      action_url = "{{ route('admin.pelajaran.store') }}";
     }
 
     if ($('#action').val() == 'Edit') {
-      action_url = "{{ route('admin.course.update') }}";
+      action_url = "{{ route('admin.pelajaran.update') }}";
     }
 
     $.ajax({
@@ -198,7 +198,7 @@
     $('#form-result').html('');
     $.ajax({
       method: "GET",
-      url: "/admin/course/get/" + id,
+      url: "/admin/pelajaran/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#course-code').val(data.kode_mapel);
@@ -224,7 +224,7 @@
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/course/delete/" + course_id,
+      url: "/admin/pelajaran/delete/" + course_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",

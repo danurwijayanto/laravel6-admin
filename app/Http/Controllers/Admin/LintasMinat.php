@@ -12,7 +12,7 @@ use Validator;
 use App\Traits\ExcelDataTraits;
 
 
-class LintasMinatClassController extends Controller
+class LintasMinat extends Controller
 {
     private $controllerDetails;
 

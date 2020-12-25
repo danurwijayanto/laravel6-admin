@@ -36,7 +36,7 @@
           <table style="margin-bottom:20px">
             <tr>
               <td>
-                <h5>Class Name</h5>
+                <h5>Nama Kelas</h5>
               </td>
               <td>
                 <h5>:</h5>
@@ -47,7 +47,7 @@
             </tr>
             <tr>
               <td>
-                <h5>Schedule</h5>
+                <h5>Jadwal</h5>
               </td>
               <td>
                 <h5>:</h5>
@@ -67,8 +67,8 @@
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="20%">Class</th>
-                <th width="20%">Student Name</th>
+                <th width="20%">Kelas</th>
+                <th width="20%">Nama siswa</th>
               </tr>
             </thead>
           </table>
@@ -79,7 +79,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Detail Cross Interest Class</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Detail kelas lintas minat</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -96,24 +96,24 @@
                   <input type="text" name="nis" id="nis" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Name : </label>
+                  <label class="col-form-label">Nama : </label>
                   <input type="text" name="name" id="name" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Class : </label>
+                  <label class="col-form-label">Kelas : </label>
                   <input type="text" name="class" id="class" class="form-control" required />
                 </div>
                 <div class="edit-content">
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 1 : </label>
+                    <label class="col-form-label">Pilihan minat 1 : </label>
                     <input type="text" name="choice_interest_1" id="choice_interest_1" class="form-control" required />
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 2 : </label>
+                    <label class="col-form-label">Pilihan minat 2 : </label>
                     <input type="text" name="choice_interest_2" id="choice_interest_2" class="form-control" required />
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 3 : </label>
+                    <label class="col-form-label">Pilihan minat 3 : </label>
                     <input type="text" name="choice_interest_3" id="choice_interest_3" class="form-control" required />
                   </div>
                   <br />
@@ -133,17 +133,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah kamu ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">Ok</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -162,7 +162,7 @@
       processing: true,
       serverSide: true,
       ajax: {
-        url: "/admin/cross-interest/get-datatables-detail-data/" + $('#class-name').val(),
+        url: "/admin/lintas-minat/get-datatables-detail-data/" + $('#class-name').val(),
       },
       columns: [{
           data: 'student.kelas',
@@ -208,11 +208,11 @@
     var action_url = '';
 
     if ($('#action').val() == 'Add') {
-      action_url = "{{ route('admin.crossInterestClass.store') }}";
+      action_url = "{{ route('admin.lintas-minat.store') }}";
     }
 
     if ($('#action').val() == 'Edit') {
-      action_url = "{{ route('admin.crossInterestClass.update') }}";
+      action_url = "{{ route('admin.lintas-minat.update') }}";
     }
 
     $.ajax({
@@ -252,7 +252,7 @@
 
     $.ajax({
       method: "GET",
-      url: "/admin/cross-interest/get/" + id,
+      url: "/admin/lintas-minat/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#nis').val(data.nis);
@@ -277,7 +277,7 @@
 
   $('#ok-button').click(function() {
     $.ajax({
-      url: "/admin/cross-interest/delete/" + user_id,
+      url: "/admin/lintas-minat/delete/" + user_id,
       method: "DELETE",
       data: {
         "_token": "{{ csrf_token() }}",
@@ -316,7 +316,7 @@
     var id = $(this).attr('id');
     $.ajax({
       method: "GET",
-      url: "/admin/cross-interest/get/" + id,
+      url: "/admin/lintas-minat/get/" + id,
       dataType: "json",
       success: function(data) {
         $('#nis').val(data.nis);

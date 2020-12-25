@@ -44,7 +44,7 @@
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
             <li class="nav-item">
-              <a href="{{ route('admin.user.index') }}" class="nav-link">
+              <a href="{{ route('admin.pengguna.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Data Admin
@@ -52,7 +52,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.student.index') }}" class="nav-link">
+              <a href="{{ route('admin.siswa.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Data Siswa
@@ -68,7 +68,7 @@
               </a>
             </li> -->
             <li class="nav-item">
-              <a href="{{ route('admin.course.index') }}" class="nav-link">
+              <a href="{{ route('admin.pelajaran.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Data Mata Pelajaran
@@ -76,7 +76,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.crossInterestClass.index') }}" class="nav-link">
+              <a href="{{ route('admin.lintas-minat.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Data Kelas Lintas Minat
@@ -84,7 +84,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.calresult.index') }}" class="nav-link">
+              <a href="{{ route('admin.kalkulasi.index') }}" class="nav-link">
                 <i class="nav-icon fas fa-book"></i>
                 <p>
                   Hasil Perhitungan
