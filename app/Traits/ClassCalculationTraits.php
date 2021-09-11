@@ -99,7 +99,6 @@ trait ClassCalculationTraits
             'data_mapel' => $dataMapel
         ];
         
-        // \Illuminate\Support\Facades\Log::debug($returnData, $dataMapel);
         return ($returnData);
     }
 
@@ -111,6 +110,8 @@ trait ClassCalculationTraits
 
         $studentData = $data['data_siswa'];
         $courseData = $data['data_mapel'];
+
+        // \Illuminate\Support\Facades\Log::debug($studentData);
 
         foreach ($courseData as $value) {
             $max_quota[$value['id']] = 0; // Total jumlah murid yang di kelas
@@ -126,9 +127,14 @@ trait ClassCalculationTraits
 
             $mapelId1 = $studentData[$i]['urutan_lintas_minat'][0]['mapel_id'];
             $mapelId2 = $studentData[$i]['urutan_lintas_minat'][1]['mapel_id'];
+            $mapelId3 = $studentData[$i]['urutan_lintas_minat'][2]['mapel_id'];
 
+            $mapelVector1 = $studentData[$i]['urutan_lintas_minat'][0]['vector'];
+            $mapelVector2 = $studentData[$i]['urutan_lintas_minat'][1]['vector'];
+            
             $idSelectedMapel1 = array_search($mapelId1, array_column($courseData, 'id'));
             $idSelectedMapel2 = array_search($mapelId2, array_column($courseData, 'id'));
+            $idSelectedMapel3 = array_search($mapelId3, array_column($courseData, 'id'));
                 
             if ($max_quota[$mapelId1] < $courseData[$idSelectedMapel1]['max_kuota_kelas'] || $max_quota[$mapelId2] < $courseData[$idSelectedMapel2]['max_kuota_kelas']) {
                 if ($max_quota[$mapelId1] < $courseData[$idSelectedMapel1]['max_kuota_kelas']) {
@@ -141,27 +147,20 @@ trait ClassCalculationTraits
                         'id_mapellm' => $mapelId1,
                         'nama_kelas' => '',
                         'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                        'nilai' => $studentData[$i]['nilai_raport'],
+                        'nilai' => $mapelVector1,
                     ];
 
                     array_push($dataProcess[$mapelId1], $value);
 
                 }elseif($max_quota[$mapelId1] >= $courseData[$idSelectedMapel1]['max_kuota_kelas']){
-                    $studentScore = $studentData[$i]['nilai_raport'];
+                    // $studentScore = $studentData[$i]['nilai_raport'];
 
                     $arrayColumn = array_column($dataProcess[$mapelId1], 'nilai');
                     $nilaiMinimal = min($arrayColumn);
                     $nilaiMinimalArray = $dataProcess[$mapelId1][array_search($nilaiMinimal, $arrayColumn)];
                     $studentDataMinimal = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
-                    // \Illuminate\Support\Facades\Log::debug($arrayColumn);
-                    // \Illuminate\Support\Facades\Log::debug($nilaiMinimal);
-                    // \Illuminate\Support\Facades\Log::debug($nilaiMinimalArray);
-                    // \Illuminate\Support\Facades\Log::debug($dataProcess);
-                    // \Illuminate\Support\Facades\Log::debug($studentDataMinimal);
-                    // \Illuminate\Support\Facades\Log::debug($studentData);
-                    // break;
                     
-                    if ($studentScore > $nilaiMinimal){
+                    if ($mapelVector1 > $nilaiMinimal && $max_quota[$mapelId3] < $courseData[$idSelectedMapel3]['max_kuota_kelas']){
                         
                         // Save data
                         $value = [
@@ -169,10 +168,15 @@ trait ClassCalculationTraits
                             'id_mapellm' => $mapelId1,
                             'nama_kelas' => '',
                             'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                            'nilai' => $studentData[$i]['nilai_raport'],
+                            'nilai' => $mapelVector1,
                         ];
-                        // \Illuminate\Support\Facades\Log::debug($value);
-                        // \Illuminate\Support\Facades\Log::debug($studentDataMinimal);
+
+                        Log::debug([
+                            "note" => "switch pil 2", 
+                            "nilai minimal" => $nilaiMinimal, 
+                            "mapel yang diganti" => $dataProcess[$mapelId1][array_search(min($arrayColumn), $arrayColumn)],
+                            "mapel pengganti" => $value]);
+
                         // Masukkan ke ignored record index yang kereplace
                         array_push($ignoredRecord, $studentDataMinimal);
 
@@ -194,32 +198,36 @@ trait ClassCalculationTraits
                         'id_mapellm' => $mapelId2,
                         'nama_kelas' => '',
                         'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                        'nilai' => $studentData[$i]['nilai_raport'],
+                        'nilai' => $mapelVector2,
                     ];
 
                     array_push($dataProcess[$mapelId2], $value);
 
                 }elseif($max_quota[$mapelId2] >= $courseData[$idSelectedMapel2]['max_kuota_kelas']){
-                    $studentScore = $studentData[$i]['nilai_raport'];
+                    // $studentScore = $studentData[$i]['nilai_raport'];
 
                     $arrayColumn = array_column($dataProcess[$mapelId2], 'nilai');
                     $nilaiMinimal = min($arrayColumn);
                     $nilaiMinimalArray = $dataProcess[$mapelId2][array_search($nilaiMinimal, $arrayColumn)];
                     $studentDataMinimal = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
                     
-                    if ($studentScore > $nilaiMinimal){
+                    if ($mapelVector2 > $nilaiMinimal && $max_quota[$mapelId3] < $courseData[$idSelectedMapel3]['max_kuota_kelas']){
                         // Save data
                         $value = [
                             'id_siswa' => $studentData[$i]['id'],
                             'id_mapellm' => $mapelId2,
                             'nama_kelas' => '',
                             'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                            'nilai' => $studentData[$i]['nilai_raport'],
+                            'nilai' => $mapelVector1,
                         ];
+                        Log::debug([
+                            "note" => "switch pil 2", 
+                            "nilai minimal" => $nilaiMinimal, 
+                            "mapel yang diganti" => $dataProcess[$mapelId2][array_search(min($arrayColumn), $arrayColumn)],
+                            "mapel pengganti" => $value]);
                         
                         // Masukkan ke ignored record index yang kereplace
                         array_push($ignoredRecord, $studentDataMinimal);
-                        // \Illuminate\Support\Facades\Log::debug($studentDataMinimal);
                         // Ganti index dataprocess dengan nilai yang baru
                         $dataProcess[$mapelId2][array_search(min($arrayColumn), $arrayColumn)] = $value;
 
@@ -230,10 +238,23 @@ trait ClassCalculationTraits
             }
         }
         // Ada masalah di ignored record
+        // \Illuminate\Support\Facades\Log::debug($dataProcess);
         for ($i = 0; $i < count($ignoredRecord); $i++) {
             $mapelId3 = $ignoredRecord[$i]['urutan_lintas_minat'][2]['mapel_id'];
+            $mapelVector3 = $ignoredRecord[$i]['urutan_lintas_minat'][2]['vector'];
             
             $idSelectedMapel3 = array_search($mapelId3, array_column($courseData, 'id'));
+
+            $isSetMapelPilihan1 = array_search($ignoredRecord[$i]['id'], array_column($dataProcess[$ignoredRecord[$i]['urutan_lintas_minat'][0]['mapel_id']], 'id_siswa'));
+            $isSetMapelPilihan2 = array_search($ignoredRecord[$i]['id'], array_column($dataProcess[$ignoredRecord[$i]['urutan_lintas_minat'][1]['mapel_id']], 'id_siswa'));
+
+            if (empty( $isSetMapelPilihan1) && empty($isSetMapelPilihan2))
+            {
+                // Masukkan ke ignored record index yang kereplace
+                array_push($ignoredRecord2, $studentDataMinimal);
+                // Ganti index dataprocess dengan nilai yang baru
+                $dataProcess[$mapelId3][array_search(min($arrayColumn), $arrayColumn)] = $value;
+            }
             
             if ($max_quota[$mapelId3] < $courseData[$idSelectedMapel3]['max_kuota_kelas']) {
 
@@ -245,51 +266,46 @@ trait ClassCalculationTraits
                     'id_mapellm' => $mapelId3,
                     'nama_kelas' => '',
                     'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                    'nilai' => $ignoredRecord[$i]['nilai_raport'],
+                    'nilai' => $mapelVector3,
                 ];
 
                 array_push($dataProcess[$mapelId3], $value);
 
             }elseif($max_quota[$mapelId3] >= $courseData[$idSelectedMapel3]['max_kuota_kelas']){
-                $studentScore = $studentData[$i]['nilai_raport'];
+                // $studentScore = $studentData[$i]['nilai_raport'];
 
                 $arrayColumn = array_column($dataProcess[$mapelId3], 'nilai');
                 $nilaiMinimal = min($arrayColumn);
                 $nilaiMinimalArray = $dataProcess[$mapelId3][array_search($nilaiMinimal, $arrayColumn)];
                 $studentDataMinimal = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
                 
-                if ($studentScore > $nilaiMinimal){
+                if ($mapelVector3 > $nilaiMinimal){
                     // Save data
                     $value = [
                         'id_siswa' => $studentData[$i]['id'],
                         'id_mapellm' => $mapelId3,
                         'nama_kelas' => '',
                         'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                        'nilai' => $studentData[$i]['nilai_raport'],
+                        'nilai' => $mapelVector3,
                     ];
-                
 
-                    $isSetMapelPilihan1 = array_search($studentData[$i]['id'], array_column($dataProcess[$studentData[$i]['urutan_lintas_minat'][0]['mapel_id']], 'id_siswa'));
-                    $isSetMapelPilihan2 = array_search($studentData[$i]['id'], array_column($dataProcess[$studentData[$i]['urutan_lintas_minat'][1]['mapel_id']], 'id_siswa'));
+                    $isSetMapelPilihan1 = array_search($ignoredRecord[$i]['id'], array_column($dataProcess[$ignoredRecord[$i]['urutan_lintas_minat'][0]['mapel_id']], 'id_siswa'));
+                    $isSetMapelPilihan2 = array_search($ignoredRecord[$i]['id'], array_column($dataProcess[$ignoredRecord[$i]['urutan_lintas_minat'][1]['mapel_id']], 'id_siswa'));
 
                     if (empty( $isSetMapelPilihan1) && empty($isSetMapelPilihan2))
                     {
-                        \Illuminate\Support\Facades\Log::debug('Kosong');
                         // Masukkan ke ignored record index yang kereplace
                         array_push($ignoredRecord2, $studentDataMinimal);
                         // Ganti index dataprocess dengan nilai yang baru
                         $dataProcess[$mapelId3][array_search(min($arrayColumn), $arrayColumn)] = $value;
                     }
-                    \Illuminate\Support\Facades\Log::debug('Tidak');
                     
                 }else{
                     array_push($ignoredRecord2,  $studentData[$i]);
                 }  
             }
         }
-        // \Illuminate\Support\Facades\Log::debug($max_quota);
-        // \Illuminate\Support\Facades\Log::debug($courseData);
-        \Illuminate\Support\Facades\Log::debug($dataProcess);
+        // \Illuminate\Support\Facades\Log::debug($dataProcess);
 
         // Index $courseData dimulai dari 0, lainnya mulai dari 1
         // Set Nama Kelas
@@ -302,10 +318,6 @@ trait ClassCalculationTraits
                 
                 
                 $className = $mapel['nama_mapel'] . '_' . chr($max_total_class[$i+1] + 65);
-                // \Illuminate\Support\Facades\Log::debug($j+1 % $courseData[$idSelectedMapel]['max_kuota_kelas']);
-                // \Illuminate\Support\Facades\Log::debug($courseData[$idSelectedMapel]['kuota_kelas']-1);
-                // \Illuminate\Support\Facades\Log::debug($max_total_class);
-                // \Illuminate\Support\Facades\Log::debug($className);
                 
                 // Save Data
                 $dataProcess[$i+1][$j]['nama_kelas'] = $className;
@@ -316,8 +328,6 @@ trait ClassCalculationTraits
                     $max_total_class[$i+1]++;
                 }
                 
-                // \Illuminate\Support\Facades\Log::debug($dataProcess[$i+1][$j]);
-
                 if (!\App\Models\Kelaslm::insert($dataProcess[$i+1][$j])) {
                     return response()->json(['errors' => [0 => 'Fail to update data']]);
                 }

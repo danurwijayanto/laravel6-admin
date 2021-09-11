@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3f268309-d018-4190-843d-b6d6706d87b1" name="Default Changelist" comment="" />
+    <list default="true" id="3f268309-d018-4190-843d-b6d6706d87b1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Traits/ClassCalculationTraits.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Traits/ClassCalculationTraits.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -157,6 +160,8 @@
       <updated>1630274724182</updated>
       <workItem from="1630274726070" duration="162000" />
       <workItem from="1630383108876" duration="236000" />
+      <workItem from="1631368513892" duration="68000" />
+      <workItem from="1631368583447" duration="149000" />
     </task>
     <servers />
   </component>
