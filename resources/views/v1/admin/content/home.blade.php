@@ -82,7 +82,7 @@
             <!-- Custom tabs (Charts with tabs)-->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Statistik Mata Pelajaran dan Jumlah Siswa</h3>
+                <h3 class="card-title">Statistik Mata Pelajaran Pilihan Siswa</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -94,7 +94,15 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <div class="chart">
+                  <div class="chartjs-size-monitor">
+                    <div class="chartjs-size-monitor-expand">
+                      <div class=""></div>
+                    </div>
+                    <div class="chartjs-size-monitor-shrink">
+                      <div class=""></div>
+                    </div>
+                  </div>
                   <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 484px;" width="484" height="250" class="chartjs-render-monitor"></canvas>
                 </div>
               </div>
@@ -110,4 +118,81 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  @push("scripts")
+  <script>
+    $(document).ready(function() {
+      const action_url = "{{ route('admin.dashboard.getChartData') }}";
+
+      $.ajax({
+      url: action_url,
+      method: "GET",
+      dataType: "json",
+      success: function(data) {
+        var areaChartData = {
+          labels  : data.listMapel.map(value => value.kode_mapel),
+          datasets: [
+            {
+              label               : 'Pilihan 1',
+              backgroundColor     : 'rgba(60,141,188,0.9)',
+              borderColor         : 'rgba(60,141,188,0.8)',
+              pointRadius          : false,
+              pointColor          : '#3b8bba',
+              pointStrokeColor    : 'rgba(60,141,188,1)',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(60,141,188,1)',
+              data                : data.listMapel.map(value => data.lintasMinat[value.kode_mapel]['pilihan1'])
+            },
+            {
+              label               : 'Pilihan 2',
+              backgroundColor     : 'rgba(210, 214, 222, 1)',
+              borderColor         : 'rgba(210, 214, 222, 1)',
+              pointRadius         : false,
+              pointColor          : 'rgba(210, 214, 222, 1)',
+              pointStrokeColor    : '#c1c7d1',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(220,220,220,1)',
+              data                : data.listMapel.map(value => data.lintasMinat[value.kode_mapel]['pilihan2'])
+            },
+            {
+              label               : 'Pilihan 3',
+              backgroundColor     : 'rgba(210, 214, 100, 1)',
+              borderColor         : 'rgba(210, 214, 100, 1)',
+              pointRadius         : false,
+              pointColor          : 'rgba(210, 214, 100, 1)',
+              pointStrokeColor    : '#c1c7d1',
+              pointHighlightFill  : '#fff',
+              pointHighlightStroke: 'rgba(220,220,100,1)',
+              data                : data.listMapel.map(value => data.lintasMinat[value.kode_mapel]['pilihan3'])
+            },
+          ]
+        }
+        //-------------
+        //- BAR CHART -
+        //-------------
+        var barChartCanvas = $('#barChart').get(0).getContext('2d')
+        var barChartData = $.extend(true, {}, areaChartData)
+        var temp0 = areaChartData.datasets[0]
+        var temp1 = areaChartData.datasets[1]
+        var temp2 = areaChartData.datasets[2]
+        barChartData.datasets[0] = temp0
+        barChartData.datasets[1] = temp1
+        barChartData.datasets[2] = temp2
+
+        var barChartOptions = {
+          responsive              : true,
+          maintainAspectRatio     : false,
+          datasetFill             : false
+        }
+
+        new Chart(barChartCanvas, {
+          type: 'bar',
+          data: barChartData,
+          options: barChartOptions
+        })
+      }
+    });
+  });
+
+  </script>
+  @endpush
 @endsection

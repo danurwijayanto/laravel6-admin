@@ -25,6 +25,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 // });
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::name('dashboard.')->group(function () {
+        Route::get('chart-data', 'HomeController@getChartData')->name('getChartData');
+   
+    });
+
     Route::name('user.')->group(function () {
         Route::get('user/index', 'Admin\UserController@index')->name('index');
         Route::get('user/get/{id}', 'Admin\UserController@edit')->name('get');

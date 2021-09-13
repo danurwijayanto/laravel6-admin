@@ -11,6 +11,9 @@
   <script src="{{asset('assets/dist/js/adminlte.min.js')}}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{{asset('assets/dist/js/demo.js')}}"></script>
+  <!-- ChartJS -->
+  <script src="{{asset('assets/plugins/chart.js/Chart.min.js')}}"></script>
+  <!-- AdminLTE App -->
 
   <!-- DataTables -->
   <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
