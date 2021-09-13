@@ -28,7 +28,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
-      <a href="../../index3.html" class="brand-link">
+      <a href="{{ route('home') }}" class="brand-link">
         {{-- <img src="{{asset('assets/dist/img/AdminLTELogo.png')}}"
         alt="AdminLTE Logo"
         class="brand-image img-circle elevation-3"
@@ -45,7 +45,7 @@
                with font-awesome or any other icon font library -->
             <li class="nav-item">
               <a href="{{ route('admin.user.index') }}" class="nav-link">
-                <i class="nav-icon fas fa-user"></i>
+                <i class="nav-icon fas fa-users"></i>
                 <p>
                   Data Admin
                 </p>
@@ -53,7 +53,7 @@
             </li>
             <li class="nav-item">
               <a href="{{ route('admin.student.index') }}" class="nav-link">
-                <i class="nav-icon fas fa-user"></i>
+                <i class="nav-icon fas fa-users"></i>
                 <p>
                   Data Siswa
                 </p>
@@ -77,7 +77,7 @@
             </li>
             <li class="nav-item">
               <a href="{{ route('admin.crossInterestClass.index') }}" class="nav-link">
-                <i class="nav-icon fas fa-arrows-h"></i>
+                <i class="nav-icon fas fa-arrows-alt-h"></i>
                 <p>
                   Data Kelas Lintas Minat
                 </p>
@@ -94,7 +94,7 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                <i class="nav-icon fas fa-sign-out"></i>
+                <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p>
                   Logout
                 </p>

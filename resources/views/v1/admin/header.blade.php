@@ -7,7 +7,7 @@
 <!-- Bootstrap 4 -->
 
 <!-- Font Awesome -->
-<script src="https://kit.fontawesome.com/1ce913e1c0.js" crossorigin="anonymous"></script>
+<link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 <!-- Ionicons -->
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 <!-- Theme style -->
