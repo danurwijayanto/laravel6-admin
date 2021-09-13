@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\models\Mapellm;
+use App\models\Siswa;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('v1.admin.content.general');
+        $jumlahSiswa = Siswa::count();
+        $jumlahMapel = Mapellm::count();
+        $jumlahKelas = Mapellm::sum("jumlah_kelas");
+        return view('v1.admin.content.home')->with([
+            "jumlahSiswa" => $jumlahSiswa,
+            "jumlahMapel" => $jumlahMapel,
+            "jumlahKelas" => $jumlahKelas,
+        ]);
     }
 }
