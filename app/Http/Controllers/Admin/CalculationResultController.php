@@ -8,14 +8,15 @@ use App\Models\Siswa;
 use Illuminate\Support\Facades\Log;
 use DataTables;
 use App\Traits\WeightedProductCalculationTraits;
-use App\Traits\ClassCalculationTraits;
+use App\Traits\ClassCalculationTraitsV2;
 
 class CalculationResultController extends Controller
 {
     private $controllerDetails;
 
     use WeightedProductCalculationTraits;
-    use ClassCalculationTraits;
+    // use ClassCalculationTraits;
+    use ClassCalculationTraitsV2;
 
     public function __construct()
     {
@@ -124,7 +125,7 @@ class CalculationResultController extends Controller
     }
 
     public function classCalculation() {
-        $calculate = $this->doClassCalculation();
+        $calculate = $this->doClassCalculationV2();
 
         if (isset(json_decode($calculate)->fail)) {
             return response()->json(['errors' => [0 => json_decode($calculate)->fail]]);
