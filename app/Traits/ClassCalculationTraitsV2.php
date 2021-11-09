@@ -122,8 +122,9 @@ trait ClassCalculationTraitsV2
             $dataProcess[$value['id']] = [];
         }
 
-        $ignoredRecord = [];
-        Log::debug($max_quota);
+        $ignoredRecordPil1 = [];
+        $ignoredRecordPil2 = [];
+
         $pilihan1Data = $studentData['pilihan1'];
         $pilihan2Data = $studentData['pilihan2'];
         $pilihan3Data = $studentData['pilihan3'];
@@ -156,8 +157,8 @@ trait ClassCalculationTraitsV2
 
                     array_push($dataProcess[$mapelId], $value);
 
-                }else if($max_quota[$mapelId] >= $courseData[$idSelectedMapel]['max_kuota_kelas']){
-                    array_push($ignoredRecord, $siswa[$j]);
+                }else {
+                    array_push($ignoredRecordPil1, $siswa[$j]);
                 }
             }
         }
@@ -190,8 +191,8 @@ trait ClassCalculationTraitsV2
 
                     array_push($dataProcess[$mapelId], $value);
 
-                }elseif($max_quota[$mapelId] >= $courseData[$idSelectedMapel]['max_kuota_kelas']){
-                    array_push($ignoredRecord, $siswa[$j]);
+                }else{
+                    array_push($ignoredRecordPil2, $siswa[$j]);
                 }
             }
         }
@@ -208,8 +209,11 @@ trait ClassCalculationTraitsV2
                 $siswa = $pilihan3Data[$i]['list_mahasiswa'];
                 $mapelVector = $siswa[$j]['vektor_v3'];
                 $idSelectedMapel = array_search($mapelId, array_column($courseData, 'id'));
-                
-                if ($max_quota[$mapelId] < $courseData[$idSelectedMapel]['max_kuota_kelas']) {
+
+                $isSetMapelPilihan1 = array_search($siswa[$j]['id'], array_column( $dataProcess[$siswa[$j]['pilih_lm1']], 'id_siswa'));
+                $isSetMapelPilihan2 = array_search($siswa[$j]['id'], array_column( $dataProcess[$siswa[$j]['pilih_lm2']], 'id_siswa'));
+
+                if (($max_quota[$mapelId] < $courseData[$idSelectedMapel]['max_kuota_kelas']) && (empty( $isSetMapelPilihan1) && empty($isSetMapelPilihan2))) {
                         
                     $max_quota[$mapelId]++;
 
@@ -223,17 +227,14 @@ trait ClassCalculationTraitsV2
                     ];
 
                     array_push($dataProcess[$mapelId], $value);
-
-                }elseif($max_quota[$mapelId] >= $courseData[$idSelectedMapel]['max_kuota_kelas']){
-
-                    array_push($ignoredRecord, $siswa[$j]);
                 }
             }
         }
 
         Log::debug([
-            "ignored_record" => $ignoredRecord, 
-            "dataProcess" => $dataProcess, 
+            "dataProcess" => $dataProcess,
+            "ignoredRecord1" => $ignoredRecordPil1,
+            "ignoredRecord2" => $ignoredRecordPil2,
         ]);
 
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
+use App\Traits\ClassCalculationTraits;
 use Illuminate\Support\Facades\Log;
 use DataTables;
 use App\Traits\WeightedProductCalculationTraits;
@@ -15,8 +16,8 @@ class CalculationResultController extends Controller
     private $controllerDetails;
 
     use WeightedProductCalculationTraits;
-    // use ClassCalculationTraits;
-    use ClassCalculationTraitsV2;
+    use ClassCalculationTraits;
+    // use ClassCalculationTraitsV2;
 
     public function __construct()
     {
@@ -125,7 +126,7 @@ class CalculationResultController extends Controller
     }
 
     public function classCalculation() {
-        $calculate = $this->doClassCalculationV2();
+        $calculate = $this->doClassCalculation();
 
         if (isset(json_decode($calculate)->fail)) {
             return response()->json(['errors' => [0 => json_decode($calculate)->fail]]);
