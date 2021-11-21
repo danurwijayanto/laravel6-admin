@@ -44,7 +44,7 @@ trait ClassCalculationTraits
 
             $dataSiswa[$i]['urutan_lintas_minat'] = $lintasMinatOrder;
         }
-
+        Log::debug($dataSiswa);
         return $dataSiswa;
     }
 
@@ -212,11 +212,11 @@ trait ClassCalculationTraits
 
                 // Mencari pilihan mapel ke 3 dari dataProcess
                 $studentDataFound = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
-                
+                Log::debug($studentDataFound);
                 
                 // mapel pilihan ke 3 dari student data
-                $idMapelPil3 = $studentData[$studentDataFound['id']]['urutan_lintas_minat'][2]['mapel_id'];
-                
+                $idMapelPil3 = $studentDataFound['urutan_lintas_minat'][2]['mapel_id'];
+                Log::debug($idMapelPil3);
                 // Mencari index mapel ke 3 dari courseData
                 $idSelectedMapel3 = array_search($idMapelPil3, array_column($courseData, 'id'));
                
@@ -231,12 +231,12 @@ trait ClassCalculationTraits
                         'nilai' => $mapelVector2,
                     ];
 
-                    Log::debug([
-                        "searchId" => $idMapelPil3, 
-                        "maxQuota" => $max_quota, 
-                        "courseData" => $courseData,
-                        "studentData" => $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))],
-                    ]);
+                    // Log::debug([
+                    //     "searchId" => $idMapelPil3, 
+                    //     "maxQuota" => $max_quota, 
+                    //     "courseData" => $courseData,
+                    //     "studentData" => $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))],
+                    // ]);
 
                     // Tambah flag
                     $studentData[$i]['selected_lintas_minat'] += 1; 
