@@ -148,7 +148,6 @@ trait ClassCalculationTraits
                 $arrayColumn = array_column($dataProcess[$mapelId1], 'nilai');
                 $nilaiMinimal = min($arrayColumn);
                 $nilaiMinimalArray = $dataProcess[$mapelId1][array_search($nilaiMinimal, $arrayColumn)];
-                $studentDataMinimal = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
 
                 // Mencari pilihan mapel ke 3 dari dataProcess
                 // $mapelPilihan3 = $dataProcess[$mapelId3][array_search(min($arrayColumn), $arrayColumn)];
@@ -220,11 +219,7 @@ trait ClassCalculationTraits
                 
                 // Mencari index mapel ke 3 dari courseData
                 $idSelectedMapel3 = array_search($idMapelPil3, array_column($courseData, 'id'));
-                Log::debug([
-                    "searchId" => $idMapelPil3, 
-                    "maxQuota" => $max_quota, 
-                    "courseData" => $courseData
-                ]);
+               
 
                 if (($mapelVector2 > $nilaiMinimal) && ($max_quota[$idMapelPil3] < $courseData[$idSelectedMapel3]['max_kuota_kelas'])){
                     // Save data
@@ -236,6 +231,13 @@ trait ClassCalculationTraits
                         'nilai' => $mapelVector2,
                     ];
 
+                    Log::debug([
+                        "searchId" => $idMapelPil3, 
+                        "maxQuota" => $max_quota, 
+                        "courseData" => $courseData,
+                        "studentData" => $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))],
+                    ]);
+
                     // Tambah flag
                     $studentData[$i]['selected_lintas_minat'] += 1; 
                     $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['selected_lintas_minat'] -= 1;
@@ -246,6 +248,9 @@ trait ClassCalculationTraits
             }
         }
 
+        /**
+         * Pilihan ke 3
+         */
         for ($i = 0; $i < count($studentData); $i++) {
             $mapelId3 = $studentData[$i]['urutan_lintas_minat'][2]['mapel_id'];
             $mapelVector3 = $studentData[$i]['urutan_lintas_minat'][2]['vector'];
@@ -299,7 +304,6 @@ trait ClassCalculationTraits
                 }
             }
         }
-        \Illuminate\Support\Facades\Log::debug(['student data' => $studentData, 'data process' => $dataProcess]);
 
         // Index $courseData dimulai dari 0, lainnya mulai dari 1
         // Set Nama Kelas

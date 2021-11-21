@@ -128,6 +128,40 @@
     $('#ok-button').data('action', 'do-calculation');
     $('#ok-button').text('OK');
   });
+
+  $('#ok-button').click(function() {
+    const action = $('#ok-button').data('action');
+
+    if (action == "do-calculation") {
+      $.ajax({
+        url: "/admin/calresult/do-calculation/",
+        method: "GET",
+        data: {
+          "_token": "{{ csrf_token() }}",
+        },
+        beforeSend: function() {
+          $('#ok-button').text('Calculating...');
+        },
+        success: function(data) {
+          setTimeout(function() {
+            if (data.errors) {
+              errorMessage = '';
+              for (var count = 0; count < data.errors.length; count++) {
+                errorMessage += data.errors[count];
+              }
+              $('#confirmModal').modal('hide');
+              $('#user-table').DataTable().ajax.reload();
+              alert(errorMessage);
+            } else {
+              $('#confirmModal').modal('hide');
+              $('#user-table').DataTable().ajax.reload();
+              alert('Calculated Successfully');
+            }
+          }, 2000);
+        }
+      })
+    }
+  });
 </script>
 @endpush
 @endsection
