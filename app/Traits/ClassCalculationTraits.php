@@ -172,12 +172,12 @@ trait ClassCalculationTraits
                     $dataProcess[$mapelId1][array_search(min($arrayColumn), $arrayColumn)] = $value;
                 }
             }
-        }
+        // }
 
         /**
          * Pilihan ke 2
          */
-        for ($i = 0; $i < count($studentData); $i++) {
+        // for ($i = 0; $i < count($studentData); $i++) {
             $mapelId2 = $studentData[$i]['urutan_lintas_minat'][1]['mapel_id'];
             $mapelId3 = $studentData[$i]['urutan_lintas_minat'][2]['mapel_id'];
             
@@ -253,12 +253,12 @@ trait ClassCalculationTraits
                     $max_quota[$idMapelPil3]++;
                 }  
             }
-        }
+        // }
 
         /**
          * Pilihan ke 3
          */
-        for ($i = 0; $i < count($studentData); $i++) {
+        // for ($i = 0; $i < count($studentData); $i++) {
             $mapelId3 = $studentData[$i]['urutan_lintas_minat'][2]['mapel_id'];
             $mapelVector3 = $studentData[$i]['urutan_lintas_minat'][2]['vector'];
             
