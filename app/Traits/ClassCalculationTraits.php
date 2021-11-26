@@ -44,7 +44,6 @@ trait ClassCalculationTraits
 
             $dataSiswa[$i]['urutan_lintas_minat'] = $lintasMinatOrder;
         }
-        // Log::debug($dataSiswa);
         return $dataSiswa;
     }
 
@@ -208,50 +207,70 @@ trait ClassCalculationTraits
                 // Mencari minimal nilai dari pilihan ke 2 dari process data
                 $arrayColumn = array_column($dataProcess[$mapelId2], 'nilai');
                 $nilaiMinimal = min($arrayColumn);
-                $nilaiMinimalArray = $dataProcess[$mapelId2][array_search($nilaiMinimal, $arrayColumn)];
-
-                // Mencari pilihan mapel ke 3 dari dataProcess
-                $studentDataFound = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
-                Log::debug($studentDataFound);
-                
-                // mapel pilihan ke 3 dari student data
-                $idMapelPil3 = $studentDataFound['urutan_lintas_minat'][2]['mapel_id'];
-                $mapelVector3 = $studentDataFound['urutan_lintas_minat'][2]['vector'];
-                Log::debug($idMapelPil3);
-                // Mencari index mapel ke 3 dari courseData
-                $idSelectedMapel3 = array_search($idMapelPil3, array_column($courseData, 'id'));
-
-                Log::debug($max_quota[$idMapelPil3]);
-                Log::debug($courseData[$idSelectedMapel3]['max_kuota_kelas']);
-                if (($mapelVector2 > $nilaiMinimal) && ($max_quota[$idMapelPil3] < $courseData[$idSelectedMapel3]['max_kuota_kelas'])){
-                    // Save data
-                    $value = [
-                        'id_siswa' => $studentData[$i]['id'],
-                        'id_mapellm' => $mapelId2,
-                        'nama_kelas' => '',
-                        'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                        'nilai' => $mapelVector2,
-                    ];
-
-                    $valuePil3 = [
-                        'id_siswa' => $studentDataFound['id'],
-                        'id_mapellm' => $idMapelPil3,
-                        'nama_kelas' => '',
-                        'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                        'nilai' => $mapelVector3,
-                    ];
-
-                    // Tambah flag
-                    $studentData[$i]['selected_lintas_minat'] += 1; 
-                    // $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['selected_lintas_minat'] -= 1;
-
-                    // Ganti index dataprocess dengan nilai yang baru
-                    $dataProcess[$mapelId2][array_search(min($arrayColumn), $arrayColumn)] = $value;
+                $listMinimalNilai = array_keys($arrayColumn,$nilaiMinimal);
+                for ($j=0; $j < count($listMinimalNilai); $j++) { 
+                    # code...
+                    // Log::debug([
+                    //     "listMinimalNilai" => $listMinimalNilai,
+                    //     "data1" => $dataProcess[$mapelId2][$listMinimalNilai[0]],
+                    //     "data2" => $dataProcess[$mapelId2][$listMinimalNilai[1]]
+                    // ]);
+                    $nilaiMinimalArray = $dataProcess[$mapelId2][$listMinimalNilai[$j]];
+    
+                    // Mencari pilihan mapel ke 3 dari dataProcess
+                    $studentDataFound = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
                     
-                    //Push ke mapel pilihan ke 3 data yang kegeser
-                    array_push($dataProcess[$idMapelPil3], $valuePil3);
-                    $max_quota[$idMapelPil3]++;
-                }  
+                    // mapel pilihan ke 3 dari student data
+                    $idMapelPil3 = $studentDataFound['urutan_lintas_minat'][2]['mapel_id'];
+                    $mapelVector3 = $studentDataFound['urutan_lintas_minat'][2]['vector'];
+                    // Log::debug($idMapelPil3);
+                    // Mencari index mapel ke 3 dari courseData
+                    $idSelectedMapel3 = array_search($idMapelPil3, array_column($courseData, 'id'));
+                    
+                    // Log::debug($max_quota[$mapelId2]);
+                    // Log::debug($max_quota[$idMapelPil3]);
+                    // Log::debug($courseData[$idSelectedMapel3]['max_kuota_kelas']);
+                    if (($mapelVector2 > $nilaiMinimal) && ($max_quota[$idMapelPil3] < $courseData[$idSelectedMapel3]['max_kuota_kelas'])){
+                        Log::debug([
+                            'Siswa yang diganti' => $studentData[$i],
+                            'Siswa pengganti' => $studentDataFound,
+                            'maxx_quota_mapel2' => $max_quota[$mapelId2],
+                            'maxx_quota_mapel3' => $max_quota[$idMapelPil3],
+                            'maxx_quota_kelas_mapel3' => $courseData[$idSelectedMapel3]['max_kuota_kelas'],
+                            'courseData' => $courseData,
+                            'max_quota' => $max_quota
+                        ]);
+                        // Save data
+                        $value = [
+                            'id_siswa' => $studentData[$i]['id'],
+                            'id_mapellm' => $mapelId2,
+                            'nama_kelas' => '',
+                            'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                            'nilai' => $mapelVector2,
+                        ];
+    
+                        $valuePil3 = [
+                            'id_siswa' => $studentDataFound['id'],
+                            'id_mapellm' => $idMapelPil3,
+                            'nama_kelas' => '',
+                            'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                            'nilai' => $mapelVector3,
+                        ];
+    
+                        // Tambah flag
+                        $studentData[$i]['selected_lintas_minat'] += 1; 
+                        // $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['selected_lintas_minat'] -= 1;
+    
+                        // Ganti index dataprocess dengan nilai yang baru
+                        $dataProcess[$mapelId2][array_search(min($arrayColumn), $arrayColumn)] = $value;
+                        
+                        //Push ke mapel pilihan ke 3 data yang kegeser
+                        array_push($dataProcess[$idMapelPil3], $valuePil3);
+                        $max_quota[$idMapelPil3]++;
+
+                        break;
+                    }  
+                }
             }
         // }
 
