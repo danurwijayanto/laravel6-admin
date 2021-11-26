@@ -137,6 +137,12 @@ trait ClassCalculationTraits
                     'nilai' => $mapelVector1,
                 ];
 
+                Log::debug([
+                    'pilihan' => 'satu',
+                    'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                    'Kelas' => $mapelId1
+                ]);
+
                 // Tambah flag
                 $studentData[$i]['selected_lintas_minat'] += 1; 
 
@@ -154,6 +160,13 @@ trait ClassCalculationTraits
                 // $idMapel = $studentData[$searchId['id']]['urutan_lintas_minat'][2]['mapel_id'];
                 
                 if ($mapelVector1 > $nilaiMinimal){
+
+                    Log::debug([
+                        'pilihan' => 'satu',
+                        'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                        'Kelas' => $mapelId1,
+                        'Nama Siswa Diganti' => $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['nama_siswa'],
+                    ]);
                     
                     // Save data
                     $value = [
@@ -171,6 +184,13 @@ trait ClassCalculationTraits
                     $dataProcess[$mapelId1][array_search(min($arrayColumn), $arrayColumn)] = $value;
                 }
             }
+            Log::debug([
+                'pilihan' => 'satu',
+                'status' => 'penuh',
+                'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                'Kelas' => $mapelId1,
+                'Kuota Kelas' => $max_quota[$mapelId1]
+            ]);
         // }
 
         /**
@@ -185,6 +205,12 @@ trait ClassCalculationTraits
             $idSelectedMapel2 = array_search($mapelId2, array_column($courseData, 'id'));
             
             if ($max_quota[$mapelId2] < $courseData[$idSelectedMapel2]['max_kuota_kelas']) {
+
+                Log::debug([
+                    'pilihan' => 'dua',
+                    'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                    'Kelas' => $mapelId2
+                ]);
 
                 $max_quota[$mapelId2]++;
 
@@ -208,7 +234,8 @@ trait ClassCalculationTraits
                 $arrayColumn = array_column($dataProcess[$mapelId2], 'nilai');
                 $nilaiMinimal = min($arrayColumn);
                 $listMinimalNilai = array_keys($arrayColumn,$nilaiMinimal);
-                for ($j=0; $j < count($listMinimalNilai); $j++) { 
+                for ($j=0; $j < count($listMinimalNilai); $j++) {
+                    // Log::debug($listMinimalNilai[$j]);
                     # code...
                     // Log::debug([
                     //     "listMinimalNilai" => $listMinimalNilai,
@@ -232,14 +259,12 @@ trait ClassCalculationTraits
                     // Log::debug($courseData[$idSelectedMapel3]['max_kuota_kelas']);
                     if (($mapelVector2 > $nilaiMinimal) && ($max_quota[$idMapelPil3] < $courseData[$idSelectedMapel3]['max_kuota_kelas'])){
                         Log::debug([
-                            'Siswa yang diganti' => $studentData[$i],
-                            'Siswa pengganti' => $studentDataFound,
-                            'maxx_quota_mapel2' => $max_quota[$mapelId2],
-                            'maxx_quota_mapel3' => $max_quota[$idMapelPil3],
-                            'maxx_quota_kelas_mapel3' => $courseData[$idSelectedMapel3]['max_kuota_kelas'],
-                            'courseData' => $courseData,
-                            'max_quota' => $max_quota
+                            'pilihan' => 'dua',
+                            'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                            'Kelas' => $mapelId2,
+                            'Nama Siswa Diganti' => $studentDataFound['nama_siswa'],
                         ]);
+
                         // Save data
                         $value = [
                             'id_siswa' => $studentData[$i]['id'],
@@ -272,6 +297,13 @@ trait ClassCalculationTraits
                     }  
                 }
             }
+            Log::debug([
+                'pilihan' => 'dua',
+                'status' => 'penuh',
+                'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                'Kelas' => $mapelId2,
+                'Kuota Kelas' => $max_quota[$mapelId2]
+            ]);
         // }
 
         /**
@@ -288,6 +320,12 @@ trait ClassCalculationTraits
                 if ($max_quota[$mapelId3] < $courseData[$idSelectedMapel3]['max_kuota_kelas']) {
 
                     $max_quota[$mapelId3]++;
+
+                    Log::debug([
+                        'pilihan' => 'tiga',
+                        'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                        'Kelas' => $mapelId3
+                    ]);
 
                     // Save data
                     $value = [
@@ -308,8 +346,18 @@ trait ClassCalculationTraits
                     $arrayColumn = array_column($dataProcess[$mapelId3], 'nilai');
                     $nilaiMinimal = min($arrayColumn);
                     $nilaiMinimalArray = $dataProcess[$mapelId3][array_search($nilaiMinimal, $arrayColumn)];
-                    
+                    $studentDataFound = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
+
                     if ($mapelVector3 > $nilaiMinimal){
+
+                        Log::debug([
+                            'pilihan' => 'tiga',
+                            'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                            'Kelas' => $mapelId2,
+                            'Nama Siswa Diganti' => $studentDataFound['nama_siswa'],
+                        ]);
+
+
                         // Save data
                         $value = [
                             'id_siswa' => $studentData[$i]['id'],
@@ -330,6 +378,7 @@ trait ClassCalculationTraits
             }
         }
 
+        // Log::debug($dataProcess);
         // Index $courseData dimulai dari 0, lainnya mulai dari 1
         // Set Nama Kelas
         for ($i=0; $i < count($dataProcess); $i++) { 
