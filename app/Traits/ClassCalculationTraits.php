@@ -262,7 +262,7 @@ trait ClassCalculationTraits
                         // $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['selected_lintas_minat'] -= 1;
     
                         // Ganti index dataprocess dengan nilai yang baru
-                        $dataProcess[$mapelId2][array_search(min($arrayColumn), $arrayColumn)] = $value;
+                        $dataProcess[$mapelId2][$listMinimalNilai[$j]] = $value;
                         
                         //Push ke mapel pilihan ke 3 data yang kegeser
                         array_push($dataProcess[$idMapelPil3], $valuePil3);
