@@ -150,47 +150,75 @@ trait ClassCalculationTraits
 
             }elseif($max_quota[$mapelId1] >= $courseData[$idSelectedMapel1]['max_kuota_kelas']){
 
+                // Mencari minimal nilai dari pilihan ke 2 dari process data
                 $arrayColumn = array_column($dataProcess[$mapelId1], 'nilai');
                 $nilaiMinimal = min($arrayColumn);
-                $nilaiMinimalArray = $dataProcess[$mapelId1][array_search($nilaiMinimal, $arrayColumn)];
+                $listMinimalNilai = array_keys($arrayColumn,$nilaiMinimal);
+                for ($j=0; $j < count($listMinimalNilai); $j++) {
 
-                // Mencari pilihan mapel ke 3 dari dataProcess
-                // $mapelPilihan3 = $dataProcess[$mapelId3][array_search(min($arrayColumn), $arrayColumn)];
-                // $searchId = $studentData[array_search($mapelPilihan3['id_siswa'], array_column($studentData, 'id'))];
-                // $idMapel = $studentData[$searchId['id']]['urutan_lintas_minat'][2]['mapel_id'];
-                
-                if ($mapelVector1 > $nilaiMinimal){
-
-                    Log::debug([
-                        'pilihan' => 'satu',
-                        'Nama Siswa' => $studentData[$i]['nama_siswa'],
-                        'Kelas' => $mapelId1,
-                        'Nama Siswa Diganti' => $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['nama_siswa'],
-                    ]);
+                    $nilaiMinimalArray = $dataProcess[$mapelId1][$listMinimalNilai[$j]];
+    
+                    // Mencari pilihan mapel ke 3 dari dataProcess
+                    $studentDataFound = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
                     
-                    // Save data
-                    $value = [
-                        'id_siswa' => $studentData[$i]['id'],
-                        'id_mapellm' => $mapelId1,
-                        'nama_kelas' => '',
-                        'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
-                        'nilai' => $mapelVector1,
-                    ];
-                    // Tambah flag
-                    $studentData[$i]['selected_lintas_minat'] += 1; 
-                    $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['selected_lintas_minat'] -= 1;
+                    // mapel pilihan ke 3 dari student data
+                    $idMapelPil3 = $studentDataFound['urutan_lintas_minat'][2]['mapel_id'];
+                    $mapelVector3 = $studentDataFound['urutan_lintas_minat'][2]['vector'];
 
-                    // Ganti index dataprocess dengan nilai yang baru
-                    $dataProcess[$mapelId1][array_search(min($arrayColumn), $arrayColumn)] = $value;
+                    // Mencari index mapel ke 3 dari courseData
+                    $idSelectedMapel3 = array_search($idMapelPil3, array_column($courseData, 'id'));
+                    
+                    if (($mapelVector1 > $nilaiMinimal) && ($max_quota[$idMapelPil3] < $courseData[$idSelectedMapel3]['max_kuota_kelas'])){
+                        Log::debug([
+                            'pilihan' => 'satu',
+                            'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                            'Kelas' => $mapelId1,
+                            'Nama Siswa Diganti' => $studentDataFound['nama_siswa'],
+                            'Kelas ke 3' => $idMapelPil3,
+                            'Kuota Terpakai kelas ke 3' => $max_quota[$idMapelPil3],
+                            'Max Kuota Terpakai kelas ke 3' => $courseData[$idSelectedMapel3]['max_kuota_kelas'],
+                        ]);
+
+                        // Save data
+                        $value = [
+                            'id_siswa' => $studentData[$i]['id'],
+                            'id_mapellm' => $mapelId1,
+                            'nama_kelas' => '',
+                            'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                            'nilai' => $mapelVector1,
+                        ];
+    
+                        $valuePil3 = [
+                            'id_siswa' => $studentDataFound['id'],
+                            'id_mapellm' => $idMapelPil3,
+                            'nama_kelas' => '',
+                            'jadwal' => \Carbon\Carbon::today('Asia/Jakarta')->format('Y-m-d H:i:s'),
+                            'nilai' => $mapelVector3,
+                        ];
+    
+                        // Tambah flag
+                        $studentData[$i]['selected_lintas_minat'] += 1; 
+                        // $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))]['selected_lintas_minat'] -= 1;
+    
+                        // Ganti index dataprocess dengan nilai yang baru
+                        $dataProcess[$mapelId1][$listMinimalNilai[$j]] = $value;
+                        
+                        //Push ke mapel pilihan ke 3 data yang kegeser
+                        array_push($dataProcess[$idMapelPil3], $valuePil3);
+                        $max_quota[$idMapelPil3]++;
+
+                        break;
+                    }  
                 }
+            }else {
+                Log::debug([
+                    'pilihan' => 'dua',
+                    'status' => 'penuh',
+                    'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                    'Kelas' => $mapelId1,
+                    'Kuota Kelas' => $max_quota[$mapelId1]
+                ]);
             }
-            Log::debug([
-                'pilihan' => 'satu',
-                'status' => 'penuh',
-                'Nama Siswa' => $studentData[$i]['nama_siswa'],
-                'Kelas' => $mapelId1,
-                'Kuota Kelas' => $max_quota[$mapelId1]
-            ]);
         // }
 
         /**
@@ -235,13 +263,7 @@ trait ClassCalculationTraits
                 $nilaiMinimal = min($arrayColumn);
                 $listMinimalNilai = array_keys($arrayColumn,$nilaiMinimal);
                 for ($j=0; $j < count($listMinimalNilai); $j++) {
-                    // Log::debug($listMinimalNilai[$j]);
-                    # code...
-                    // Log::debug([
-                    //     "listMinimalNilai" => $listMinimalNilai,
-                    //     "data1" => $dataProcess[$mapelId2][$listMinimalNilai[0]],
-                    //     "data2" => $dataProcess[$mapelId2][$listMinimalNilai[1]]
-                    // ]);
+
                     $nilaiMinimalArray = $dataProcess[$mapelId2][$listMinimalNilai[$j]];
     
                     // Mencari pilihan mapel ke 3 dari dataProcess
@@ -250,19 +272,19 @@ trait ClassCalculationTraits
                     // mapel pilihan ke 3 dari student data
                     $idMapelPil3 = $studentDataFound['urutan_lintas_minat'][2]['mapel_id'];
                     $mapelVector3 = $studentDataFound['urutan_lintas_minat'][2]['vector'];
-                    // Log::debug($idMapelPil3);
+
                     // Mencari index mapel ke 3 dari courseData
                     $idSelectedMapel3 = array_search($idMapelPil3, array_column($courseData, 'id'));
                     
-                    // Log::debug($max_quota[$mapelId2]);
-                    // Log::debug($max_quota[$idMapelPil3]);
-                    // Log::debug($courseData[$idSelectedMapel3]['max_kuota_kelas']);
                     if (($mapelVector2 > $nilaiMinimal) && ($max_quota[$idMapelPil3] < $courseData[$idSelectedMapel3]['max_kuota_kelas'])){
                         Log::debug([
                             'pilihan' => 'dua',
                             'Nama Siswa' => $studentData[$i]['nama_siswa'],
                             'Kelas' => $mapelId2,
                             'Nama Siswa Diganti' => $studentDataFound['nama_siswa'],
+                            'Kelas ke 3' => $idMapelPil3,
+                            'Kuota Terpakai kelas ke 3' => $max_quota[$idMapelPil3],
+                            'Max Kuota Terpakai kelas ke 3' => $courseData[$idSelectedMapel3]['max_kuota_kelas'],
                         ]);
 
                         // Save data
@@ -296,14 +318,15 @@ trait ClassCalculationTraits
                         break;
                     }  
                 }
+            }else {
+                Log::debug([
+                    'pilihan' => 'dua',
+                    'status' => 'penuh',
+                    'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                    'Kelas' => $mapelId2,
+                    'Kuota Kelas' => $max_quota[$mapelId2]
+                ]);
             }
-            Log::debug([
-                'pilihan' => 'dua',
-                'status' => 'penuh',
-                'Nama Siswa' => $studentData[$i]['nama_siswa'],
-                'Kelas' => $mapelId2,
-                'Kuota Kelas' => $max_quota[$mapelId2]
-            ]);
         // }
 
         /**
