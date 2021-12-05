@@ -11,7 +11,7 @@ use DataTables;
 use App\Traits\WeightedProductCalculationTraits;
 use App\Traits\ClassCalculationTraitsV2;
 
-class CalculationResultController extends Controller
+class KalkulasiController extends Controller
 {
     private $controllerDetails;
 
@@ -36,7 +36,7 @@ class CalculationResultController extends Controller
      */
     public function index()
     {
-        return view('v1.admin.content.calResult')->with([
+        return view('v1.admin.content.kalkulasi')->with([
             'detailController' => $this->controllerDetails,
         ]);
     }

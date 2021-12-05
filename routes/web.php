@@ -27,7 +27,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     Route::name('dashboard.')->group(function () {
         Route::get('chart-data', 'HomeController@getChartData')->name('getChartData');
-   
+
     });
 
     Route::name('user.')->group(function () {
@@ -37,7 +37,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
         Route::post('user/store', 'Admin\UserController@store')->name('store');
         Route::delete('user/delete/{id}', 'Admin\UserController@destroy')->name('delete');
         Route::get('user/get-datatables-all-data', 'Admin\UserController@dataTablesGetAllData')->name('datatablesGetalldata');
-    
+
     });
 
     Route::name('roles.')->group(function() {
@@ -45,46 +45,46 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
     });
 
     Route::name('student.')->group(function() {
-        Route::get('student/index', 'Admin\StudentController@index')->name('index');
-        Route::get('student/get/{id}', 'Admin\StudentController@edit')->name('get');
-        Route::post('student/update', 'Admin\StudentController@update')->name('update');
-        Route::post('student/store', 'Admin\StudentController@store')->name('store');
-        Route::post('student/store-excel-data', 'Admin\StudentController@storeExcelData')->name('storeExcel');
-        Route::delete('student/delete/{id}', 'Admin\StudentController@destroy')->name('delete');
-        Route::get('student/get-datatables-all-data', 'Admin\StudentController@dataTablesGetAllData')->name('datatablesGetalldata');
+        Route::get('student/index', 'Admin\SiswaController@index')->name('index');
+        Route::get('student/get/{id}', 'Admin\SiswaController@edit')->name('get');
+        Route::post('student/update', 'Admin\SiswaController@update')->name('update');
+        Route::post('student/store', 'Admin\SiswaController@store')->name('store');
+        Route::post('student/store-excel-data', 'Admin\SiswaController@storeExcelData')->name('storeExcel');
+        Route::delete('student/delete/{id}', 'Admin\SiswaController@destroy')->name('delete');
+        Route::get('student/get-datatables-all-data', 'Admin\SiswaController@dataTablesGetAllData')->name('datatablesGetalldata');
     });
 
     Route::name('course.')->group(function() {
-        Route::get('course/index', 'Admin\MapelLmController@index')->name('index');
-        Route::get('course/get/{id}', 'Admin\MapelLmController@edit')->name('get');
-        Route::post('course/update', 'Admin\MapelLmController@update')->name('update');
-        Route::post('course/store', 'Admin\MapelLmController@store')->name('store');
-        Route::delete('course/delete/{id}', 'Admin\MapelLmController@destroy')->name('delete');
-        Route::get('course/get-datatables-all-data', 'Admin\MapelLmController@dataTablesGetAllData')->name('datatablesGetalldata');
+        Route::get('course/index', 'Admin\MapelController@index')->name('index');
+        Route::get('course/get/{id}', 'Admin\MapelController@edit')->name('get');
+        Route::post('course/update', 'Admin\MapelController@update')->name('update');
+        Route::post('course/store', 'Admin\MapelController@store')->name('store');
+        Route::delete('course/delete/{id}', 'Admin\MapelController@destroy')->name('delete');
+        Route::get('course/get-datatables-all-data', 'Admin\MapelController@dataTablesGetAllData')->name('datatablesGetalldata');
     });
 
     Route::name('crossInterestClass.')->group(function() {
-        Route::get('cross-interest/index', 'Admin\LintasMinatClassController@index')->name('index');
-        Route::get('cross-interest/detail/{id}', 'Admin\LintasMinatClassController@show')->name('detail');
-        Route::get('cross-interest/get/{id}', 'Admin\LintasMinatClassController@edit')->name('get');
-        Route::post('cross-interest/update', 'Admin\LintasMinatClassController@update')->name('update');
-        Route::post('cross-interest/store', 'Admin\LintasMinatClassController@store')->name('store');
-        Route::delete('cross-interest/delete/{id}', 'Admin\LintasMinatClassController@destroy')->name('delete');
-        Route::delete('cross-interest/delete-all', 'Admin\LintasMinatClassController@deleteAll')->name('deleteAll');
-        Route::get('cross-interest/get-datatables-all-data', 'Admin\LintasMinatClassController@dataTablesGetAllData')->name('datatablesGetalldata');
-        Route::get('cross-interest/get-datatables-detail-data/{name}', 'Admin\LintasMinatClassController@dataTablesGetDetailData')->name('datatablesGetdetaildata');
-        Route::get('cross-interest/download-data/{name}', 'Admin\LintasMinatClassController@detailClassToExcel')->name('downloadExcelData');
+        Route::get('cross-interest/index', 'Admin\LintasMinatController@index')->name('index');
+        Route::get('cross-interest/detail/{id}', 'Admin\LintasMinatController@show')->name('detail');
+        Route::get('cross-interest/get/{id}', 'Admin\LintasMinatController@edit')->name('get');
+        Route::post('cross-interest/update', 'Admin\LintasMinatController@update')->name('update');
+        Route::post('cross-interest/store', 'Admin\LintasMinatController@store')->name('store');
+        Route::delete('cross-interest/delete/{id}', 'Admin\LintasMinatController@destroy')->name('delete');
+        Route::delete('cross-interest/delete-all', 'Admin\LintasMinatController@deleteAll')->name('deleteAll');
+        Route::get('cross-interest/get-datatables-all-data', 'Admin\LintasMinatController@dataTablesGetAllData')->name('datatablesGetalldata');
+        Route::get('cross-interest/get-datatables-detail-data/{name}', 'Admin\LintasMinatController@dataTablesGetDetailData')->name('datatablesGetdetaildata');
+        Route::get('cross-interest/download-data/{name}', 'Admin\LintasMinatController@detailClassToExcel')->name('downloadExcelData');
     });
 
     Route::name('calresult.')->group(function() {
-        Route::get('calresult/do-calculation', 'Admin\CalculationResultController@calculation')->name('calculation');
-        Route::get('calresult/do-class-division', 'Admin\CalculationResultController@classCalculation')->name('classCalculation');
-        Route::get('calresult/index', 'Admin\CalculationResultController@index')->name('index');
-        Route::get('calresult/get/{id}', 'Admin\CalculationResultController@edit')->name('get');
-        Route::post('calresult/update', 'Admin\CalculationResultController@update')->name('update');
-        Route::post('calresult/store', 'Admin\CalculationResultController@store')->name('store');
-        Route::delete('calresult/delete/{id}', 'Admin\CalculationResultController@destroy')->name('delete');
-        Route::get('calresult/get-datatables-all-data', 'Admin\CalculationResultController@dataTablesGetAllData')->name('datatablesGetalldata');
+        Route::get('calresult/do-calculation', 'Admin\KalkulasiController@calculation')->name('calculation');
+        Route::get('calresult/do-class-division', 'Admin\KalkulasiController@classCalculation')->name('classCalculation');
+        Route::get('calresult/index', 'Admin\KalkulasiController@index')->name('index');
+        Route::get('calresult/get/{id}', 'Admin\KalkulasiController@edit')->name('get');
+        Route::post('calresult/update', 'Admin\KalkulasiController@update')->name('update');
+        Route::post('calresult/store', 'Admin\KalkulasiController@store')->name('store');
+        Route::delete('calresult/delete/{id}', 'Admin\KalkulasiController@destroy')->name('delete');
+        Route::get('calresult/get-datatables-all-data', 'Admin\KalkulasiController@dataTablesGetAllData')->name('datatablesGetalldata');
     });
     // Route::get('users', 'Admin\UserController@index')->name('users');
 });

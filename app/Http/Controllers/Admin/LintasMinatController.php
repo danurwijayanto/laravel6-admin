@@ -12,7 +12,7 @@ use Validator;
 use App\Traits\ExcelDataTraits;
 
 
-class LintasMinatClassController extends Controller
+class LintasMinatController extends Controller
 {
     private $controllerDetails;
 
@@ -35,7 +35,7 @@ class LintasMinatClassController extends Controller
      */
     public function index()
     {
-        return view('v1.admin.content.crossInterest')->with([
+        return view('v1.admin.content.lintasMinat')->with([
             'detailController' => $this->controllerDetails,
         ]);
     }
@@ -70,12 +70,12 @@ class LintasMinatClassController extends Controller
     public function show($id)
     {
         $classData = Kelaslm::where("nama_kelas", $id)->first();
-        if (!$classData) return view('v1.admin.content.crossInterestDetail')->with(['error' => "Warning : Class not found !"]);
+        if (!$classData) return view('v1.admin.content.detailLintasMinat')->with(['error' => "Warning : Class not found !"]);
 
         $studentList = Kelaslm::where("nama_kelas", $id)->get();
-        if (!$studentList) return view('v1.admin.content.crossInterestDetail')->with(['error' => "Warning : Student not found !"]);
+        if (!$studentList) return view('v1.admin.content.detailLintasMinat')->with(['error' => "Warning : Student not found !"]);
 
-        return view('v1.admin.content.crossInterestDetail')->with([
+        return view('v1.admin.content.detailLintasMinat')->with([
             'detailController' => $this->controllerDetails,
             'classData' => $classData,
             'studentList' => $studentList
@@ -184,7 +184,7 @@ class LintasMinatClassController extends Controller
 
     public function detailClassToExcel($className)
     {
-        $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();   
+        $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();
         $this->writeExcel($data);
 
         return redirect()->back();

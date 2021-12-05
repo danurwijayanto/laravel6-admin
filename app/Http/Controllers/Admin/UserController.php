@@ -37,7 +37,7 @@ class UserController extends Controller
     {
         $role = Role::get();
 
-        return view('v1.admin.content.userList')->with([
+        return view('v1.admin.content.user')->with([
             'detailController' => $this->controllerDetails,
             'roleList' => $role
         ]);
@@ -74,7 +74,7 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->role_id = $request->role_id;
 
-        return view('v1.admin.content.userList')->with([
+        return view('v1.admin.content.user')->with([
             'detailController' => $this->controllerDetails,
         ]);
     }

@@ -316,6 +316,18 @@ trait ClassCalculationTraits
                         $max_quota[$idMapelPil3]++;
 
                         break;
+                    } else{
+                        Log::debug([
+                            'pilihan' => 'dua',
+                            'status' => 'penuh dan tidak bisa geser',
+                            'Nama Siswa' => $studentData[$i]['nama_siswa'],
+                            'Kelas' => $mapelId2,
+                            'Kuota Kelas' => $max_quota[$mapelId2],
+                            'Nilai Siswa' => $mapelVector2,
+                            'Nilai Siswa Minimal' => $nilaiMinimal,
+                            'Max Quota Saat ini' => $max_quota[$idMapelPil3],
+                            'Max Quota Kelas' => $courseData[$idSelectedMapel3]['max_kuota_kelas'],
+                        ]);
                     }  
                 }
             }else {

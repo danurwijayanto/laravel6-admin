@@ -5,25 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Mapellm;
-use App\Models\Siswa;
-use App\Traits\ExcelDataTraits;
 use DataTables;
 use Validator;
-use Illuminate\Support\Facades\Log;
 
-class StudentController extends Controller
+class MapelController extends Controller
 {
     private $controllerDetails;
-
-    use ExcelDataTraits;
 
     public function __construct()
     {
         $this->middleware('auth');
 
         $this->controllerDetails = [
-            "currentPage" => "Student",
-            "pageDescription" => "Student Management Page"
+            "currentPage" => "Course",
+            "pageDescription" => "Course Management Page"
         ];
     }
 
@@ -34,7 +29,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('v1.admin.content.studentList')->with([
+        return view('v1.admin.content.mapel')->with([
             'detailController' => $this->controllerDetails,
         ]);
     }
@@ -57,7 +52,24 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'course_code' => 'bail|required|max:11',
+            'course_name' => 'required|max:35',
+            'number_of_classes' => 'required',
+            'class_quota' => 'required',
+        ]);
+
+        $course = new Mapellm;
+        $course->kode_mapel = $request->course_code;
+        $course->nama_mapel = strtolower($request->course_name);
+        $course->jumlah_kelas = $request->number_of_classes;
+        $course->kuota_kelas = $request->class_quota;
+
+        if (!$course->save()) {
+            return response()->json(['errors' => [0 => 'Fail to update data']]);
+        } else {
+            return response()->json(['success' => 'Data is successfully updated']);
+        }
     }
 
     /**
@@ -79,8 +91,9 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $user = Siswa::with('detailLm1', 'detailLm2', 'detailLm3')->find($id);
-        return response()->json($user);
+        $course = Mapellm::find($id);
+
+        return json_encode($course);
     }
 
     /**
@@ -94,9 +107,10 @@ class StudentController extends Controller
     {
         // Request Validation
         $validatorRules = array(
-            'nis' => 'bail|required',
-            'name' => 'required',
-            'class' => 'required',
+            'course_code' => 'bail|required|max:11',
+            'course_name' => 'required|max:35',
+            'number_of_classes' => 'required',
+            'class_quota' => 'required',
         );
 
         $error = Validator::make($request->all(), $validatorRules);
@@ -106,15 +120,16 @@ class StudentController extends Controller
         }
 
         // Save data
-        $student = Siswa::find($request->student_id);
-        if (empty($student)) {
+        $course = Mapellm::find($request->course_id);
+        if (empty($course)) {
             return response()->json(['errors' => [0 => 'Data not found !']]);
         }
-        $student->nis = $request->nis;
-        $student->nama_siswa = $request->name;
-        $student->kelas = $request->class;
+        $course->kode_mapel = $request->course_code;
+        $course->nama_mapel = strtolower($request->course_name);
+        $course->jumlah_kelas = $request->number_of_classes;
+        $course->kuota_kelas = $request->class_quota;
 
-        if (!$student->save()) {
+        if (!$course->save()) {
             return response()->json(['errors' => [0 => 'Fail to update data']]);
         } else {
             return response()->json(['success' => 'Data is successfully updated']);
@@ -129,13 +144,14 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $siswa = Siswa::find($id);
-        
-        if (empty($siswa)) {
+        // Check if super user or not
+        $course = Mapellm::find($id);
+
+        if (empty($course)) {
             return response()->json(['errors' => [0 => 'Data not found !']]);
         }
 
-        if (!$siswa->delete()) {
+        if (!$course->delete()) {
             return response()->json(['errors' => [0 => 'Fail to update data']]);
         } else {
             return response()->json(['success' => 'Data is successfully updated']);
@@ -144,46 +160,15 @@ class StudentController extends Controller
 
     public function dataTablesGetAllData()
     {
-        $data = Siswa::get();
+        $data = Mapellm::get();
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
-                $button = '<button type="button" name="detail" id="' . $data->id . '" class="detail btn btn-secondary btn-sm">Detail</button>';
-                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" >Delete</button>';
+                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Delete</button>';
                 return $button;
             })
             ->rawColumns(['action'])
             ->make(true);
-    }
-
-    public function storeExcelData(Request $request)
-    {
-        if (!empty($request->student_data)) {
-            $file = $request->file('student_data');
-            $new_name = rand() . '.' . $file->getClientOriginalExtension();
-            $file_path = public_path('file') . "/" . $new_name;
-            $file->move(public_path('file'), $new_name);
-
-            // Change process to traits
-            $export = $this->doExport($file_path);
-            if (isset(json_decode($export)->fail)) {
-                return response()->json(['errors' => [0 => json_decode($export)->fail]]);
-            }
-
-            // Insert into database
-            $data = json_decode($export, true) ;
-
-            if (Siswa::insert($data['data'])) {
-                // Delete file
-                unlink($file_path);
-
-                return response()->json(['success' => 'Data is successfully added']);
-            }
-
-            return response()->json(['errors' => [0 => 'Fail to adding data']]);
-        } else {
-            return response()->json(['errors' => [0 => 'Fail to adding data']]);
-        }
     }
 }
