@@ -37,6 +37,7 @@
               <tr>
                 <th width="20%">NIS</th>
                 <th width="20%">Nama</th>
+                <th width="20%">Jenis Kelamin</th>
                 <th width="20%">Kelas</th>
                 <th width="20%">Nilai</th>
                 <th width="20%">Aksi</th>
@@ -69,6 +70,13 @@
                 <div class="form-group">
                   <label class="col-form-label">Nama : </label>
                   <input type="text" name="name" id="name" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label class="col-form-label">Jenis Kelamin : </label>
+                  <select id="gender" class="form-control" name="gender" required>
+                    <option value="Pria">Pria</option>
+                    <option value="Wanita">Wanita</option>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label class="col-form-label">Kelas : </label>
@@ -173,6 +181,10 @@
           name: 'nama_siswa'
         },
         {
+          data: 'jenis_kelamin',
+          name: 'jenis_kelamin'
+        },
+        {
           data: 'kelas',
           name: 'kelas'
         },
@@ -218,7 +230,7 @@
         if (data.success) {
           html = '<div class="alert alert-success">' + data.success + '</div>';
           $('#edit-form')[0].reset();
-          // $('#formModal').modal('hide');
+          $('#formModal').modal('hide');
           $('#student-table').DataTable().ajax.reload();
         }
         $('#form-result').html(html);

@@ -113,6 +113,7 @@ class SiswaController extends Controller
         $student->nis = $request->nis;
         $student->nama_siswa = $request->name;
         $student->kelas = $request->class;
+        $student->jenis_kelamin = $request->gender;
 
         if (!$student->save()) {
             return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
