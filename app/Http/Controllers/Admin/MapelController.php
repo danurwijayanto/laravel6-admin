@@ -17,8 +17,8 @@ class MapelController extends Controller
         $this->middleware('auth');
 
         $this->controllerDetails = [
-            "currentPage" => "Course",
-            "pageDescription" => "Course Management Page"
+            "currentPage" => "Mata Pelajaran",
+            "pageDescription" => "Manajemen Mata Pelajaran"
         ];
     }
 
@@ -66,9 +66,9 @@ class MapelController extends Controller
         $course->kuota_kelas = $request->class_quota;
 
         if (!$course->save()) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
     }
 
@@ -122,7 +122,7 @@ class MapelController extends Controller
         // Save data
         $course = Mapellm::find($request->course_id);
         if (empty($course)) {
-            return response()->json(['errors' => [0 => 'Data not found !']]);
+            return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
         $course->kode_mapel = $request->course_code;
         $course->nama_mapel = strtolower($request->course_name);
@@ -130,9 +130,9 @@ class MapelController extends Controller
         $course->kuota_kelas = $request->class_quota;
 
         if (!$course->save()) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
     }
 
@@ -148,13 +148,13 @@ class MapelController extends Controller
         $course = Mapellm::find($id);
 
         if (empty($course)) {
-            return response()->json(['errors' => [0 => 'Data not found !']]);
+            return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
 
         if (!$course->delete()) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
     }
 
@@ -164,8 +164,8 @@ class MapelController extends Controller
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
-                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Delete</button>';
+                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Rubah</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm">Hapus</button>';
                 return $button;
             })
             ->rawColumns(['action'])

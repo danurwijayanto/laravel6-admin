@@ -32,8 +32,8 @@
               <tr>
                 <th width="35%">Username</th>
                 <th width="35%">Email</th>
-                <th width="35%">Role</th>
-                <th width="30%">Action</th>
+                <th width="35%">Peran</th>
+                <th width="30%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -61,13 +61,13 @@
                   <input type="text" name="username" id="username" class="form-control" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Email : </label>
+                  <label class="col-form-label">Alamat Email : </label>
                   <input type="text" name="email" id="email" class="form-control" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Role : </label>
+                  <label class="col-form-label">Peran : </label>
                   <select class="custom-select" name="role" id="role">
-                    <option selected>Role List</option>
+                    <option selected>List Peran</option>
                     @if (!empty($roleList))
                     @foreach ($roleList as $role)
                     <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -99,17 +99,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah anda benar ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -224,7 +224,7 @@
         "_token": "{{ csrf_token() }}",
       },
       beforeSend: function() {
-        $('#ok-button').text('Deleting...');
+        $('#ok-button').text('Menghapus...');
       },
       success: function(data) {
         setTimeout(function() {

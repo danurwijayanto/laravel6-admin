@@ -37,7 +37,7 @@ trait ClassCalculationTraitsV2
         /**
          * Sort Pilihan 1
          */
-        for ($i=0; $i < count($pilihan1); $i++) { 
+        for ($i = 0; $i < count($pilihan1); $i++) {
             // Mengurutkan berdasarkan mapel pilihan
             $user = Siswa::where('pilih_lm1', $pilihan1[$i]['id'])->get()->toArray();
 
@@ -50,7 +50,7 @@ trait ClassCalculationTraitsV2
         /**
          * Sort Pilihan 2
          */
-        for ($i=0; $i < count($pilihan2); $i++) { 
+        for ($i = 0; $i < count($pilihan2); $i++) {
             // Mengurutkan berdasarkan mapel pilihan
             $user = Siswa::where('pilih_lm2', $pilihan2[$i]['id'])->get()->toArray();
 
@@ -63,7 +63,7 @@ trait ClassCalculationTraitsV2
         /**
          * Sort Pilihan 3
          */
-        for ($i=0; $i < count($pilihan3); $i++) { 
+        for ($i = 0; $i < count($pilihan3); $i++) {
             // Mengurutkan berdasarkan mapel pilihan
             $user = Siswa::where('pilih_lm3', $pilihan3[$i]['id'])->get()->toArray();
 
@@ -72,7 +72,7 @@ trait ClassCalculationTraitsV2
             });
             $pilihan3[$i]['list_mahasiswa'] = $user;
         }
-          
+
         return $dataSiswa = [
             "pilihan1" => $pilihan1,
             "pilihan2" => $pilihan2,
@@ -103,7 +103,7 @@ trait ClassCalculationTraitsV2
             'data_siswa' => $data,
             'data_mapel' => $dataMapel
         ];
-        
+
         return ($returnData);
     }
 
@@ -128,7 +128,7 @@ trait ClassCalculationTraitsV2
         $pilihan1Data = $studentData['pilihan1'];
         $pilihan2Data = $studentData['pilihan2'];
         $pilihan3Data = $studentData['pilihan3'];
-        
+
         /**
          * Pilihan 1
          */
@@ -136,14 +136,14 @@ trait ClassCalculationTraitsV2
             $className = "";
 
             $mapelId = $pilihan1Data[$i]['id'];
-            
-            for ($j=0; $j < count($pilihan1Data[$i]['list_mahasiswa']); $j++) {
+
+            for ($j = 0; $j < count($pilihan1Data[$i]['list_mahasiswa']); $j++) {
                 $siswa = $pilihan1Data[$i]['list_mahasiswa'];
                 $mapelVector = $siswa[$j]['vektor_v1'];
                 $idSelectedMapel = array_search($mapelId, array_column($courseData, 'id'));
-                
+
                 if ($max_quota[$mapelId] < $courseData[$idSelectedMapel]['max_kuota_kelas']) {
-                        
+
                     $max_quota[$mapelId]++;
 
                     // Save data
@@ -156,8 +156,7 @@ trait ClassCalculationTraitsV2
                     ];
 
                     array_push($dataProcess[$mapelId], $value);
-
-                }else {
+                } else {
                     array_push($ignoredRecordPil1, $siswa[$j]);
                 }
             }
@@ -170,14 +169,14 @@ trait ClassCalculationTraitsV2
             $className = "";
 
             $mapelId = $pilihan2Data[$i]['id'];
-            
-            for ($j=0; $j < count($pilihan2Data[$i]['list_mahasiswa']); $j++) {
+
+            for ($j = 0; $j < count($pilihan2Data[$i]['list_mahasiswa']); $j++) {
                 $siswa = $pilihan2Data[$i]['list_mahasiswa'];
                 $mapelVector = $siswa[$j]['vektor_v2'];
                 $idSelectedMapel = array_search($mapelId, array_column($courseData, 'id'));
-                
+
                 if ($max_quota[$mapelId] < $courseData[$idSelectedMapel]['max_kuota_kelas']) {
-                        
+
                     $max_quota[$mapelId]++;
 
                     // Save data
@@ -190,31 +189,30 @@ trait ClassCalculationTraitsV2
                     ];
 
                     array_push($dataProcess[$mapelId], $value);
-
-                }else{
+                } else {
                     array_push($ignoredRecordPil2, $siswa[$j]);
                 }
             }
         }
 
-         /**
+        /**
          * Pilihan 3
          */
         for ($i = 0; $i < count($pilihan3Data); $i++) {
             $className = "";
 
             $mapelId = $pilihan3Data[$i]['id'];
-            
-            for ($j=0; $j < count($pilihan3Data[$i]['list_mahasiswa']); $j++) {
+
+            for ($j = 0; $j < count($pilihan3Data[$i]['list_mahasiswa']); $j++) {
                 $siswa = $pilihan3Data[$i]['list_mahasiswa'];
                 $mapelVector = $siswa[$j]['vektor_v3'];
                 $idSelectedMapel = array_search($mapelId, array_column($courseData, 'id'));
 
-                $isSetMapelPilihan1 = array_search($siswa[$j]['id'], array_column( $dataProcess[$siswa[$j]['pilih_lm1']], 'id_siswa'));
-                $isSetMapelPilihan2 = array_search($siswa[$j]['id'], array_column( $dataProcess[$siswa[$j]['pilih_lm2']], 'id_siswa'));
+                $isSetMapelPilihan1 = array_search($siswa[$j]['id'], array_column($dataProcess[$siswa[$j]['pilih_lm1']], 'id_siswa'));
+                $isSetMapelPilihan2 = array_search($siswa[$j]['id'], array_column($dataProcess[$siswa[$j]['pilih_lm2']], 'id_siswa'));
 
-                if (($max_quota[$mapelId] < $courseData[$idSelectedMapel]['max_kuota_kelas']) && (empty( $isSetMapelPilihan1) && empty($isSetMapelPilihan2))) {
-                        
+                if (($max_quota[$mapelId] < $courseData[$idSelectedMapel]['max_kuota_kelas']) && (empty($isSetMapelPilihan1) && empty($isSetMapelPilihan2))) {
+
                     $max_quota[$mapelId]++;
 
                     // Save data
@@ -241,7 +239,7 @@ trait ClassCalculationTraitsV2
         // for ($i = 0; $i < count($ignoredRecord); $i++) {
         //     $mapelId3 = $ignoredRecord[$i]['urutan_lintas_minat'][2]['mapel_id'];
         //     $mapelVector3 = $ignoredRecord[$i]['urutan_lintas_minat'][2]['vector'];
-            
+
         //     $idSelectedMapel3 = array_search($mapelId3, array_column($courseData, 'id'));
 
         //     $isSetMapelPilihan1 = array_search($ignoredRecord[$i]['id'], array_column($dataProcess[$ignoredRecord[$i]['urutan_lintas_minat'][0]['mapel_id']], 'id_siswa'));
@@ -271,7 +269,7 @@ trait ClassCalculationTraitsV2
         //         // Ganti index dataprocess dengan nilai yang baru
         //         // $dataProcess[$mapelId3][array_search(min($arrayColumn), $arrayColumn)] = $value;
         //     }
-            
+
         //     if ($max_quota[$mapelId3] < $courseData[$idSelectedMapel3]['max_kuota_kelas']) {
 
         //         $max_quota[$mapelId3]++;
@@ -298,7 +296,7 @@ trait ClassCalculationTraitsV2
         //         $nilaiMinimal = min($arrayColumn);
         //         $nilaiMinimalArray = $dataProcess[$mapelId3][array_search($nilaiMinimal, $arrayColumn)];
         //         $studentDataMinimal = $studentData[array_search($nilaiMinimalArray['id_siswa'], array_column($studentData, 'id'))];
-                
+
         //         if ($mapelVector3 > $nilaiMinimal){
         //             // Save data
         //             $value = [
@@ -319,7 +317,7 @@ trait ClassCalculationTraitsV2
         //                 // Ganti index dataprocess dengan nilai yang baru
         //                 $dataProcess[$mapelId3][array_search(min($arrayColumn), $arrayColumn)] = $value;
         //             }
-                    
+
         //         }else{
         //             array_push($ignoredRecord2,  $studentData[$i]);
         //         }  
@@ -328,27 +326,27 @@ trait ClassCalculationTraitsV2
 
         // Index $courseData dimulai dari 0, lainnya mulai dari 1
         // Set Nama Kelas
-        for ($i=0; $i < count($dataProcess); $i++) { 
+        for ($i = 0; $i < count($dataProcess); $i++) {
             // Mencari detail mapel yang terpilih
-            $idSelectedMapel = array_search($i+1, array_column($courseData, 'id'));
+            $idSelectedMapel = array_search($i + 1, array_column($courseData, 'id'));
             $mapel = $courseData[$idSelectedMapel];
-            
-            for ($j=0; $j < count($dataProcess[$i+1]); $j++) { 
-                
-                
-                $className = $mapel['nama_mapel'] . '_' . chr($max_total_class[$i+1] + 65);
-                
+
+            for ($j = 0; $j < count($dataProcess[$i + 1]); $j++) {
+
+
+                $className = $mapel['nama_mapel'] . '_' . chr($max_total_class[$i + 1] + 65);
+
                 // Save Data
-                $dataProcess[$i+1][$j]['nama_kelas'] = $className;
-                unset($dataProcess[$i+1][$j]['nilai']);
-                
+                $dataProcess[$i + 1][$j]['nama_kelas'] = $className;
+                unset($dataProcess[$i + 1][$j]['nilai']);
+
                 // Nama Kelas
-                if ($j % $courseData[$idSelectedMapel]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel]['kuota_kelas']-1) {
-                    $max_total_class[$i+1]++;
+                if ($j % $courseData[$idSelectedMapel]['max_kuota_kelas'] ==  $courseData[$idSelectedMapel]['kuota_kelas'] - 1) {
+                    $max_total_class[$i + 1]++;
                 }
-                
-                if (!\App\Models\Kelaslm::insert($dataProcess[$i+1][$j])) {
-                    return response()->json(['errors' => [0 => 'Fail to update data']]);
+
+                if (!\App\Models\Kelaslm::insert($dataProcess[$i + 1][$j])) {
+                    return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
                 }
             }
         }

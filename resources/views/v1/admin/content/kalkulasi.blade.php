@@ -35,11 +35,11 @@
             <thead>
               <tr>
                 <th width="35%">NIS</th>
-                <th width="35%">Name</th>
-                <th width="35%">Class</th>
-                <th width="30%">Choice Interest 1</th>
-                <th width="30%">Choice Interest 2</th>
-                <th width="30%">Choice Interest 3</th>
+                <th width="35%">Nama</th>
+                <th width="35%">Kelas</th>
+                <th width="30%">Pilihan 1</th>
+                <th width="30%">Pilihan 2</th>
+                <th width="30%">Pilihan 3</th>
                 <th width="30%">Vector 1</th>
                 <th width="30%">Vector 2</th>
                 <th width="30%">Vector 3</th>
@@ -48,21 +48,21 @@
           </table>
         </div>
       </div>
-      <div id="confirmModal" class="modal fade" role="dialog" >
+      <div id="confirmModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to do some calculation ? </h4>
+              <h4 align="center" style="margin:0;">Apakah anda ingin melakukan kalkulasi ? </h4>
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button" data-action="" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@
           "_token": "{{ csrf_token() }}",
         },
         beforeSend: function() {
-          $('#ok-button').text('Calculating...');
+          $('#ok-button').text('Mengkalkulasi...');
         },
         success: function(data) {
           setTimeout(function() {
@@ -155,7 +155,7 @@
             } else {
               $('#confirmModal').modal('hide');
               $('#user-table').DataTable().ajax.reload();
-              alert('Calculated Successfully');
+              alert('Kalkulasi sukses');
             }
           }, 2000);
         }

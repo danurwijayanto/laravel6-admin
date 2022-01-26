@@ -28,17 +28,18 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="add-student-data">Add new data</button>
-            <a href="{{ asset('file/data_murid_kosong.xlsx') }}" type="button" class="btn btn-secondary">Download empty format</a>
+            <button type="button" class="btn btn-primary" id="add-student-data">Tambah data</button>
+            <a href="{{ asset('file/data_murid_kosong.xlsx') }}" type="button" class="btn btn-secondary">Unduh format
+              excel kosong</a>
           </div>
           <table id="student-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
                 <th width="20%">NIS</th>
-                <th width="20%">Name</th>
-                <th width="20%">Class</th>
-                <th width="20%">Score</th>
-                <th width="20%">Action</th>
+                <th width="20%">Nama</th>
+                <th width="20%">Kelas</th>
+                <th width="20%">Nilai</th>
+                <th width="20%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -49,7 +50,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Detail Student</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Detail Siswa</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -66,24 +67,24 @@
                   <input type="text" name="nis" id="nis" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Name : </label>
+                  <label class="col-form-label">Nama : </label>
                   <input type="text" name="name" id="name" class="form-control" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Class : </label>
+                  <label class="col-form-label">Kelas : </label>
                   <input type="text" name="class" id="class" class="form-control" required />
                 </div>
                 <div class="edit-content">
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 1 : </label>
+                    <label class="col-form-label">Pilihan 1 : </label>
                     <input type="text" name="choice_interest_1" id="choice_interest_1" class="form-control" required />
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 2 : </label>
+                    <label class="col-form-label">Pilihan 2 : </label>
                     <input type="text" name="choice_interest_2" id="choice_interest_2" class="form-control" required />
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label">Choice Interest 3 : </label>
+                    <label class="col-form-label">Pilihan 3 : </label>
                     <input type="text" name="choice_interest_3" id="choice_interest_3" class="form-control" required />
                   </div>
                   <br />
@@ -91,7 +92,7 @@
                 <div class="modal-footer">
                   <input type="hidden" name="action" id="action" value="Add" />
                   <input type="hidden" name="student_id" id="student-id" />
-                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Edit" />
+                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Simpan" />
                 </div>
               </form>
             </div>
@@ -132,17 +133,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah anda benar ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -245,7 +246,7 @@
         $("#class").val(data.kelas)
         $('#student-id').val(id);
         $('.modal-title').text('Edit Student Record');
-        $('#action_button').val('Edit');
+        $('#action_button').val('Simpan');
         $('#action').val('Edit');
         // $('#formModal').modal('show');
       },
@@ -304,7 +305,7 @@
         "_token": "{{ csrf_token() }}",
       },
       beforeSend: function() {
-        $('#ok-button').text('Deleting...');
+        $('#ok-button').text('Menghapus...');
       },
       success: function(data) {
         setTimeout(function() {

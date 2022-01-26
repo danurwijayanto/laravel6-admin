@@ -24,8 +24,8 @@ class KalkulasiController extends Controller
         $this->middleware('auth');
 
         $this->controllerDetails = [
-            "currentPage" => "Result",
-            "pageDescription" => "Calculation Result Page"
+            "currentPage" => "Hasil Perhitungan",
+            "pageDescription" => "Hasil Perhitungan"
         ];
     }
 
@@ -125,7 +125,8 @@ class KalkulasiController extends Controller
         return response()->json(['success' => 'Data is successfully added']);
     }
 
-    public function classCalculation() {
+    public function classCalculation()
+    {
         $calculate = $this->doClassCalculation();
 
         if (isset(json_decode($calculate)->fail)) {

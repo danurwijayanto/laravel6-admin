@@ -23,8 +23,8 @@ class LintasMinatController extends Controller
         $this->middleware('auth');
 
         $this->controllerDetails = [
-            "currentPage" => "Cross-interest Class",
-            "pageDescription" => "Cross-interest Class List"
+            "currentPage" => "Kelas Lintas Minat",
+            "pageDescription" => "Daftar Kelas Lintas Minat"
         ];
     }
 
@@ -122,19 +122,19 @@ class LintasMinatController extends Controller
         $classData = Kelaslm::find($request->cross_interest_class_id);
 
         if (empty($classData)) {
-            return response()->json(['errors' => [0 => 'Data not found !']]);
+            return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
 
         $editClassData = Kelaslm::where('nama_kelas', $classData->nama_kelas)
             ->update([
                 'pengajar' => $request->teacher,
                 'jadwal' => $request->time
-                ]);
+            ]);
 
         if (!$editClassData) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
 
         // Log::debug($request);
@@ -167,7 +167,7 @@ class LintasMinatController extends Controller
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="detail" id="' . $data->nama_kelas . '" class="detail btn btn-secondary btn-sm">Detail</button>';
-                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->nama_kelas . '" class="edit btn btn-primary btn-sm">Edit</button>';
+                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->nama_kelas . '" class="edit btn btn-primary btn-sm">Rubah</button>';
                 return $button;
             })
             ->rawColumns(['action'])

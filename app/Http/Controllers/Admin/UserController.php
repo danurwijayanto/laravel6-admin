@@ -23,8 +23,8 @@ class UserController extends Controller
         $this->middleware('auth');
 
         $this->controllerDetails = [
-            "currentPage" => "Users",
-            "pageDescription" => "Users Management Page"
+            "currentPage" => "Pengguna",
+            "pageDescription" => "Manajemen Pengguna"
         ];
     }
 
@@ -129,16 +129,16 @@ class UserController extends Controller
         // Save data
         $user = User::find($request->user_id);
         if (empty($user)) {
-            return response()->json(['errors' => [0 => 'Data not found !']]);
+            return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
         $user->name = $request->username;
         $user->email = $request->email;
         $user->role_id = $request->role;
 
         if (!$user->save()) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
     }
 
@@ -151,20 +151,20 @@ class UserController extends Controller
     public function destroy($id)
     {
         // Check if super user or not
-        if($id == 1){
+        if ($id == 1) {
             return response()->json(['errors' => [0 => 'Cannot delete Super User Account!']]);
         }
 
         $user = User::find($id);
-        
+
         if (empty($user)) {
-            return response()->json(['errors' => [0 => 'Data not found !']]);
+            return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
 
         if (!$user->delete()) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
     }
 
@@ -174,8 +174,8 @@ class UserController extends Controller
 
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
-                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" ' . ($data->id == 1 ? "disabled" : "") . '>Delete</button>';
+                $button = '<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Rubah</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" ' . ($data->id == 1 ? "disabled" : "") . '>Hapus</button>';
                 return $button;
             })
             ->rawColumns(['action'])

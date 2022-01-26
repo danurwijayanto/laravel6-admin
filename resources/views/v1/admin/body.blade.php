@@ -94,7 +94,7 @@
                                                      document.getElementById('logout-form').submit();">
                 <i class="nav-icon fas fa-sign-out-alt"></i>
                 <p>
-                  Logout
+                  Keluar
                 </p>
               </a>
 

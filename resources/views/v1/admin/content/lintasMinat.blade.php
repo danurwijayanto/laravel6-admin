@@ -28,16 +28,16 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary" id="clear-data">Clear Data</button>
-            <button type="button" class="btn btn-secondary" id="do-class-divison">Do Class Division</button>
+            <button type="button" class="btn btn-primary" id="clear-data">Hapus semua data</button>
+            <button type="button" class="btn btn-secondary" id="do-class-divison">Lakukan perhitungan</button>
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="25%">Class Name</th>
-                <th width="25%">Total Students</th>
-                <th width="25%">Schedule</th>
-                <th width="25%">Action</th>
+                <th width="25%">Nama Kelas</th>
+                <th width="25%">Total Murid</th>
+                <th width="25%">Jadwal</th>
+                <th width="25%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -47,7 +47,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Detail Cross Interest Class</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Detail Kelas Lintas Minat</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -60,28 +60,28 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">Course Code : </label>
+                  <label class="col-form-label">Kode Mata Pelajaran : </label>
                   <input type="text" id="course-code" class="form-control" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Class : </label>
+                  <label class="col-form-label">Kelas : </label>
                   <input type="text" id="class" class="form-control" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Teacher : </label>
+                  <label class="col-form-label">Guru : </label>
                   <input type="text" id="teacher" class="form-control" name="teacher" />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Schedule : </label>
+                  <label class="col-form-label">Jadwal : </label>
                   <div class="row">
                     <div class="col">
                       <select id="day" class="form-control" name="day" required>
-                        <option value="Sunday">Sunday</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Senin</option>
+                        <option value="Monday">Selasa</option>
+                        <option value="Tuesday">Rabu</option>
+                        <option value="Wednesday">Kamis</option>
+                        <option value="Thursday">Jum`at</option>
+                        <option value="Saturday">Sabtu</option>
                       </select>
                     </div>
                     <div class="col">
@@ -104,17 +104,18 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" id="modal-remove-text" style="margin:0;">Are you sure you want to remove this data ?</h4>
+              <h4 align="center" id="modal-remove-text" style="margin:0;">Apakah anda ingin menghapus data ini ?
+              </h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">Hapus</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -123,36 +124,38 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" id="modal-remove-text" style="margin:0;">Are you sure you want to remove all data ?</h4>
+              <h4 align="center" id="modal-remove-text" style="margin:0;">Apakah anda ingin menghapus data ini ?
+              </h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">Delete</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button" id="ok-button-delete-all" class="btn btn-danger">Hapus</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
       </div>
-      <div id="confirmModalDoDivision" class="modal fade" role="dialog" >
+      <div id="confirmModalDoDivision" class="modal fade" role="dialog">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to do some division ? </h4>
+              <h4 align="center" style="margin:0;">Apakah anda yakin ingin melakukan perhitungan ? </h4>
             </div>
             <div class="modal-footer">
-              <button type="button" name="ok_button_division" id="ok-button-division" data-action="" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" name="ok_button_division" id="ok-button-division" data-action=""
+                class="btn btn-danger">OK</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -266,13 +269,13 @@
         $("#day").val(jadwalSplit[0]);
         $("#time").val(jadwalSplit[1]);
         $('#cross-interest-class-id').val(data.id);
-        $('.modal-title').text('Edit Cross Interest Class Record');
-        $('#action_button').val('Save');
+        $('.modal-title').text('Edit Data Kelas Lintas Minat');
+        $('#action_button').val('Simpan');
         $('#action').val('Edit');
         // $('#formModal').modal('show');
       },
       error: function() {
-        alert("Error : Cannot get data");
+        alert("Error : Tidak dapat mendapatkan data");
       }
     })
   });
@@ -295,7 +298,7 @@
         "_token": "{{ csrf_token() }}",
       },
       beforeSend: function() {
-        $('#ok-button-delete-all').text('Deleting...');
+        $('#ok-button-delete-all').text('Menghapus...');
       },
       success: function(data) {
         setTimeout(function() {
@@ -335,7 +338,7 @@
           "_token": "{{ csrf_token() }}",
         },
         beforeSend: function() {
-          $('#ok-button-division').text('Calculating...');
+          $('#ok-button-division').text('Mengkalkulasi...');
         },
         success: function(data) {
           setTimeout(function() {
@@ -366,7 +369,7 @@
         "_token": "{{ csrf_token() }}",
       },
       beforeSend: function() {
-        $('#ok-button').text('Deleting...');
+        $('#ok-button').text('Menghapus...');
       },
       success: function(data) {
         setTimeout(function() {

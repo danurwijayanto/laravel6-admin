@@ -36,7 +36,7 @@
           <table style="margin-bottom:20px">
             <tr>
               <td>
-                <h5>Class Name</h5>
+                <h5>Nama Kelas</h5>
               </td>
               <td>
                 <h5>:</h5>
@@ -47,7 +47,7 @@
             </tr>
             <tr>
               <td>
-                <h5>Schedule</h5>
+                <h5>Jadwal</h5>
               </td>
               <td>
                 <h5>:</h5>
@@ -60,15 +60,15 @@
           <div class="top-button-group" style="margin-bottom: 20px;">
             <a href="{{ route('admin.crossInterestClass.downloadExcelData', $classData['nama_kelas']) }}">
               <button type="button" class="btn btn-primary" id="download-cross-interest-class-data">
-                Download File
+                Unduh File
               </button>
             </a>
           </div>
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="20%">Class</th>
-                <th width="20%">Student Name</th>
+                <th width="20%">Kelas</th>
+                <th width="20%">Nama Siswa</th>
               </tr>
             </thead>
           </table>
@@ -133,17 +133,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah anda benar ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -283,7 +283,7 @@
         "_token": "{{ csrf_token() }}",
       },
       beforeSend: function() {
-        $('#ok-button').text('Deleting...');
+        $('#ok-button').text('Menghapus...');
       },
       success: function(data) {
         setTimeout(function() {

@@ -22,8 +22,8 @@ class SiswaController extends Controller
         $this->middleware('auth');
 
         $this->controllerDetails = [
-            "currentPage" => "Student",
-            "pageDescription" => "Student Management Page"
+            "currentPage" => "Siswa",
+            "pageDescription" => "Manajemen Siswa"
         ];
     }
 
@@ -108,16 +108,16 @@ class SiswaController extends Controller
         // Save data
         $student = Siswa::find($request->student_id);
         if (empty($student)) {
-            return response()->json(['errors' => [0 => 'Data not found !']]);
+            return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
         $student->nis = $request->nis;
         $student->nama_siswa = $request->name;
         $student->kelas = $request->class;
 
         if (!$student->save()) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
     }
 
@@ -132,13 +132,13 @@ class SiswaController extends Controller
         $siswa = Siswa::find($id);
 
         if (empty($siswa)) {
-            return response()->json(['errors' => [0 => 'Data not found !']]);
+            return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
 
         if (!$siswa->delete()) {
-            return response()->json(['errors' => [0 => 'Fail to update data']]);
+            return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
         } else {
-            return response()->json(['success' => 'Data is successfully updated']);
+            return response()->json(['success' => 'Data berhasil dirubah']);
         }
     }
 
@@ -149,8 +149,8 @@ class SiswaController extends Controller
         return DataTables::of($data)
             ->addColumn('action', function ($data) {
                 $button = '<button type="button" name="detail" id="' . $data->id . '" class="detail btn btn-secondary btn-sm">Detail</button>';
-                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Edit</button>';
-                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" >Delete</button>';
+                $button .= '&nbsp;&nbsp;&nbsp<button type="button" name="edit" id="' . $data->id . '" class="edit btn btn-primary btn-sm">Rubah</button>';
+                $button .= '&nbsp;&nbsp;&nbsp;<button type="button" name="delete" id="' . $data->id . '" class="delete btn btn-danger btn-sm" >Hapus</button>';
                 return $button;
             })
             ->rawColumns(['action'])
@@ -172,7 +172,7 @@ class SiswaController extends Controller
             }
 
             // Insert into database
-            $data = json_decode($export, true) ;
+            $data = json_decode($export, true);
 
             if (Siswa::insert($data['data'])) {
                 // Delete file

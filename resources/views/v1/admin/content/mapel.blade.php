@@ -28,16 +28,16 @@
       <div class="card card-default color-palette-box">
         <div class="card-body">
           <div class="top-button-group" style="margin-bottom: 20px;">
-            <button type="button" class="btn btn-primary add-course">Add new data</button>
+            <button type="button" class="btn btn-primary add-course">Tambah Data Mata Pelajaran</button>
           </div>
           <table id="course-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
-                <th width="20%">Course Code</th>
-                <th width="20%">Course Name</th>
-                <th width="20%">Number of Class</th>
-                <th width="20%">Class Quota</th>
-                <th width="20%">Action</th>
+                <th width="20%">Kode Mata Pelajaran</th>
+                <th width="20%">Nama Mata Pelajaran</th>
+                <th width="20%">Jumlah Kelas</th>
+                <th width="20%">Kuota</th>
+                <th width="20%">Aksi</th>
               </tr>
             </thead>
           </table>
@@ -48,7 +48,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Add New Course</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Tambah Mata Pelajaran</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -61,26 +61,27 @@
               <form method="post" id="edit-form" class="form-horizontal">
                 @csrf
                 <div class="form-group">
-                  <label class="col-form-label">Course code : </label>
-                  <input type="text" name="course_code" id="course-code" class="form-control" maxlength="11" required/>
+                  <label class="col-form-label">Kode Mata Pelajaran : </label>
+                  <input type="text" name="course_code" id="course-code" class="form-control" maxlength="11" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Course name : </label>
-                  <input type="text" name="course_name" id="course-name" class="form-control" maxlength="35" required/>
+                  <label class="col-form-label">Nama Mata Pelajaran : </label>
+                  <input type="text" name="course_name" id="course-name" class="form-control" maxlength="35" required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Number of classes : </label>
-                  <input type="number" name="number_of_classes" id="number-of-classes" class="form-control" min="1" required/>
+                  <label class="col-form-label">Jumlah Kelas : </label>
+                  <input type="number" name="number_of_classes" id="number-of-classes" class="form-control" min="1"
+                    required />
                 </div>
                 <div class="form-group">
-                  <label class="col-form-label">Class quota : </label>
-                  <input type="number" name="class_quota" id="class-quota" class="form-control" min="1" required/>
+                  <label class="col-form-label">Kuota : </label>
+                  <input type="number" name="class_quota" id="class-quota" class="form-control" min="1" required />
                 </div>
                 <br />
                 <div class="modal-footer">
                   <input type="hidden" name="action" id="action" value="Add" />
                   <input type="hidden" name="course_id" id="course-id" />
-                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Add" />
+                  <input type="submit" name="action_button" id="action_button" class="btn btn-primary" value="Tambah" />
                 </div>
               </form>
             </div>
@@ -92,17 +93,17 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Confirmation</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle">Konfirmasi</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <h4 align="center" style="margin:0;">Are you sure you want to remove this data?</h4>
+              <h4 align="center" style="margin:0;">Apakah anda benar ingin menghapus data ini ?</h4>
             </div>
             <div class="modal-footer">
               <button type="button" name="ok_button" id="ok-button" class="btn btn-danger">OK</button>
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
             </div>
           </div>
         </div>
@@ -189,7 +190,7 @@
   $(document).on('click', '.add-course', function() {
     $('#form-result').html('');
     $('#formModal').modal('show');
-    $('#action_button').val('Add');
+    $('#action_button').val('Simpan');
     $('#action').val('Add');
   });
 
@@ -206,13 +207,13 @@
         $("#number-of-classes").val(data.jumlah_kelas)
         $("#class-quota").val(data.kuota_kelas)
         $('#course-id').val(id);
-        $('.modal-title').text('Edit User Record');
-        $('#action_button').val('Edit');
-        $('#action').val('Edit');
+        $('.modal-title').text('Rubah Data Mata Pelajaran');
+        $('#action_button').val('Rubah');
+        $('#action').val('Rubah');
         $('#formModal').modal('show');
       },
       error: function() {
-        alert("Error : Cannot get data");
+        alert("Error : Tidak dapat memperoleh data");
       }
     })
   });
@@ -230,7 +231,7 @@
         "_token": "{{ csrf_token() }}",
       },
       beforeSend: function() {
-        $('#ok-button').text('Deleting...');
+        $('#ok-button').text('Menghapus...');
       },
       success: function(data) {
         setTimeout(function() {

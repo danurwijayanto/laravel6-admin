@@ -167,15 +167,15 @@ trait WeightedProductCalculationTraits
             // Save data
             $student = \App\Models\Siswa::find($data[$i]['id']);
             if (empty($student)) {
-                return response()->json(['errors' => [0 => 'Data not found !']]);
+                return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
             }
 
             $student->vektor_v1 = $data[$i]['v_value']['v1'];
             $student->vektor_v2 = $data[$i]['v_value']['v2'];
             $student->vektor_v3 = $data[$i]['v_value']['v3'];
-            
+
             if (!$student->save()) {
-                return response()->json(['errors' => [0 => 'Fail to update data']]);
+                return response()->json(['errors' => [0 => 'Gagal merubah atau menyimpan data']]);
             }
         }
 
