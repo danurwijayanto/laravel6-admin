@@ -5,6 +5,7 @@ namespace App\Traits;
 use Illuminate\HTTP\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx as WriterXlsx;
 use Illuminate\Support\Facades\Log;
 use App\Models\Mapellm;
@@ -117,9 +118,13 @@ trait ExcelDataTraits
             $sheet->setCellValue('B' . $row, $data[$i]['student']["nama_siswa"]);
         }
 
-        $writer = new WriterXlsx($spreadsheet);
-        $writer->save('./' . $data[0]["nama_kelas"] . '.xlsx');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $data[0]["nama_kelas"] . '.xlsx"');
+        header('Cache-Control: max-age=0');
 
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        // $writer->save('./' . $data[0]["nama_kelas"] . '.xlsx');
         return json_encode([
             'success' => 'Export Successfully !'
         ]);

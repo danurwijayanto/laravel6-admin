@@ -186,7 +186,6 @@ class LintasMinatController extends Controller
     {
         $data = Kelaslm::where('nama_kelas', $className)->with(['student', 'course'])->get();
         $this->writeExcel($data);
-
-        return redirect()->back();
+        return;
     }
 }
