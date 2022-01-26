@@ -160,8 +160,8 @@ class LintasMinatController extends Controller
 
     public function dataTablesGetAllData()
     {
-        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal')
-            ->groupBy('nama_kelas', 'id_mapellm', 'jadwal')
+        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal, pengajar')
+            ->groupBy('nama_kelas', 'id_mapellm', 'jadwal', 'pengajar')
             ->get();
 
         return DataTables::of($data)

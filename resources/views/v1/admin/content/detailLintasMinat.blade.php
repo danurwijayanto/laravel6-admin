@@ -67,6 +67,7 @@
           <table id="cross-interest-class-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
               <tr>
+                <th width="20%">NIS</th>
                 <th width="20%">Kelas</th>
                 <th width="20%">Nama Siswa</th>
               </tr>
@@ -165,6 +166,9 @@
         url: "/admin/cross-interest/get-datatables-detail-data/" + $('#class-name').val(),
       },
       columns: [{
+          data: 'student.nis',
+          name: 'student.nis'
+        },{
           data: 'student.kelas',
           name: 'student.kelas'
         },

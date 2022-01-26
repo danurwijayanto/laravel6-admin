@@ -37,6 +37,7 @@
                 <th width="25%">Nama Kelas</th>
                 <th width="25%">Total Murid</th>
                 <th width="25%">Jadwal</th>
+                <th width="25%">Guru</th>
                 <th width="25%">Aksi</th>
               </tr>
             </thead>
@@ -189,6 +190,10 @@
           name: 'jadwal'
         },
         {
+          data: 'pengajar',
+          name: 'pengajar'
+        },
+        {
           data: 'action',
           name: 'action',
           orderable: false
@@ -235,7 +240,7 @@
         if (data.success) {
           html = '<div class="alert alert-success">' + data.success + '</div>';
           $('#edit-form')[0].reset();
-          // $('#formModal').modal('hide');
+          $('#formModal').modal('hide');
           $('#cross-interest-class-table').DataTable().ajax.reload();
         }
         $('#form-result').html(html);
