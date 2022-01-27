@@ -306,7 +306,7 @@
         $('#ok-button-delete-all').text('Menghapus...');
       },
       success: function(data) {
-        setTimeout(function() {
+        // setTimeout(function() {
           if (data.errors) {
             errorMessage = '';
             for (var count = 0; count < data.errors.length; count++) {
@@ -320,7 +320,7 @@
             $('#cross-interest-class-table').DataTable().ajax.reload();
             alert('Data Deleted');
           }
-        }, 2000);
+        // }, 2000);
       }
     })
   })
