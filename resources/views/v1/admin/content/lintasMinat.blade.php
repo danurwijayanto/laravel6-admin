@@ -77,12 +77,12 @@
                   <div class="row">
                     <div class="col">
                       <select id="day" class="form-control" name="day" required>
-                        <option value="Sunday">Senin</option>
-                        <option value="Monday">Selasa</option>
-                        <option value="Tuesday">Rabu</option>
-                        <option value="Wednesday">Kamis</option>
-                        <option value="Thursday">Jum`at</option>
-                        <option value="Saturday">Sabtu</option>
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jum`at</option>
+                        <option value="Sabtu">Sabtu</option>
                       </select>
                     </div>
                     <div class="col">
@@ -187,7 +187,14 @@
         },
         {
           data: 'jadwal',
-          name: 'jadwal'
+          name: 'jadwal',
+          render: function ( data, type, row ) {
+            if (row.hari) {
+                return `${row.hari}, ${row.jadwal}`;
+            } else {
+                return '-';
+            }
+          }
         },
         {
           data: 'pengajar',
@@ -265,14 +272,13 @@
       success: function(data) {
         const jadwal = data.jadwal
         const jadwalSplit = jadwal.split(",")
-        console.log(jadwalSplit)
         $('#course-code').val(data.course.kode_mapel);
         $("#course-code").prop('disabled', true);
         $('#class').val(data.nama_kelas);
         $("#class").prop('disabled', true);
         $("#teacher").val(data.pengajar);
-        $("#day").val(jadwalSplit[0]);
-        $("#time").val(jadwalSplit[1]);
+        $("#day").val(data.hari);
+        $("#time").val(jadwalSplit);
         $('#cross-interest-class-id').val(data.id);
         $('.modal-title').text('Edit Data Kelas Lintas Minat');
         $('#action_button').val('Simpan');

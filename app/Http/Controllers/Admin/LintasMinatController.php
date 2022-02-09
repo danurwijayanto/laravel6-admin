@@ -125,10 +125,17 @@ class LintasMinatController extends Controller
             return response()->json(['errors' => [0 => 'Data tidak ditemukan']]);
         }
 
+        $getKelasLm = Kelaslm::where('jadwal', $request->time)->where('hari', $request->day)->get();
+
+        if (count($getKelasLm) > 0) {
+            return response()->json(['errors' => [0 => 'Terjadi tabrakan jadwal']]);
+        }
+
         $editClassData = Kelaslm::where('nama_kelas', $classData->nama_kelas)
             ->update([
                 'pengajar' => $request->teacher,
-                'jadwal' => $request->time
+                'jadwal' => $request->time,
+                'hari' => $request->day
             ]);
 
         if (!$editClassData) {
@@ -160,8 +167,8 @@ class LintasMinatController extends Controller
 
     public function dataTablesGetAllData()
     {
-        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal, pengajar')
-            ->groupBy('nama_kelas', 'id_mapellm', 'jadwal', 'pengajar')
+        $data = DB::table('kelaslm')->selectRaw('count("id_siswa") as jumlah_siswa ,id_mapellm, nama_kelas, jadwal, pengajar, hari')
+            ->groupBy('nama_kelas', 'id_mapellm', 'jadwal', 'pengajar', 'hari')
             ->get();
 
         return DataTables::of($data)
