@@ -90,7 +90,7 @@ trait ExcelDataTraits
 
                 array_push($value, $data);
             } else {
-                return json_encode(['fail' => 'Student nip or student score is null']);
+                return json_encode(['fail' => 'NIP Murid atau Nilai Murid belum diisi']);
             }
         }
         // Menghilangkan koma di belakang

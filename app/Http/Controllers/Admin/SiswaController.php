@@ -175,11 +175,15 @@ class SiswaController extends Controller
             // Insert into database
             $data = json_decode($export, true);
 
-            if (Siswa::insert($data['data'])) {
-                // Delete file
-                unlink($file_path);
+            try {
+                if (Siswa::insert($data['data'])) {
+                    // Delete file
+                    unlink($file_path);
 
-                return response()->json(['success' => 'Data is successfully added']);
+                    return response()->json(['success' => 'Data is successfully added']);
+                }
+            } catch (\Exception $e) {
+                return response()->json(['errors' => [0 => $e->getMessage()]]);
             }
 
             return response()->json(['errors' => [0 => 'Fail to adding data']]);
